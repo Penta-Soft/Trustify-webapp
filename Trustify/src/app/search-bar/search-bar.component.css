@@ -11,3 +11,7 @@ form {
 .recensione > span {
     display: block;
 }
+
+form > button {
+    background-color: #999999;
+}

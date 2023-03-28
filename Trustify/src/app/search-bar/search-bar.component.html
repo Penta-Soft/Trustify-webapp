@@ -1,7 +1,13 @@
-<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
-    <label for="address">Inserisci l'indirizzo dell'attività</label>
-    <input id="address" type="text" formControlName="address" placeholder="Indirizzo Wallet" />
-    <button type="submit">Cerca</button>
+<form (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+        <mat-label>Inserisci l'indirizzo dell'attività </mat-label>
+        <input name="address" type="text" formControlName="address" placeholder="Indirizzo Wallet" />
+        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+        <mat-hint>Hint</mat-hint>
+    </mat-form-field>
+    <button type="submit" mat-mini-fab>
+        <mat-icon fontIcon="search">icon</mat-icon>
+    </button>
 </form>
 
 <ul *ngFor="let recensione of recensioni">
