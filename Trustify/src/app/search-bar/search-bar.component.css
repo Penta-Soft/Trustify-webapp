@@ -1,0 +1,13 @@
+form {
+    text-align: center;
+    padding: 1em;
+}
+
+.recensione {
+    padding: 1em;
+    list-style-type: none;
+}
+
+.recensione > span {
+    display: block;
+}

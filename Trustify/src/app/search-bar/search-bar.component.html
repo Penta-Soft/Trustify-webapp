@@ -1,0 +1,13 @@
+<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+    <label for="address">Inserisci l'indirizzo dell'attività</label>
+    <input id="address" type="text" formControlName="address" placeholder="Indirizzo Wallet" />
+    <button type="submit">Cerca</button>
+</form>
+
+<ul *ngFor="let recensione of recensioni">
+    <li class="recensione">
+        <span><strong>Indirizzo wallet</strong>: {{recensione.indirizzoWallet}}</span>
+        <span><strong>Valutazione</strong>: {{recensione.valutazione}}</span>
+        <span><strong>Descrizione</strong>: {{recensione.descrizione}}</span>
+    </li>
+</ul>

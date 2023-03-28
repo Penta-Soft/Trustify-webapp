@@ -1,0 +1,26 @@
+<div id="paymentWrapper">
+  <h1 id="paymentTitle">Effettua un pagamento</h1>
+  <form id="payment" method="post">
+    <fieldset>
+      <legend xml:lang="en" lang="en">Dettagli del pagamento</legend>
+      <label for="paymentAddress"
+        ><span xml:lang="en" lang="en"
+          >Indirizzo wallet beneficiario:</span
+        ></label
+      >
+      <input
+        id="paymentAddress"
+        class="campo_input"
+        name="address"
+        maxlength="42"
+      />
+      <label for="paymentAmount"
+        ><span xml:lang="en" lang="en"
+          >Quantità token da trasferire:</span
+        ></label
+      >
+      <input id="paymentAmount" class="campo_input" />
+      <input id="paymentConfirm" type="submit" value="Continua" title="Effettua il pagamento" />
+    </fieldset>
+  </form>
+</div>
