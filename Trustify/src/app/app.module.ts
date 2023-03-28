@@ -12,6 +12,7 @@ import { HeaderComponent } from './header/header.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 
+import { AreaPersonaleComponent } from './area-personale/area-personale.component';
 
 @NgModule({
   declarations: [
@@ -23,8 +24,8 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     HomePageComponent,
     SearchBarComponent,
 
-    PagamentoComponent
-
+    PagamentoComponent,
+    AreaPersonaleComponent
   ],
   imports: [
     BrowserModule,

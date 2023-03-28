@@ -1,0 +1,40 @@
+<div id="personal-area">
+    <h1>Area Personale</h1>
+    <div id="form-new-review">
+        <h2>Inserisci nuova recensione</h2>
+        <label for="address">Indirizzo attività da recensire: </label>
+        <input type="text" name="address" id="address"><br>
+        <label for="description">Descrizione: </label>
+        <input type="text" name="description" id="description"><br>
+        
+        <p>Valutazione:</p>
+        <input type="radio" id="1" name="rating" value="1">
+        <label for="rating">1 Stella</label><br>
+        <input type="radio" id="2" name="rating" value="2">
+        <label for="rating">2 Stelle</label><br>
+        <input type="radio" id="3" name="rating" value="3">
+        <label for="rating">3 Stelle</label><br>
+        <input type="radio" id="4" name="rating" value="4">
+        <label for="rating">4 Stelle</label><br>
+        <input type="radio" id="5" name="rating" value="5">
+        <label for="rating">5 Stelle</label><br>
+        <button>Inserisci</button>
+    </div>
+<!--ngFor ciclando su tutte le recensioni che ha l'utente autenticato attive (sarà tipo <li ngFor"let recensione of recensioni">...</li>)-->
+    <div id="overview-review">
+        <h2>Panoramica recensioni personali</h2>
+        <ul>
+            <li>
+                recensione 1
+            </li>
+            <li>
+                recensione 2
+            </li>
+            <li>
+                recensione 3
+            </li>
+        </ul>
+    </div>
+</div>
+
+
