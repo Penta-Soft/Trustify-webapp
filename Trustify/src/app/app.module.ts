@@ -15,6 +15,10 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
 import { AreaPersonaleComponent } from './area-personale/area-personale.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatButtonModule, } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +34,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatIconModule
   ],
   providers: [],
   bootstrap: [AppComponent]
