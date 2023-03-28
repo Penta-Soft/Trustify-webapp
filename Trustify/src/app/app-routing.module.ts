@@ -7,13 +7,13 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { PagamentoComponent } from './pagamento/pagamento.component';
 
 const routes: Routes = [
-  { path: '/pagamento', component: PagamentoComponent },
-  { path: '/areapersonale', component: AreaPersonaleComponent },
-  { path: '/', component: HomePageComponent }
+  { path: 'pagamento', component: PagamentoComponent },
+  { path: 'areapersonale', component: AreaPersonaleComponent },
+  { path: '', component: HomePageComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
