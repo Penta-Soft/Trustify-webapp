@@ -17,13 +17,10 @@ import { AreaPersonaleComponent } from './area-personale/area-personale.componen
 @NgModule({
   declarations: [
     AppComponent,
-
     FooterComponent,
     HeaderComponent,
-
     HomePageComponent,
     SearchBarComponent,
-
     PagamentoComponent,
     AreaPersonaleComponent
   ],
