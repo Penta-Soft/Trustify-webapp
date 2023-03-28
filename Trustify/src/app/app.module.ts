@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { PagamentoComponent } from './pagamento/pagamento.component';
 
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
@@ -20,7 +21,9 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
     HeaderComponent,
 
     HomePageComponent,
-    SearchBarComponent
+    SearchBarComponent,
+
+    PagamentoComponent
 
   ],
   imports: [

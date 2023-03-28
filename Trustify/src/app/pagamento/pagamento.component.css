@@ -1,0 +1,33 @@
+#paymentTitle {
+    text-align: center;
+}
+
+#paymentWrapper {
+    text-align: center;
+}
+
+#payment {
+    width: 30%;
+    margin: 1% auto;
+}
+
+#payment fieldset {
+    border: 1px solid black;
+    padding: 1.5%;
+}
+
+.campo_input {
+    width: 85%;
+    margin: 0% 1%;
+}
+
+#payment fieldset>label {
+    display: block;
+    margin-top: 2%;
+}
+
+#paymentConfirm {
+    margin-top: 1%;
+    padding: 0.5em;
+
+}
