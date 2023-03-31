@@ -27,6 +27,7 @@ export class StarRatingComponent implements OnInit {
       this.ratingArr.push(index);
     }
   }
+
   onClick(rating:number) {
     console.log(rating)
     this.snackBar.open('You rated ' + rating + ' / ' + this.starCount, '', {
@@ -43,8 +44,8 @@ export class StarRatingComponent implements OnInit {
       return 'star_border';
     }
   }
-
 }
+
 export enum StarRatingColor {
   primary = "primary",
   accent = "accent",
