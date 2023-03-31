@@ -1,14 +1,21 @@
-<form (ngSubmit)="onSubmit()">
-    <mat-form-field appearance="outline">
-        <mat-label>Inserisci l'indirizzo dell'attività </mat-label>
-        <input name="address" type="text" formControlName="address" placeholder="Indirizzo Wallet" />
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-        <mat-hint>Hint</mat-hint>
+<form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+    <mat-form-field>
+        <mat-label>Indirizzo Wallet</mat-label>
+        <input matInput minlength="42" maxlength="42" inputmode="address" placeholder="0x..." formControlName="address"
+            #nameInput>
+        <mat-error>Inserisci un indirizzo</mat-error>
+        <mat-error *ngIf="form.controls['address'].errors?.['minlength']">
+            Inserire un indirizzo di 42 caratteri
+        </mat-error>
     </mat-form-field>
-    <button type="submit" mat-mini-fab>
-        <mat-icon fontIcon="search">icon</mat-icon>
+
+    <button color="primary" type="submit" [disabled]="!form.valid" mat-fab extended>
+        <mat-icon>search</mat-icon>
+        Cerca
     </button>
 </form>
+
+<div>{{ form.value | json }}</div>
 
 <ul *ngFor="let recensione of recensioni">
     <li class="recensione">
