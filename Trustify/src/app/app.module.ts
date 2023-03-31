@@ -15,9 +15,12 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
 import { AreaPersonaleComponent } from './area-personale/area-personale.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatFormFieldModule} from '@angular/material/form-field';
-import { MatButtonModule, } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -35,9 +38,13 @@ import { MatIconModule } from '@angular/material/icon';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
     MatFormFieldModule,
-    MatButtonModule,
-    MatIconModule
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
