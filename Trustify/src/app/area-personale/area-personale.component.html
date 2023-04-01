@@ -7,7 +7,7 @@
             <legend>Nuova recensione</legend>
             <mat-form-field appearance="fill">
               <input matInput placeholder="Indirizzo attività da recensire" required>
-              <mat-hint>inserire Indirizzo tipo 0x...</mat-hint>
+              <mat-hint>inserire Indirizzo del tipo 0x...</mat-hint>
             </mat-form-field>
             <mat-form-field appearance="fill">
               <textarea matInput placeholder="Recensione" required></textarea>
@@ -15,7 +15,7 @@
             </mat-form-field>
 
             <h3>Valutazione:</h3>
-            <app-star-rating [rating]="rating" [starCount]="starCount" [color]="starColor" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
+            <app-star-rating [rating]="rating" [starCount]="starCount" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
             <button mat-raised-button>Inserisci</button>
           </fieldset>
         </form>

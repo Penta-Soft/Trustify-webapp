@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import { StarRatingColor } from '../star-rating/star-rating.component';
 
 
 @Component({
@@ -11,9 +10,6 @@ import { StarRatingColor } from '../star-rating/star-rating.component';
 export class AreaPersonaleComponent implements OnInit {
   rating:number = 3;
   starCount:number = 5;
-  starColor:StarRatingColor = StarRatingColor.accent;
-  starColorP:StarRatingColor = StarRatingColor.primary;
-  starColorW:StarRatingColor = StarRatingColor.warn;
 
   constructor() { }
 
