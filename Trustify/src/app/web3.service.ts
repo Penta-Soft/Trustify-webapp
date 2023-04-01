@@ -104,7 +104,7 @@ export class Web3Service {
     );
     let reviews : string[];
     let stars : number[];
-    [reviews, stars] = await contract.methods.GetNCompanyReview.call();
+    [reviews, stars] = await contract.methods.GetNCompanyReview(from, to, address).call();
     return [reviews, stars];
   }
   
@@ -116,7 +116,7 @@ export class Web3Service {
     );
     let review : string;
     let star : number;
-    [review, star] = await contract.methods.GetSpecificReview.call();
+    [review, star] = await contract.methods.GetSpecificReview(address).call();
     return [review, star];
   }
 
@@ -130,7 +130,7 @@ export class Web3Service {
     let reviews : string[];
     let stars : number[];
     let addresses : string[];
-    [reviews, stars, addresses] = await contract.methods.GetNMyReview.call();
+    [reviews, stars, addresses] = await contract.methods.GetNMyReview(from,to).call();
     return [reviews, stars, addresses];
   }
 
@@ -142,7 +142,7 @@ export class Web3Service {
       this.contractAddress
     );
     let stars : number[];
-    stars = await contract.methods.GetAverageStars.call();
+    stars = await contract.methods.GetAverageStars(address).call();
     return stars;
   }
 
