@@ -1,10 +1,25 @@
- #personal-area {
-    text-align: center;
- }
- 
- #connect-btn {
-    
-    width: 98%;
-    padding: 0.5em;
-    text-align: center;
- }
+*{
+  text-align: center;
+}
+
+form {
+  display: inline-block;
+  width: 50%;
+}
+
+fieldset {
+  border-radius: 1em;
+}
+
+mat-form-field {
+  display: block;
+  margin: 1em;
+}
+
+input, textarea {
+  text-align: left;
+}
+
+button {
+  margin-bottom: 1em;
+}

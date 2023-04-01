@@ -14,7 +14,10 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
 
 import { AreaPersonaleComponent } from './area-personale/area-personale.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StarRatingComponent } from './star-rating/star-rating.component';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -32,6 +35,7 @@ import { MatIconModule } from '@angular/material/icon';
     SearchBarComponent,
     PagamentoComponent,
     AreaPersonaleComponent,
+    StarRatingComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,7 +50,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatButtonModule,
+    MatSnackBarModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

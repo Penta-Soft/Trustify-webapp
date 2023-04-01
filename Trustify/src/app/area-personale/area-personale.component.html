@@ -1,24 +1,26 @@
-<div *ngIf="isConnected; else notConnected" id="personal-area">
+<div id="personal-area">
     <h1>Area Personale</h1>
     <div id="form-new-review">
         <h2>Inserisci nuova recensione</h2>
-        <label for="address">Indirizzo attività da recensire: </label>
-        <input type="text" name="address" id="address"><br>
-        <label for="description">Descrizione: </label>
-        <input type="text" name="description" id="description"><br>
+        <form>
+          <fieldset>
+            <legend>Nuova recensione</legend>
+            <mat-form-field appearance="fill">
+              <input matInput placeholder="Indirizzo attività da recensire" required>
+              <mat-hint>inserire Indirizzo tipo 0x...</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <textarea matInput placeholder="Recensione" required></textarea>
+              <mat-hint>inserire recensione</mat-hint>
+            </mat-form-field>
 
-        <p>Valutazione:</p>
-        <input type="radio" id="1" name="rating" value="1">
-        <label for="rating">1 Stella</label><br>
-        <input type="radio" id="2" name="rating" value="2">
-        <label for="rating">2 Stelle</label><br>
-        <input type="radio" id="3" name="rating" value="3">
-        <label for="rating">3 Stelle</label><br>
-        <input type="radio" id="4" name="rating" value="4">
-        <label for="rating">4 Stelle</label><br>
-        <input type="radio" id="5" name="rating" value="5">
-        <label for="rating">5 Stelle</label><br>
-        <button>Inserisci</button>
+            <h3>Valutazione:</h3>
+            <app-star-rating [rating]="rating" [starCount]="starCount" [color]="starColor" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
+            <button mat-raised-button>Inserisci</button>
+          </fieldset>
+        </form>
+
+
     </div>
     <!--ngFor ciclando su tutte le recensioni che ha l'utente autenticato attive (sarà tipo <li ngFor"let recensione of recensioni">...</li>)-->
     <div id="overview-review">
@@ -36,9 +38,3 @@
         </ul>
     </div>
 </div>
-
-<ng-template #notConnected>
-    <div id="connect-btn">
-        <button (click)="connect()" mat-raised-button>Connetti Metamask</button>
-    </div>
-</ng-template>
