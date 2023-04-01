@@ -15,7 +15,7 @@
             </mat-form-field>
 
             <h3>Valutazione:</h3>
-            <app-star-rating [rating]="rating" [starCount]="starCount" [color]="starColor" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
+            <app-star-rating [rating]="rating" [starCount]="starCount" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
             <button mat-raised-button>Inserisci</button>
           </fieldset>
         </form>
