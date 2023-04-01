@@ -15,8 +15,13 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
 import { AreaPersonaleComponent } from './area-personale/area-personale.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatTabsModule } from '@angular/material/tabs'
-import {MatButtonModule} from '@angular/material/button';;
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -26,7 +31,7 @@ import {MatButtonModule} from '@angular/material/button';;
     HomePageComponent,
     SearchBarComponent,
     PagamentoComponent,
-    AreaPersonaleComponent
+    AreaPersonaleComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,9 +40,15 @@ import {MatButtonModule} from '@angular/material/button';;
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatTabsModule,
-    MatButtonModule
+    MatButtonModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
