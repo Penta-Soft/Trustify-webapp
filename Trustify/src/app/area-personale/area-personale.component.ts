@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./area-personale.component.css']
 })
 export class AreaPersonaleComponent {
+  isConnected:boolean = false;
 
+  connect() {
+    this.isConnected = true;
+  }
 }
