@@ -11,6 +11,11 @@ fieldset {
   border-radius: 1em;
 }
 
+legend {
+  text-align: left;
+  margin: 2em;
+}
+
 mat-form-field {
   display: block;
   margin: 1em;
