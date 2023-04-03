@@ -68,7 +68,7 @@ export class Web3Service {
       this.abiTC.abi,this.contractAddressTC
     );
     this.ConnectWallet();
-    await contract.methods.drip().call();
+    await contract.methods.drip().send({from: this.address[0]});
   }
 
   async DepositTokens(address:string, amount:number){
