@@ -20,20 +20,20 @@
           </fieldset>
         </form>
 
-
     </div>
-    <!--ngFor ciclando su tutte le recensioni che ha l'utente autenticato attive (sarà tipo <li ngFor"let recensione of recensioni">...</li>)-->
-    <div id="overview-review">
-        <h2>Panoramica recensioni personali</h2>
+    <h2>Panoramica recensioni personali</h2>
+    <div id="reviews-overview">
         <ul>
-            <li>
-                recensione 1
-            </li>
-            <li>
-                recensione 2
-            </li>
-            <li>
-                recensione 3
+            <li *ngFor="let review of recensione">
+              {{review.indirizzoWallet}}
+              {{showStarsReview(review.valutazione)}}
+              <!-- <button mat-icon-button *ngFor="let i of starArr" disabled>
+                <mat-icon>
+                  {{showStarsReview(i)}}
+                </mat-icon>
+              </button><br> -->
+              {{review.valutazione}}
+              {{review.descrizione}}
             </li>
         </ul>
     </div>

@@ -6,7 +6,6 @@
 body {
     margin: auto;
     max-width: 1024px;
-    overflow: hidden;
 }
 
 html, body { height: 100%; }
