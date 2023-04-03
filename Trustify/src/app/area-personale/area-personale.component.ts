@@ -14,17 +14,10 @@ export class AreaPersonaleComponent implements OnInit {
   recensione: Recensione[] = [];
   plot: number = 0;
 
-  constructor(private service: RecensioniService, private cd:ChangeDetectorRef) {}
+  constructor(private serviceReview: RecensioniService, private cd:ChangeDetectorRef) {}
 
   ngOnInit() {
-    // for(let i = 0; i < this.recensione.length; i++) {
-    //   for(let j = 0; j < this.recensione.at(i).valutazione; j++) {
-    //     console.log(j);
-    //     this.ratingStars.push(j);
-    //   }
-    // }
-
-    this.recensione = this.service.getRecensioni();
+    this.recensione = this.serviceReview.getRecensioni();
     for(let i of this.recensione) {
       this.ratingStars.push(i.valutazione)
     }
