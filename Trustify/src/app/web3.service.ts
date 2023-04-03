@@ -7,14 +7,20 @@ import { provider } from 'web3-core';
   providedIn: 'root',
 })
 export class Web3Service {
-  private contractAddress = "0x881037F2cC0A8eADCc3f3C991573b988F052fd91"; //da cambiare e mettere l'address del contratto
-    private provider!: provider;
+  private contractAddress = "0xE45855601095597163f2081d8d1bc26cc283d202"; //address del contratto
+  //https://sepolia.etherscan.io/address/0xE45855601095597163f2081d8d1bc26cc283d202
+  private contractAddressTC ="0xDE3160A2B9feE2a47DF91Ce47DA53065EEfa25b1";
+  //https://sepolia.etherscan.io/address/0xDE3160A2B9feE2a47DF91Ce47DA53065EEfa25b1
+
+  private provider!: provider;
   private address!: string[];
   private web3WalletProvider: Web3; 
   private m_wallet: WalletService;
   private readonly infuraHTTPProvider: string =
     'https://sepolia.infura.io/v3/1caadfe504ce4531b041de4bc8927ceb';
   private walletConnected: boolean = false;
+  private abi= require('../../contracts/Trustify.json')
+  private abiTC= require('../../contracts/TCoin.json');
 
   constructor() {
     this.m_wallet = new WalletService();
@@ -57,10 +63,17 @@ export class Web3Service {
     }
   }
 
+  async pullTCoin(){
+    const contract = new this.web3WalletProvider.eth.Contract(
+      this.abiTC.abi,this.contractAddressTC
+    );
+    this.ConnectWallet();
+    await contract.methods.drip().call();
+  }
+
   async DepositTokens(address:string, amount:number){
     if (this.walletConnected) {
-      let abi= require('contracts/Trustify.sol/Trustify.json')
-      const contract = new this.web3WalletProvider.eth.Contract(abi.abi, this.contractAddress);
+      const contract = new this.web3WalletProvider.eth.Contract(this.abi.abi, this.contractAddress);
       await contract.methods.DepositTokens(
         address,
         amount
@@ -77,9 +90,9 @@ export class Web3Service {
   }
 
   async WriteAReview(address:string, review:string, stars:number){
+    console.log("Scriviamo");
     if (this.walletConnected) {
-      let abi= require('contracts/Trustify.sol/Trustify.json')
-      const contract = new this.web3WalletProvider.eth.Contract(abi.abi, this.contractAddress);
+      const contract = new this.web3WalletProvider.eth.Contract(this.abi.abi, this.contractAddress);
       await contract.methods.WriteAReview(
         address,
         review,
@@ -97,9 +110,8 @@ export class Web3Service {
   }
 
   async GetNCompanyReview(from: number, to:number, address: string){
-    let abi= require('contracts/Trustify.sol/Trustify.json')
     const contract = new this.web3WalletProvider.eth.Contract(
-      abi.abi,
+      this.abi.abi,
       this.contractAddress
     );
     let reviews : string[];
@@ -109,9 +121,8 @@ export class Web3Service {
   }
   
   async GetSpecificReview(address: string){
-    let abi= require('contracts/Trustify.sol/Trustify.json')
     const contract = new this.web3WalletProvider.eth.Contract(
-      abi.abi,
+      this.abi.abi,
       this.contractAddress
     );
     let review : string;
@@ -121,9 +132,8 @@ export class Web3Service {
   }
 
   async GetNMyReview(from : number, to : number){
-    let abi= require('contracts/Trustify.sol/Trustify.json')
     const contract = new this.web3WalletProvider.eth.Contract(
-      abi.abi,
+      this.abi.abi,
       this.contractAddress
     );
 
@@ -136,9 +146,8 @@ export class Web3Service {
 
   //Ritorna un array con tutte le "stars"
   async GetAverageStarsArray(address : string){
-    let abi= require('contracts/Trustify.sol/Trustify.json')
     const contract = new this.web3WalletProvider.eth.Contract(
-      abi.abi,
+      this.abi.abi,
       this.contractAddress
     );
     let stars : number[];
@@ -157,6 +166,8 @@ export class Web3Service {
     return sum/array.length;*/
     return array.reduce((a, b) => a + b, 0) / array.length; //dovrebbe calcolare la media direttamente così
   }
+
+
 
 
 

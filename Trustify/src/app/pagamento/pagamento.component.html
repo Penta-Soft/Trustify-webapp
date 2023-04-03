@@ -8,7 +8,7 @@
           >Indirizzo wallet beneficiario:</span
         ></label
       >
-      <input
+      <input #address
         id="paymentAddress"
         class="campo_input"
         name="address"
@@ -19,8 +19,17 @@
           >Quantità token da trasferire:</span
         ></label
       >
-      <input id="paymentAmount" class="campo_input" />
-      <input id="paymentConfirm" type="submit" value="Continua" title="Effettua il pagamento" />
+      <input #amount id="paymentAmount" type="number" class="campo_input" />
+      <button color="primary" type="submit" value="Continua" (click)="pay(address.value, amount.value)">Continua!</button>
+
+
+
+
+
+      <button color="primary" type="submit" value="Continua" (click)="getToken()">Ottieni token free!</button>
+
     </fieldset>
   </form>
+
+
 </div>
