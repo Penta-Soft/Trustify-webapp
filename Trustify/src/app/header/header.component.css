@@ -1,5 +1,10 @@
 header {
     text-align: center;
+    
+}
+
+h1 {
+    font-size: 3em;
     padding: 0.5em;
 }
 
@@ -8,12 +13,3 @@ nav {
     padding: 1.5em;
 }
 
-ul {
-    display: flex;
-    justify-content: space-between;
-    padding: 0em 6em;
-}
-
-ul > li {
-    display: inline-block;
-}

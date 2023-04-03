@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RecensioniService } from '../recensioni.service';
 import { Recensione } from '../recensione';
 @Component({
@@ -14,7 +14,7 @@ export class AreaPersonaleComponent implements OnInit {
   recensione: Recensione[] = [];
   plot: number = 0;
 
-  constructor(private serviceReview: RecensioniService, private cd:ChangeDetectorRef) {}
+  constructor(private serviceReview: RecensioniService) {}
 
   ngOnInit() {
     this.recensione = this.serviceReview.getRecensioni();
@@ -26,7 +26,6 @@ export class AreaPersonaleComponent implements OnInit {
     }
     console.log(this.ratingStars)
     console.log(this.starArr.length);
-    this.cd.detectChanges();
   }
 
   onRatingChanged(rating: number) {

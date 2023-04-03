@@ -16,14 +16,15 @@ import { AreaPersonaleComponent } from './area-personale/area-personale.componen
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StarRatingComponent } from './star-rating/star-rating.component';
 
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatIconModule} from '@angular/material/icon';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatButtonModule} from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import {MatInputModule} from '@angular/material/input';
     SearchBarComponent,
     PagamentoComponent,
     AreaPersonaleComponent,
-    StarRatingComponent
+    StarRatingComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,14 +43,17 @@ import {MatInputModule} from '@angular/material/input';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatSnackBarModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatTooltipModule,
+    MatTabsModule,
     MatButtonModule,
-    MatInputModule
+    MatNativeDateModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatSnackBarModule,
+    MatTooltipModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

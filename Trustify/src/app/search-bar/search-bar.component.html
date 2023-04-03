@@ -1,8 +1,21 @@
-<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
-    <label for="address">Inserisci l'indirizzo dell'attività</label>
-    <input id="address" type="text" formControlName="address" placeholder="Indirizzo Wallet" />
-    <button type="submit">Cerca</button>
+<form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+    <mat-form-field>
+        <mat-label>Indirizzo Wallet</mat-label>
+        <input matInput minlength="42" maxlength="42" inputmode="address" placeholder="0x..." formControlName="address"
+            #nameInput>
+        <mat-error>Inserisci un indirizzo</mat-error>
+        <mat-error *ngIf="form.controls['address'].errors?.['minlength']">
+            Inserire un indirizzo di 42 caratteri
+        </mat-error>
+    </mat-form-field>
+
+    <button color="primary" type="submit" [disabled]="!form.valid" mat-fab extended>
+        <mat-icon>search</mat-icon>
+        Cerca
+    </button>
 </form>
+
+<div>{{ form.value | json }}</div>
 
 <ul *ngFor="let recensione of recensioni">
     <li class="recensione">
