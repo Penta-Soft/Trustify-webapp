@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-star-rating',
@@ -11,15 +10,11 @@ export class StarRatingComponent implements OnInit {
 
   @Input('rating') public rating: number = 3;
   @Input('starCount') public starCount: number = 5;
-  @Input('color') public color: string = 'accent';
   @Output() private ratingUpdated = new EventEmitter();
 
-  private snackBarDuration: number = 2000;
   public ratingArr:number[] = [];
 
-  //private snackBar: MatSnackBar (tolto dal constructor)
-  constructor() {
-  }
+  constructor() {}
 
 
   ngOnInit() {
@@ -31,9 +26,6 @@ export class StarRatingComponent implements OnInit {
 
   onClick(rating:number) {
     console.log(rating)
-    // this.snackBar.open('You rated ' + rating + ' / ' + this.starCount, '', {
-    //   duration: this.snackBarDuration
-    // });
     this.ratingUpdated.emit(rating);
     return false;
   }
