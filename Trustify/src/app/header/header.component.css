@@ -11,3 +11,12 @@ h1 {
 nav {
     padding: 1.5em;
 }
+
+:host ::ng-deep mat-tab-header {
+    top: 0;
+    z-index: 1000;
+    position: sticky;
+    position: -webkit-sticky; /* macOS/iOS Safari */
+    background-color: white;
+    border-bottom: 1.5px solid #3f51b5;
+}
