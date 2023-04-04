@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Web3Service } from '../web3.service';
 
 @Component({
   selector: 'app-pagamento',
@@ -8,8 +9,22 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 })
 export class PagamentoComponent {
   form: FormGroup = new FormGroup({});
+  accountBalance: string = "";
+  constructor(private formBuilder: FormBuilder, private web3: Web3Service) {
+    //this.getTokenBalance();
+  }
 
-  constructor(private formBuilder: FormBuilder) { }
+  async pay(address: string, amount: string) {
+    this.web3.ApproveTokens(parseInt(amount));
+    this.web3.DepositTokens(address, parseInt(amount));
+  }
+  async getToken() {
+    this.web3.pullTCoin();
+  }
+
+  // async getTokenBalance() {
+  //   this.accountBalance = await this.web3.getTokenBalance();
+  // }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -17,8 +32,8 @@ export class PagamentoComponent {
       tokens: [null, [Validators.required, Validators.pattern("(?<!\d)0*[1-9]\d*")]]
     });
   }
-  
+
   onSubmit(form: any): void {
-    alert("HEH, VOLEVI!");
+    this.pay(form.address, form.tokens);
   }
 }

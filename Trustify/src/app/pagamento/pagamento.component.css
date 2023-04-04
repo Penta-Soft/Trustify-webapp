@@ -17,3 +17,11 @@
 .errorMsg {
     margin-bottom: 1%;
 }
+
+#payment fieldset > button {
+    margin: 1% 0%;
+}
+
+.accountBalance {
+    text-align: center;
+}

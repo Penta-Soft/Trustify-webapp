@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+<form [formGroup]="form" >
     <mat-form-field>
         <mat-label>Indirizzo Wallet</mat-label>
         <input matInput minlength="42" maxlength="42" inputmode="address" placeholder="0x..." formControlName="address"
@@ -9,7 +9,7 @@
         </mat-error>
     </mat-form-field>
 
-    <button color="primary" type="submit" [disabled]="!form.valid" mat-fab extended>
+    <button color="primary" type="submit" (click)="send(nameInput.value)" [disabled]="!form.valid" mat-fab extended>
         <mat-icon>search</mat-icon>
         Cerca
     </button>

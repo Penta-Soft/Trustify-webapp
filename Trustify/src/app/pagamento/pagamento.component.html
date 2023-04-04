@@ -1,5 +1,4 @@
 <div id="paymentWrapper">
-  <h1 id="paymentTitle">Effettua un pagamento</h1>
   <form id="payment" [formGroup]="form" (ngSubmit)="onSubmit(form)">
     <fieldset>
       <mat-form-field appearance="fill">
@@ -40,6 +39,15 @@
         </mat-error>
       </mat-form-field>
 
+      <mat-form-field appearance="outline">
+        <input
+          matInput
+          disabled
+          class="accountBalance"
+          value="Hai {{accountBalance}} token a disposizione"
+        />
+      </mat-form-field>
+
       <button
         color="primary"
         type="submit"
@@ -49,6 +57,17 @@
       >
         <mat-icon>shopping_cart_checkout</mat-icon>
         Paga
+      </button>
+
+      <button
+        color="primary"
+        type="submit"
+        value="Continua"
+        (click)="getToken()"
+        mat-fab
+        extended
+      >
+        Ottieni token free!
       </button>
     </fieldset>
   </form>
