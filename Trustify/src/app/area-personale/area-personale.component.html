@@ -17,6 +17,7 @@
             <h3>Valutazione:</h3>
             <app-star-rating [rating]="rating" [starCount]="starCount" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
             <button mat-raised-button (click)="aggiungi(address.value,review.value)">Inserisci</button>
+            <button mat-raised-button (click)="GetMyReview()">Get</button>
           </fieldset>
         </form>
 

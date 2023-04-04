@@ -25,4 +25,9 @@ export class AreaPersonaleComponent implements OnInit {
 
     //this.recensione=recensione;
   }
+
+  async GetMyReview(){
+    const {0: strValue, 1: stars, 2: address} = await this.web3.GetNMyReview(0, 10);
+    console.log(address);
+  }
 }
