@@ -71,12 +71,19 @@ export class Web3Service {
     await contract.methods.drip().send({from: this.address[0]});
   }
 
+  async ApproveTokens(amount:number){
+    if (this.walletConnected) {
+      const contract = new this.web3WalletProvider.eth.Contract(this.abiTC.abi, this.contractAddressTC);
+      await contract.methods.approve(this.contractAddress, Web3.utils.toWei(amount.toString(), "ether")).send({from: this.address[0]});
+    }else console.log("wallet not connected");
+  }
+
   async DepositTokens(address:string, amount:number){
     if (this.walletConnected) {
       const contract = new this.web3WalletProvider.eth.Contract(this.abi.abi, this.contractAddress);
       await contract.methods.DepositTokens(
         address,
-        amount
+        Web3.utils.toWei(amount.toString(), "ether")
       ).send({from: this.address[0]})
       .on('transactionHash', function (hash: any) {
         console.log(hash);
