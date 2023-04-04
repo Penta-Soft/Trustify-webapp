@@ -26,12 +26,8 @@ export class SearchBarComponent {
 
   async send(address : string){
     let reviews,stars;
-    [reviews, stars]= await this.web3.GetNCompanyReview(0,5,address);
-    let recensioni:any[]=["","",""];
-    for(let i=0;i<reviews.length;i++){
-      recensioni[i].indirizzoWallet="";
-      recensioni[i].valutazione=stars[i];
-      recensioni[i].descrizione=reviews[i];
-    }
+    console.log("Daje");
+    [reviews, stars]= await this.web3.GetNCompanyReview(0,3,address);
+    console.log(reviews,stars);
   }
 }

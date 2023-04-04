@@ -22,6 +22,7 @@ export class Web3Service {
   private abi= require('../../contracts/Trustify.json')
   private abiTC= require('../../contracts/TCoin.json');
 
+
   constructor() {
     this.m_wallet = new WalletService();
     this.web3WalletProvider = new Web3(
@@ -70,13 +71,22 @@ export class Web3Service {
     this.ConnectWallet();
     await contract.methods.drip().send({from: this.address[0]});
   }
-
+  async ApproveTokens(amount:number){
+    if (this.walletConnected) {
+      const contract = new this.web3WalletProvider.eth.Contract(this.abiTC.abi, this.contractAddressTC);
+      await contract.methods.approve(this.contractAddress, Web3.utils.toWei(amount.toString(), "ether")).send({from: this.address[0]});
+    }else console.log("wallet not connected");
+  }
+ 
   async DepositTokens(address:string, amount:number){
     if (this.walletConnected) {
+      ///        await coin.approve(holder.address, ethers.parseEther("100"));
+
       const contract = new this.web3WalletProvider.eth.Contract(this.abi.abi, this.contractAddress);
+
       await contract.methods.DepositTokens(
         address,
-        amount
+        Web3.utils.toWei(amount.toString(), "ether")
       ).send({from: this.address[0]})
       .on('transactionHash', function (hash: any) {
         console.log(hash);
@@ -110,14 +120,17 @@ export class Web3Service {
   }
 
   async GetNCompanyReview(from: number, to:number, address: string){
+    console.log("Roma");
+
     const contract = new this.web3WalletProvider.eth.Contract(
       this.abi.abi,
       this.contractAddress
     );
-    let reviews : string[];
-    let stars : number[];
-    [reviews, stars] = await contract.methods.GetNCompanyReview(from, to, address).call();
-    return [reviews, stars];
+    let output,dio;
+    output = await contract.methods.GetNCompanyReview(from, to, address).call();
+    console.log(output);
+    console.log(output[0][0],output[0][1]);
+    return [output, dio];
   }
   
   async GetSpecificReview(address: string){
