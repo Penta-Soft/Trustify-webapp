@@ -77,7 +77,6 @@ export class Web3Service {
       await contract.methods.approve(this.contractAddress, Web3.utils.toWei(amount.toString(), "ether")).send({from: this.address[0]});
     }else console.log("wallet not connected");
   }
- 
   async DepositTokens(address:string, amount:number){
     if (this.walletConnected) {
       ///        await coin.approve(holder.address, ethers.parseEther("100"));
