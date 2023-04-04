@@ -3,14 +3,32 @@
 </header>
 
 
-<mat-tab-group>
+<mat-tab-group [(selectedIndex)]="firstPage">
     <mat-tab label="Home">
         <app-home-page></app-home-page>
     </mat-tab>
-    <mat-tab label="Effettua il pagamento">
-        <app-pagamento></app-pagamento>
-    </mat-tab>
-    <mat-tab label="Area personale">
-        <app-area-personale></app-area-personale>
+    <div *ngIf="isMetamaskConnected">
+        <mat-tab label="Effettua il pagamento">
+            <app-pagamento></app-pagamento>
+        </mat-tab>
+        <mat-tab label="Area personale">
+            <app-area-personale></app-area-personale>
+        </mat-tab>
+    </div>
+
+    <mat-tab disabled>
+        <ng-template mat-tab-label>
+            <div *ngIf="!isMetamaskConnected; else disconnected">
+                <button (click)="changeMetamaskState()" color="basic" mat-button extended>
+                    <mat-icon>close</mat-icon> Connetti metamask
+                </button>
+            </div>
+            <ng-template #disconnected>
+                <button (click)="changeMetamaskState()" color="basic" mat-button extended>
+                    <mat-icon>done</mat-icon> Disconnetti Metamask
+                </button>
+            </ng-template>
+
+        </ng-template>
     </mat-tab>
 </mat-tab-group>

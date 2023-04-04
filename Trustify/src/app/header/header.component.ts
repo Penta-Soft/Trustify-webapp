@@ -6,4 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+  firstPage: number = 0;
+  isMetamaskConnected: boolean = false;
+
+  changeMetamaskState(): void {
+    this.isMetamaskConnected = !this.isMetamaskConnected;
+    this.firstPage = 0;
+  }
+
 }
