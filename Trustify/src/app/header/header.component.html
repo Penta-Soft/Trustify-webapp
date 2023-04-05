@@ -16,16 +16,16 @@
         </mat-tab>
     </div>
 
-    <mat-tab disabled>
+    <mat-tab id="button-tab" disabled>
         <ng-template mat-tab-label>
             <div *ngIf="!isMetamaskConnected; else disconnected">
                 <button (click)="changeMetamaskState()" color="basic" mat-button extended>
-                    <mat-icon>close</mat-icon> Connetti metamask
+                    <mat-icon id="icon-close">close</mat-icon> Connetti metamask
                 </button>
             </div>
             <ng-template #disconnected>
                 <button (click)="changeMetamaskState()" color="basic" mat-button extended>
-                    <mat-icon>done</mat-icon> Disconnetti Metamask
+                    <mat-icon id="icon-done">done</mat-icon> Disconnetti Metamask
                 </button>
             </ng-template>
 
