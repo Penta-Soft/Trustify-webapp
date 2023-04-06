@@ -78,11 +78,12 @@ export class Web3Service {
     } else console.log("wallet not connected");
   }
 
-  // async getTokenBalance() {
-  //   const contract = new this.web3WalletProvider.eth.Contract(this.abiTC.abi, this.contractAddressTC);
-  //   const balance = await (contract.methods.getBalance(this.address[0]).call()).then();
-  //   return balance;
-  // }
+  async getTokenBalance(): Promise<number> {
+    const contract = new this.web3WalletProvider.eth.Contract(this.abiTC.abi, this.contractAddressTC);
+    let balance = await contract.methods.balanceOf(this.address[0]).call({ from: this.address[0] });
+    balance = Web3.utils.fromWei(balance);
+    return balance;
+  }
 
   async DepositTokens(address: string, amount: number) {
     if (this.walletConnected) {
@@ -185,12 +186,4 @@ export class Web3Service {
     return sum/array.length;*/
     return array.reduce((a, b) => a + b, 0) / array.length; //dovrebbe calcolare la media direttamente così
   }
-
-
-
-
-
-
-
 }
-

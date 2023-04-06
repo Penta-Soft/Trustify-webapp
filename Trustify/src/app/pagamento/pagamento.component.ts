@@ -9,9 +9,9 @@ import { Web3Service } from '../web3.service';
 })
 export class PagamentoComponent {
   form: FormGroup = new FormGroup({});
-  accountBalance: string = "";
+  accountBalance: number = 0;
   constructor(private formBuilder: FormBuilder, private web3: Web3Service) {
-    //this.getTokenBalance();
+    this.getTokenBalance();
   }
 
   async pay(address: string, amount: string) {
@@ -22,14 +22,15 @@ export class PagamentoComponent {
     this.web3.pullTCoin();
   }
 
-  // async getTokenBalance() {
-  //   this.accountBalance = await this.web3.getTokenBalance();
-  // }
+  async getTokenBalance() {
+    let balance = await this.web3.getTokenBalance();
+    this.accountBalance = balance;
+  }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       address: [null, [Validators.required, Validators.pattern("^0x[a-fA-F0-9]{40}$")]],
-      tokens: [null, [Validators.required, Validators.pattern("(?<!\d)0*[1-9]\d*")]]
+      tokens: [null, [Validators.required, Validators.pattern(/^[1-9]\d*$/)]]
     });
   }
 
