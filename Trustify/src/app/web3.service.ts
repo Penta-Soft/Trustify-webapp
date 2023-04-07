@@ -80,7 +80,7 @@ export class Web3Service {
 
   async getTokenBalance(): Promise<number> {
     const contract = new this.web3WalletProvider.eth.Contract(this.abiTC.abi, this.contractAddressTC);
-    let balance = await contract.methods.balanceOf(this.address[0]).call({ from: this.address[0] });
+    let balance = await contract.methods.balanceOf(this.getAddress()).call({ from: this.getAddress() });
     balance = Web3.utils.fromWei(balance);
     return balance;
   }
