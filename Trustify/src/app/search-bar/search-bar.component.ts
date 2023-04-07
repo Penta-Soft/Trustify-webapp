@@ -26,7 +26,7 @@ export class SearchBarComponent {
 
   async onSubmit(form: any) {
     let reviews, stars;
-    [reviews, stars] = await this.web3.GetNCompanyReview(0, 3, form.address);
+    [reviews, stars] = await this.web3.GetNCompanyReview(0, 3, form.value.address);
     console.log(reviews, stars);
   }
 
