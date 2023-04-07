@@ -2,11 +2,15 @@
     <h1>Area Personale</h1>
     <div id="form-new-review">
         <h2>Inserisci nuova recensione</h2>
-        <form>
+        <form [formGroup]="form">
           <fieldset>
             <legend>Nuova recensione</legend>
             <mat-form-field appearance="fill">
-              <input matInput #address placeholder="Indirizzo attività da recensire" required>
+              <input matInput minlength="42" maxlength="42" #address inputmode="address" placeholder="Indirizzo attività da recensire" formControlName="address" #nameInput required>
+              <mat-error>Inserisci un indirizzo</mat-error>
+              <mat-error *ngIf="form.controls['address'].errors?.['minlength']">
+                Inserire un indirizzo di 42 caratteri
+              </mat-error>
               <mat-hint>inserire Indirizzo tipo 0x...</mat-hint>
             </mat-form-field>
             <mat-form-field appearance="fill">
@@ -24,16 +28,7 @@
     <!--ngFor ciclando su tutte le recensioni che ha l'utente autenticato attive (sarà tipo <li ngFor"let recensione of recensioni">...</li>)-->
     <div id="overview-review">
         <h2>Panoramica recensioni personali</h2>
-        <ul>
-            <li>
-                recensione 1
-            </li>
-            <li>
-                recensione 2
-            </li>
-            <li>
-                recensione 3
-            </li>
-        </ul>
+        <button mat-raised-button (click)="GetMyReview()">Show/Hide</button>
+        <ul id="ReviewList"></ul>
     </div>
 </div>

@@ -152,16 +152,16 @@ export class Web3Service {
   }
 
   async GetNMyReview(from: number, to: number) {
-    const contract = new this.web3WalletProvider.eth.Contract(
-      this.abi.abi,
-      this.contractAddress
-    );
+    if (this.walletConnected) {
+      const contract = new this.web3WalletProvider.eth.Contract(
+        this.abi.abi,
+        this.contractAddress
+      );
 
-    let reviews: string[];
-    let stars: number[];
-    let addresses: string[];
-    [reviews, stars, addresses] = await contract.methods.GetNMyReview(from, to).call();
-    return [reviews, stars, addresses];
+      let output = await contract.methods.GetNMyReview(from, to).call({ from: this.address[0] });
+      return output;
+    }
+    return;
   }
 
   //Ritorna un array con tutte le "stars"
