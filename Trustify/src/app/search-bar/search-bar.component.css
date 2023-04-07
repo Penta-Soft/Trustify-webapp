@@ -12,3 +12,7 @@ form {
     display: block;
 }
 
+#address {
+    width: 50%;
+    padding: 0em 1em;
+}
