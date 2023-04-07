@@ -35,6 +35,6 @@ export class PagamentoComponent {
   }
 
   onSubmit(form: any): void {
-    this.pay(form.address, form.tokens);
+    this.pay(form.value.address, form.value.tokens);
   }
 }
