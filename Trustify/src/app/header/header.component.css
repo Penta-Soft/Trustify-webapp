@@ -36,10 +36,19 @@ nav {
 }
 
 #button-tab,
-#button-tab button {
+#button-tab * {
     box-sizing: border-box;
 }
 
 #button-tab button {
     width: 100%;
+    display: block;
+}
+
+.container-btn {
+    margin: 0 auto;
+}
+
+.active-btn {
+    color: black !important;
 }
