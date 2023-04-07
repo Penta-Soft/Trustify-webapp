@@ -10,13 +10,13 @@ import { Web3Service } from '../web3.service';
 
 })
 //export interface Recensioni {
- //}
+//}
 export class SearchBarComponent {
 
   form: FormGroup = new FormGroup({});
   recensioni?: Recensione[];
 
-  constructor(/*private rece:Recensioni,*/ private formBuilder: FormBuilder, private recensioniService: RecensioniService,private web3: Web3Service) { }
+  constructor(/*private rece:Recensioni,*/ private formBuilder: FormBuilder, private recensioniService: RecensioniService, private web3: Web3Service) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -24,10 +24,10 @@ export class SearchBarComponent {
     });
   }
 
-  async send(address : string){
-    let reviews,stars;
-    console.log("Daje");
-    [reviews, stars]= await this.web3.GetNCompanyReview(0,3,address);
-    console.log(reviews,stars);
+  async onSubmit(form: any) {
+    let reviews, stars;
+    [reviews, stars] = await this.web3.GetNCompanyReview(0, 3, form.address);
+    console.log(reviews, stars);
   }
+
 }
