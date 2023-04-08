@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Web3Service } from '../web3.service';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'app-area-personale',
@@ -11,12 +10,8 @@ export class AreaPersonaleComponent {
   starCount: number = 5;
   reviewCheck: boolean = true;
 
-  constructor(private web3: Web3Service) {}
+  constructor() {}
 
-  // async GetMyReview(){
-  //   let ul:any = document.getElementById("ReviewList");
-  //   if(this.reviewCheck) {
-  //     const {0: strValue, 1: stars, 2: address} = await this.web3.GetNMyReview(0, 10);
 
   //     for(let i=0; i<address.length; i++) {
   //       let li = document.createElement("li");

@@ -20,7 +20,7 @@ export class SearchBarComponent {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      address: [null, [Validators.required, Validators.minLength(42), Validators.maxLength(42)]]
+      address: [null, [Validators.required, Validators.pattern("^0x[a-fA-F0-9]{40}$")]]
     });
   }
 
