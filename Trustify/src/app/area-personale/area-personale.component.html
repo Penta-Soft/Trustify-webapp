@@ -1,34 +1,11 @@
 <div id="personal-area">
     <h1>Area Personale</h1>
-    <div id="form-new-review">
-        <h2>Inserisci nuova recensione</h2>
-        <form [formGroup]="form">
-          <fieldset>
-            <legend>Nuova recensione</legend>
-            <mat-form-field appearance="fill">
-              <input matInput minlength="42" maxlength="42" #address inputmode="address" placeholder="Indirizzo attività da recensire" formControlName="address" #nameInput required>
-              <mat-error>Inserisci un indirizzo</mat-error>
-              <mat-error *ngIf="form.controls['address'].errors?.['minlength']">
-                Inserire un indirizzo di 42 caratteri
-              </mat-error>
-              <mat-hint>inserire Indirizzo tipo 0x...</mat-hint>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <textarea matInput rows="8" #review placeholder="Recensione" required></textarea>
-              <mat-hint>inserire recensione</mat-hint>
-            </mat-form-field>
-
-            <h3>Valutazione:</h3>
-            <app-star-rating [rating]="rating" [starCount]="starCount" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
-            <button mat-raised-button (click)="aggiungi(address.value,review.value)">Inserisci</button>
-          </fieldset>
-        </form>
-
-    </div>
-    <!--ngFor ciclando su tutte le recensioni che ha l'utente autenticato attive (sarà tipo <li ngFor"let recensione of recensioni">...</li>)-->
-    <div id="overview-review">
-        <h2>Panoramica recensioni personali</h2>
-        <button mat-raised-button (click)="GetMyReview()">Show/Hide</button>
-        <ul id="ReviewList"></ul>
-    </div>
+    <mat-tab-group>
+      <mat-tab label="Nuova-recensione">
+        <app-genera-recensione></app-genera-recensione>
+      </mat-tab>
+        <mat-tab label="Lista-recensioni">
+          <app-recensione></app-recensione>
+        </mat-tab>
+    </mat-tab-group>
 </div>
