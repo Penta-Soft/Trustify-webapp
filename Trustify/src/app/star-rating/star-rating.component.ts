@@ -13,12 +13,9 @@ export class StarRatingComponent implements OnInit {
   @Input('color') public color: string = 'accent';
   @Output() private ratingUpdated = new EventEmitter();
 
-  private snackBarDuration: number = 2000;
   public ratingArr:number[] = [];
 
-  constructor() {
-  }
-
+  constructor() {}
 
   ngOnInit() {
     console.log("a "+this.starCount)

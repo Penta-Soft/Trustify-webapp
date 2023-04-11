@@ -3,10 +3,16 @@
   <ul id="ReviewList">
     <li *ngFor="let i of len">
       {{arrayAddresses[i]}}
-      {{arrayRatings[i]}}
-      {{arrayDescriptions[i]}}
-      <button>Modifica</button>
-      <button>Cancella</button>
+      <button mat-icon-button *ngFor="let s of starArr" color="accent">
+        <mat-icon>
+          {{showStarsReview(s,i)}}
+        </mat-icon>
+      </button><br>
+      <p [id]='"descrizione"+i' contenteditable="false">{{arrayDescriptions[i]}}</p><br>
+      <div id="review-buttons">
+        <button [id]='"modifica"+i' mat-raised-button (click)="editReview(i)">Modifica</button>
+        <button mat-raised-button>Cancella</button>
+      </div>
     </li>
   </ul>
 </div>

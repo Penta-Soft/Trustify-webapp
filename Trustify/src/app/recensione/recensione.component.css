@@ -1,0 +1,32 @@
+ul {
+  display: inline-block;
+  list-style: none;
+  margin: 2em;
+  border: 1px solid #000;
+  border-radius: 1em;
+  /* border-bottom: none;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0; */
+}
+
+mat-icon {
+  color: yellow;
+}
+
+/* button:hover {
+  cursor: default;
+} */
+
+li {
+  display: block;
+  padding: 1em;
+  border-bottom: 1px solid #000;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+#review-buttons button{
+  margin: 0 1em;
+}
