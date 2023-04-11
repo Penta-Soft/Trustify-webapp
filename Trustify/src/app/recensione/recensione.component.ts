@@ -10,7 +10,7 @@ export class RecensioneComponent implements OnInit{
   arrayDescriptions: string[] = [];
   arrayRatings: number[] = [];
   arrayAddresses: string[] = [];
-  len: number[] = [0,1];
+  len: number[] = [];
   starArr: number[] = [0,1,2,3,4];
   modified: boolean = false;
   // @Output() private ratingUpdated = new EventEmitter();//aggiuntoa
@@ -25,6 +25,10 @@ export class RecensioneComponent implements OnInit{
       // console.log('arrayDescriptions'+this.arrayDescriptions);
       this.arrayRatings = val[1];
       this.arrayAddresses = val[2];
+      console.log('dim'+val[2].length);
+      for(let i = 0; i < val[2].length; i++) {
+        this.len.push(i);
+      }
     }).catch((val) => {'problem'});
   }
 

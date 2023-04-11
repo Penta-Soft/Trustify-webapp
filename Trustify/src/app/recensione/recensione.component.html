@@ -1,9 +1,10 @@
 <div id="overview-review">
   <h2>Panoramica recensioni personali</h2>
-  <ul id="ReviewList">
+  <p *ngIf="len.length==0">Nessuna recensione presente</p>
+  <ul id="ReviewList" *ngIf="len.length>0">
     <li *ngFor="let i of len">
       {{arrayAddresses[i]}}
-      <button mat-icon-button *ngFor="let s of starArr" color="accent">
+      <button mat-icon-button *ngFor="let s of starArr" color="accent" disabled>
         <mat-icon>
           {{showStarsReview(s,i)}}
         </mat-icon>
