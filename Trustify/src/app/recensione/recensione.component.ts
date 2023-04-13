@@ -73,13 +73,14 @@ export class RecensioneComponent implements OnInit {
   }
 
   async deleteReview(index: number) {
-    await this.web3.DeleteReview(this.arrayAddresses[index]);
     let btn2 = document.getElementById('cancella'+index);
     if(btn2?.innerText == 'Annulla') {
       let btn = document.getElementById('modifica'+index);
       if(btn) btn.innerHTML = 'Modifica';
       this.modified = false;
       btn2.innerHTML = 'Cancella';
+    } else {
+          // await this.web3.DeleteReview(this.arrayAddresses[index]);
     }
   }
 
