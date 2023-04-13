@@ -56,7 +56,6 @@ export class RecensioneComponent implements OnInit {
       this.rating = 0;
       this.modified = true;
     } else if (this.modified && btn?.innerText == 'Fatto') {
-      //chiamata a writeAReview()
       if(recensione) recensione.setAttribute('contenteditable', 'false');
       if(btn) btn.innerHTML = 'Modifica';
       if(btn2) btn2.innerHTML = 'Cancella';
@@ -74,7 +73,7 @@ export class RecensioneComponent implements OnInit {
   }
 
   async deleteReview(index: number) {
-    // await this.web3.DeleteReview(this.arrayAddresses[index]);
+    await this.web3.DeleteReview(this.arrayAddresses[index]);
     let btn2 = document.getElementById('cancella'+index);
     if(btn2?.innerText == 'Annulla') {
       let btn = document.getElementById('modifica'+index);
