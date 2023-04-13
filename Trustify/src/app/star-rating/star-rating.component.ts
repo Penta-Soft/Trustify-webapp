@@ -10,7 +10,6 @@ export class StarRatingComponent implements OnInit {
 
   @Input('rating') public rating: number = 3;
   @Input('starCount') public starCount: number = 5;
-  @Input('color') public color: string = 'accent';
   @Output() private ratingUpdated = new EventEmitter();
 
   public ratingArr:number[] = [];

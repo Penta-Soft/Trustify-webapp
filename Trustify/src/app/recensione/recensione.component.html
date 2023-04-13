@@ -3,16 +3,17 @@
   <p *ngIf="len.length==0">Nessuna recensione presente</p>
   <ul id="ReviewList" *ngIf="len.length>0">
     <li *ngFor="let i of len">
-      {{arrayAddresses[i]}}
-      <button mat-icon-button *ngFor="let s of starArr" color="accent" disabled>
+      <p [id]='"indirizzo"+i'>{{arrayAddresses[i]}}</p>
+      <app-star-rating [rating]="arrayRatings[i]" [starCount]="starCount" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
+      <!-- <button mat-icon-button *ngFor="let s of starArr" color="accent" disabled>
         <mat-icon>
           {{showStarsReview(s,i)}}
         </mat-icon>
-      </button><br>
+      </button><br> -->
       <p [id]='"descrizione"+i' contenteditable="false">{{arrayDescriptions[i]}}</p><br>
       <div id="review-buttons">
-        <button [id]='"modifica"+i' mat-raised-button (click)="editReview(i)">Modifica</button>
-        <button mat-raised-button>Cancella</button>
+        <button mat-raised-button [id]='"modifica"+i' (click)="editReview(i)">Modifica</button>
+        <button mat-raised-button [id]='"cancella"+i' (click)="removeReview(i)">Cancella</button>
       </div>
     </li>
   </ul>

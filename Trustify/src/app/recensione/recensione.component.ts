@@ -11,9 +11,10 @@ export class RecensioneComponent implements OnInit{
   arrayRatings: number[] = [];
   arrayAddresses: string[] = [];
   len: number[] = [];
-  starArr: number[] = [0,1,2,3,4];
+  // starArr: number[] = [0,1,2,3,4];
   modified: boolean = false;
-  // @Output() private ratingUpdated = new EventEmitter();//aggiuntoa
+  rating: number = 0;
+  starCount: number = 5;
 
 
   constructor(private web3: Web3Service) {}
@@ -42,30 +43,44 @@ export class RecensioneComponent implements OnInit{
   }
 
   async editReview(index: number) {
-    // let n:number = await this.web3.GetNumberReviews('0x46280DAc7ddB65FD98cFEd1C53D848068b5ccb3E');
-    // console.log('number'+n);
     let btn = document.getElementById('modifica'+index);
-    let descrizione = document.getElementById('descrizione'+index);
+    let recensione = document.getElementById('descrizione'+index);
 
     if(!this.modified && btn?.innerText == 'Modifica') {
-      if(descrizione) descrizione.setAttribute('contenteditable', 'true');
+      if(recensione) recensione.setAttribute('contenteditable', 'true');
       if(btn) btn.innerHTML = 'Fatto';
+      this.rating = 0;
       this.modified = true;
     } else if(this.modified && btn?.innerText == 'Fatto') {
       //chiamata a writeAReview()
-      if(descrizione) descrizione.setAttribute('contenteditable', 'false');
+      if(recensione) recensione.setAttribute('contenteditable', 'false');
       if(btn) btn.innerHTML = 'Modifica';
-      // console.log(descrizione?.innerText);
+      let recensioneText = recensione?.innerText;
+      console.log(recensione?.innerText);
+      let indirizzo = document.getElementById('indirizzo'+index)?.innerText;
+      console.log(indirizzo);
       this.modified = false;
+      console.log('prova'+this.arrayRatings[index]);
+      if(this.rating==0) this.rating = this.arrayRatings[index];
+      if(indirizzo)
+      this.web3.WriteAReview(indirizzo,String(recensioneText),this.rating);
     } else {
       alert('Finisci la modifica');
     }
   }
 
-  // onClick(rating:number) {
-  //   console.log(rating)
-  //   this.ratingUpdated.emit(rating);
-  //   return false;
-  // }
+  async removeReview(index: number) {
+
+  }
+
+  onRatingChanged(rating: number) {
+    if(this.modified) {
+      // console.log(rating);
+      // this.arrayRatings[value] = rating;
+      // console.log('prova1'+this.arrayRatings[value]);
+        this.rating = rating;
+        console.log('prova1'+this.rating);
+    }
+  }
 
 }
