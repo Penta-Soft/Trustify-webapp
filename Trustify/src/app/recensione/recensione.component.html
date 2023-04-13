@@ -12,8 +12,10 @@
       </button><br> -->
       <p [id]='"descrizione"+i' contenteditable="false">{{arrayDescriptions[i]}}</p><br>
       <div id="review-buttons">
+
         <button mat-raised-button [id]='"modifica"+i' (click)="editReview(i)">Modifica</button>
-        <button mat-raised-button [id]='"cancella"+i' (click)="removeReview(i)">Cancella</button>
+        <button mat-raised-button (click)="deleteReview(arrayAddresses[i])">Cancella</button>
+
       </div>
     </li>
   </ul>

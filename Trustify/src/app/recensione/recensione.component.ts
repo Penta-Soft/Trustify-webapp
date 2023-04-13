@@ -4,9 +4,9 @@ import { Web3Service } from '../web3.service';
 @Component({
   selector: 'app-recensione',
   templateUrl: './recensione.component.html',
-  styleUrls: ['./recensione.component.css']
+  styleUrls: ['./recensione.component.css'],
 })
-export class RecensioneComponent implements OnInit{
+export class RecensioneComponent implements OnInit {
   arrayDescriptions: string[] = [];
   arrayRatings: number[] = [];
   arrayAddresses: string[] = [];
@@ -16,26 +16,29 @@ export class RecensioneComponent implements OnInit{
   rating: number = 0;
   starCount: number = 5;
 
-
   constructor(private web3: Web3Service) {}
 
   ngOnInit(): void {
-    const reviews = this.web3.GetNMyReview(0,10);
-    reviews.then((val) => {
-      this.arrayDescriptions = val[0];
-      // console.log('arrayDescriptions'+this.arrayDescriptions);
-      this.arrayRatings = val[1];
-      this.arrayAddresses = val[2];
-      console.log('dim'+val[2].length);
-      for(let i = 0; i < val[2].length; i++) {
-        this.len.push(i);
-      }
-    }).catch((val) => {'problem'});
+    const reviews = this.web3.GetNMyReview(0, 10);
+    reviews
+      .then((val) => {
+        this.arrayDescriptions = val[0];
+        // console.log('arrayDescriptions'+this.arrayDescriptions);
+        this.arrayRatings = val[1];
+        this.arrayAddresses = val[2];
+        console.log('dim' + val[2].length);
+        for (let i = 0; i < val[2].length; i++) {
+          this.len.push(i);
+        }
+      })
+      .catch((val) => {
+        'problem';
+      });
   }
 
   showStarsReview(index: number, status: number) {
     // console.log('i'+index+'s'+status);
-    if(index < this.arrayRatings[status]) {
+    if (index < this.arrayRatings[status]) {
       return 'star';
     } else {
       return 'star_border';
@@ -51,7 +54,7 @@ export class RecensioneComponent implements OnInit{
       if(btn) btn.innerHTML = 'Fatto';
       this.rating = 0;
       this.modified = true;
-    } else if(this.modified && btn?.innerText == 'Fatto') {
+    } else if (this.modified && btn?.innerText == 'Fatto') {
       //chiamata a writeAReview()
       if(recensione) recensione.setAttribute('contenteditable', 'false');
       if(btn) btn.innerHTML = 'Modifica';
@@ -71,6 +74,10 @@ export class RecensioneComponent implements OnInit{
 
   async removeReview(index: number) {
 
+  }
+
+  async deleteReview(address: string) {
+    await this.web3.DeleteReview(address);
   }
 
   onRatingChanged(rating: number) {
