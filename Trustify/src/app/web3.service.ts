@@ -7,9 +7,9 @@ import { provider } from 'web3-core';
   providedIn: 'root',
 })
 export class Web3Service {
-  private contractAddress = '0x147D1E4d1E78c1bEC758295DE4Bab24389c8413d'; //address del contratto
+  private contractAddress = '0x70fd2D79f5188483EF86244d6B3A836b89D85Ac4'; //address del contratto
   //https://sepolia.etherscan.io/address/0xE45855601095597163f2081d8d1bc26cc283d202
-  private contractAddressTC = '0x92B967E129b8bEd0431D39B9683DB7d371E69d9c';
+  private contractAddressTC = '0x0BE57a9883B3CAAE780F52eaE22e052e9A88d806';
   //https://sepolia.etherscan.io/address/0xDE3160A2B9feE2a47DF91Ce47DA53065EEfa25b1
 
   private provider!: provider;
