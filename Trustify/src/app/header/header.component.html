@@ -1,11 +1,47 @@
 <header>
-    <h1>Trustify</h1>
+  <h1>Trustify</h1>
 </header>
 
-<nav>
-    <mat-tab-group>
-        <mat-tab label="Home"><app-home-page></app-home-page> </mat-tab>
-        <mat-tab label="Effettua il pagamento"><app-pagamento></app-pagamento> </mat-tab>
-        <mat-tab label="Area personale"><app-area-personale></app-area-personale> </mat-tab>
-    </mat-tab-group>
-</nav>
+<mat-tab-group [(selectedIndex)]="firstPage">
+  <mat-tab label="Home">
+    <app-home-page></app-home-page>
+  </mat-tab>
+  <div *ngIf="isMetamaskConnected">
+    <mat-tab label="Effettua un pagamento">
+      <app-pagamento></app-pagamento>
+    </mat-tab>
+    <mat-tab label="Area personale">
+      <app-area-personale></app-area-personale>
+    </mat-tab>
+  </div>
+
+  <mat-tab id="button-tab" disabled>
+    <ng-template mat-tab-label>
+      <div
+        class="container-btn"
+        *ngIf="!isMetamaskConnected; else disconnected"
+      >
+        <button
+          class="active-btn"
+          (click)="changeMetamaskState()"
+          color="basic"
+          mat-button
+          extended
+        >
+          <mat-icon id="icon-close">close</mat-icon> Connetti metamask
+        </button>
+      </div>
+      <ng-template class="container-btn" #disconnected>
+        <button
+          class="active-btn"
+          (click)="changeMetamaskState()"
+          color="basic"
+          mat-button
+          extended
+        >
+          <mat-icon id="icon-done">done</mat-icon> Disconnetti Metamask
+        </button>
+      </ng-template>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

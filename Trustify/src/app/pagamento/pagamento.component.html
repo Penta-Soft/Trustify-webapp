@@ -1,26 +1,74 @@
 <div id="paymentWrapper">
-  <h1 id="paymentTitle">Effettua un pagamento</h1>
-  <form id="payment" method="post">
+  <form id="payment" [formGroup]="form" (ngSubmit)="onSubmit(form)">
     <fieldset>
-      <legend xml:lang="en" lang="en">Dettagli del pagamento</legend>
-      <label for="paymentAddress"
-        ><span xml:lang="en" lang="en"
-          >Indirizzo wallet beneficiario:</span
-        ></label
+      <mat-form-field appearance="fill">
+        <mat-label>Indirizzo wallet</mat-label>
+        <input
+          matInput
+          placeholder="0x..."
+          formControlName="address"
+          required
+          minlength="42"
+          maxlength="42"
+        />
+        <mat-error
+          class="errorMsg"
+          *ngIf="form.controls['address'].errors?.['required']"
+          >Inserire un indirizzo</mat-error
+        >
+        <mat-error
+          class="errorMsg"
+          *ngIf="form.controls['address'].errors?.['pattern']"
+          >L'indirizzo non rispetta il formato corretto</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Quantità di token</mat-label>
+        <input matInput formControlName="tokens" required />
+        <mat-error
+          class="errorMsg"
+          *ngIf="form.controls['tokens'].errors?.['required']"
+        >
+          Inserire un importo di token</mat-error
+        >
+        <mat-error
+          class="errorMsg"
+          *ngIf="form.controls['tokens'].errors?.['pattern']"
+        >
+          L'importo dev'essere un intero maggiore di zero
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <input
+          matInput
+          disabled
+          class="accountBalance"
+          value="Hai {{accountBalance}} token a disposizione"
+        />
+      </mat-form-field>
+
+      <button
+        color="primary"
+        type="submit"
+        [disabled]="!form.valid"
+        mat-fab
+        extended
       >
-      <input
-        id="paymentAddress"
-        class="campo_input"
-        name="address"
-        maxlength="42"
-      />
-      <label for="paymentAmount"
-        ><span xml:lang="en" lang="en"
-          >Quantità token da trasferire:</span
-        ></label
+        <mat-icon>shopping_cart_checkout</mat-icon>
+        Paga
+      </button>
+
+      <button
+        color="primary"
+        type="submit"
+        value="Continua"
+        (click)="getToken()"
+        mat-fab
+        extended
       >
-      <input id="paymentAmount" class="campo_input" />
-      <input id="paymentConfirm" type="submit" value="Continua" title="Effettua il pagamento" />
+        Ottieni token free!
+      </button>
     </fieldset>
   </form>
 </div>

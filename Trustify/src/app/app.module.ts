@@ -25,6 +25,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { RecensioneComponent } from './recensione/recensione.component';
+import { GeneraRecensioneComponent } from './genera-recensione/genera-recensione.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +38,8 @@ import { MatIconModule } from '@angular/material/icon';
     PagamentoComponent,
     AreaPersonaleComponent,
     StarRatingComponent,
+    RecensioneComponent,
+    GeneraRecensioneComponent,
   ],
   imports: [
     BrowserModule,

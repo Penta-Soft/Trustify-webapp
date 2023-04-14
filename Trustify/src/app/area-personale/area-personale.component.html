@@ -1,41 +1,11 @@
 <div id="personal-area">
     <h1>Area Personale</h1>
-    <div id="form-new-review">
-        <h2>Inserisci nuova recensione</h2>
-        <form>
-          <fieldset>
-            <legend>Nuova recensione</legend>
-            <mat-form-field appearance="fill">
-              <input matInput placeholder="Indirizzo attività da recensire" required>
-              <mat-hint>inserire Indirizzo del tipo 0x...</mat-hint>
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-              <textarea matInput rows="8" placeholder="Recensione" required></textarea>
-              <mat-hint>inserire recensione</mat-hint>
-            </mat-form-field>
-
-            <h3>Valutazione:</h3>
-            <app-star-rating [rating]="rating" [starCount]="starCount" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
-            <button mat-raised-button>Inserisci</button>
-          </fieldset>
-        </form>
-
-    </div>
-    <h2>Panoramica recensioni personali</h2>
-
-    <!--ngFor ciclando su tutte le recensioni che ha l'utente autenticato attive (sarà tipo <li ngFor"let recensione of recensioni">...</li>)-->
-    <div id="reviews-overview">
-        <ul>
-            <li *ngFor="let review of recensione;let u = index">
-              {{review.indirizzoWallet}}
-              {{review.valutazione}}
-              <button mat-icon-button *ngFor="let i of starArr" disabled color="accent">
-                <mat-icon>
-                  {{showStarsReview(i,u)}}
-                </mat-icon>
-              </button><br>
-              {{review.descrizione}}
-            </li>
-        </ul>
-    </div>
+    <mat-tab-group>
+      <mat-tab label="Nuova-recensione">
+        <app-genera-recensione></app-genera-recensione>
+      </mat-tab>
+        <mat-tab label="Lista-recensioni">
+          <app-recensione></app-recensione>
+        </mat-tab>
+    </mat-tab-group>
 </div>

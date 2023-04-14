@@ -1,11 +1,17 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
-    <mat-form-field>
+    <mat-form-field id="address">
         <mat-label>Indirizzo Wallet</mat-label>
-        <input matInput minlength="42" maxlength="42" inputmode="address" placeholder="0x..." formControlName="address"
-            #nameInput>
-        <mat-error>Inserisci un indirizzo</mat-error>
-        <mat-error *ngIf="form.controls['address'].errors?.['minlength']">
-            Inserire un indirizzo di 42 caratteri
+        <input type="text" matInput minlength="42" maxlength="42" inputmode="address" placeholder="0x..."
+            formControlName="address" #nameInput>
+        <mat-error
+          class="errorMsg"
+          *ngIf="form.controls['address'].errors?.['required']"
+          >Inserire un indirizzo</mat-error
+        >
+        <mat-error
+          class="errorMsg"
+          *ngIf="form.controls['address'].errors?.['pattern']"
+          >L'indirizzo non rispetta il formato corretto
         </mat-error>
     </mat-form-field>
 
