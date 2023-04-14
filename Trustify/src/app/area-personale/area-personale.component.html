@@ -1,11 +1,13 @@
 <div id="personal-area">
-    <h1>Area Personale</h1>
-    <mat-tab-group>
-      <mat-tab label="Nuova-recensione">
-        <app-genera-recensione></app-genera-recensione>
+  <h1>Area Personale</h1>
+  <mat-tab-group>
+    <mat-tab label="Nuova-recensione">
+      <app-genera-recensione></app-genera-recensione>
+    </mat-tab>
+      <mat-tab label="Lista-recensioni">
+        <ul>
+          <app-recensione *ngFor="let i of len" [index]="i" [Description]="arrayDescriptions[i]" [Rating]="arrayRatings[i]" [Address]="arrayAddresses[i]"></app-recensione>
+        </ul>
       </mat-tab>
-        <mat-tab label="Lista-recensioni">
-          <app-recensione></app-recensione>
-        </mat-tab>
-    </mat-tab-group>
+  </mat-tab-group>
 </div>
