@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Web3Service } from '../web3.service';
 
 @Component({
@@ -9,10 +9,10 @@ import { Web3Service } from '../web3.service';
 export class RecensioneComponent implements OnInit {
   arrayDescriptions: string[] = [];
   arrayRatings: number[] = [];
-  arrayAddresses: string[] = [];
+  arrayAddresses:  string[] = [];
+  arrayRatings2: number[] = [];
   len: number[] = [];
   modified: boolean = false;
-  rating: number = 0;
   starCount: number = 5;
 
   constructor(private web3: Web3Service) {}
@@ -28,6 +28,7 @@ export class RecensioneComponent implements OnInit {
         console.log('dim' + val[2].length);
         for (let i = 0; i < val[2].length; i++) {
           this.len.push(i);
+          this.arrayRatings2.push(this.arrayRatings[i]);
         }
       })
       .catch((val) => {
@@ -35,14 +36,14 @@ export class RecensioneComponent implements OnInit {
       });
   }
 
-  showStarsReview(index: number, status: number) {
-    // console.log('i'+index+'s'+status);
-    if (index < this.arrayRatings[status]) {
-      return 'star';
-    } else {
-      return 'star_border';
-    }
-  }
+  // showStarsReview(index: number, status: number) {
+  //   // console.log('i'+index+'s'+status);
+  //   if (index < this.arrayRatings[status]) {
+  //     return 'star';
+  //   } else {
+  //     return 'star_border';
+  //   }
+  // }
 
   async editReview(index: number) {
     let btn = document.getElementById('modifica'+index);
@@ -53,7 +54,6 @@ export class RecensioneComponent implements OnInit {
       if(recensione) recensione.setAttribute('contenteditable', 'true');
       if(btn) btn.innerHTML = 'Fatto';
       if(btn2) btn2.innerHTML = 'Annulla';
-      this.rating = 0;
       this.modified = true;
     } else if (this.modified && btn?.innerText == 'Fatto') {
       if(recensione) recensione.setAttribute('contenteditable', 'false');
@@ -65,8 +65,7 @@ export class RecensioneComponent implements OnInit {
       console.log(indirizzo);
       this.modified = false;
       console.log('prova'+this.arrayRatings[index]);
-      if(this.rating==0) this.rating = this.arrayRatings[index];
-      if(indirizzo) this.web3.WriteAReview(indirizzo,String(recensioneText),this.rating);
+      if(indirizzo) this.web3.WriteAReview(indirizzo,String(recensioneText),this.arrayRatings2[index]);
     } else {
       alert('Finisci la modifica');
     }
@@ -79,15 +78,16 @@ export class RecensioneComponent implements OnInit {
       if(btn) btn.innerHTML = 'Modifica';
       this.modified = false;
       btn2.innerHTML = 'Cancella';
+      let recensione = document.getElementById('descrizione'+index);
+      if(recensione) recensione.innerHTML = this.arrayDescriptions[index];
     } else {
-          // await this.web3.DeleteReview(this.arrayAddresses[index]);
+          await this.web3.DeleteReview(this.arrayAddresses[index]);
     }
   }
 
-  onRatingChanged(rating: number) {
+  onRatingChanged(rating: number, value: number) {
     if(this.modified) {
-        this.rating = rating;
-        console.log('prova1'+this.rating);
+      this.arrayRatings2[value] = rating;
     }
   }
 

@@ -4,12 +4,7 @@
   <ul id="ReviewList" *ngIf="len.length>0">
     <li *ngFor="let i of len">
       <p [id]='"indirizzo"+i'>{{arrayAddresses[i]}}</p>
-      <app-star-rating [rating]="arrayRatings[i]" [starCount]="starCount" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
-      <!-- <button mat-icon-button *ngFor="let s of starArr" color="accent" disabled>
-        <mat-icon>
-          {{showStarsReview(s,i)}}
-        </mat-icon>
-      </button><br> -->
+      <app-star-rating [rating]="arrayRatings2[i]" [starCount]="starCount" (ratingUpdated)="onRatingChanged($event,i)"></app-star-rating>
       <p [id]='"descrizione"+i' contenteditable="false">{{arrayDescriptions[i]}}</p><br>
       <div id="review-buttons">
 
