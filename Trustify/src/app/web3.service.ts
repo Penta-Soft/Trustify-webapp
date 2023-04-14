@@ -175,9 +175,9 @@ export class Web3Service {
       let output = await contract.methods
         .GetNMyReview(from, to)
         .call({ from: this.address[0] });
+      console.log(output);
       return output;
-    }
-    return;
+    } else console.log('wallet not connected');
   }
 
   async DeleteReview(address: string) {
