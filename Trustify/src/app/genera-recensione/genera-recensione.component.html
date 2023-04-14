@@ -15,7 +15,7 @@
       </mat-form-field>
 
       <h3>Valutazione:</h3>
-      <app-star-rating [rating]="rating" [starCount]="starCount" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
+      <app-star-rating [rating]="rating" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
       <p class="body-2">
         Your rated <span class="body-2">{{rating}}</span> / <span class="body-2">{{starCount}}</span>
       </p>

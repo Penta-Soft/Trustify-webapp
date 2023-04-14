@@ -9,7 +9,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } fro
 export class StarRatingComponent implements OnInit {
 
   @Input('rating') public rating: number = 3;
-  @Input('starCount') public starCount: number = 5;
+  public starCount: number = 5;
   @Output() private ratingUpdated = new EventEmitter();
 
   public ratingArr:number[] = [];

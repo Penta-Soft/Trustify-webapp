@@ -4,13 +4,11 @@
   <ul id="ReviewList" *ngIf="len.length>0">
     <li *ngFor="let i of len">
       <p [id]='"indirizzo"+i'>{{arrayAddresses[i]}}</p>
-      <app-star-rating [rating]="arrayRatings2[i]" [starCount]="starCount" (ratingUpdated)="onRatingChanged($event,i)"></app-star-rating>
+      <app-star-rating [rating]="arrayRatings2[i]" (ratingUpdated)="onRatingChanged($event,i)"></app-star-rating>
       <p [id]='"descrizione"+i' contenteditable="false">{{arrayDescriptions[i]}}</p><br>
       <div id="review-buttons">
-
         <button mat-raised-button [id]='"modifica"+i' (click)="editReview(i)">Modifica</button>
         <button mat-raised-button [id]='"cancella"+i' (click)="deleteReview(i)">Cancella</button>
-
       </div>
     </li>
   </ul>

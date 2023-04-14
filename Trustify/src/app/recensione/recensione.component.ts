@@ -13,7 +13,6 @@ export class RecensioneComponent implements OnInit {
   arrayRatings2: number[] = [];
   len: number[] = [];
   modified: boolean = false;
-  starCount: number = 5;
 
   constructor(private web3: Web3Service) {}
 
