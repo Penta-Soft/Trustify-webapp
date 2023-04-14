@@ -15,8 +15,7 @@ export class PagamentoComponent {
   }
 
   async pay(address: string, amount: string) {
-    this.web3.ApproveTokens(parseInt(amount));
-    this.web3.DepositTokens(address, parseInt(amount));
+    this.web3.ApproveAndDepositTokens(address, parseInt(amount));
   }
   async getToken() {
     this.web3.pullTCoin();
