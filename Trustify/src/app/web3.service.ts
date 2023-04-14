@@ -7,9 +7,9 @@ import { provider } from 'web3-core';
   providedIn: 'root',
 })
 export class Web3Service {
-  private contractAddress = '0xE45855601095597163f2081d8d1bc26cc283d202'; //address del contratto
+  private contractAddress = '0x50Ee59170362b8E1Db8FaEcd3496b556CfF97b69'; //address del contratto
   //https://sepolia.etherscan.io/address/0xE45855601095597163f2081d8d1bc26cc283d202
-  private contractAddressTC = '0xDE3160A2B9feE2a47DF91Ce47DA53065EEfa25b1';
+  private contractAddressTC = '0x210Fb19518f77f78d52A09de2b0608d9f565f172';
   //https://sepolia.etherscan.io/address/0xDE3160A2B9feE2a47DF91Ce47DA53065EEfa25b1
 
   private provider!: provider;
@@ -86,24 +86,6 @@ export class Web3Service {
     return balance;
   }
 
-  async DepositTokens(address: string, amount: number) {
-    const contract = new this.web3WalletProvider.eth.Contract(
-      this.abi.abi,
-      this.contractAddress
-    );
-
-    await contract.methods
-      .DepositTokens(address, Web3.utils.toWei(amount.toString(), 'ether'))
-      .send({ from: this.address[0] })
-      .on('transactionHash', function (hash: any) {
-        console.log(hash);
-      })
-      .on('receipt', function (receipt: any) {
-        console.log(receipt + 'Done!');
-      })
-      .on('error', console.error);
-  }
-
   async ApproveAndDepositTokens(address: string, amount: number) {
     if (this.walletConnected) {
       const contractTC = new this.web3WalletProvider.eth.Contract(
@@ -116,8 +98,25 @@ export class Web3Service {
           Web3.utils.toWei(amount.toString(), 'ether')
         )
         .send({ from: this.address[0] })
-        .on('receipt', this.DepositTokens(address, amount));
-
+        .on('receipt', async (receipt: any) => {
+          const contract = new this.web3WalletProvider.eth.Contract(
+            this.abi.abi,
+            this.contractAddress
+          );
+          await contract.methods
+            .DepositTokens(
+              address,
+              Web3.utils.toWei(amount.toString(), 'ether')
+            )
+            .send({ from: this.address[0] })
+            .on('transactionHash', function (hash: any) {
+              console.log(hash);
+            })
+            .on('receipt', function (receipt: any) {
+              console.log(receipt + 'Done!');
+            })
+            .on('error', console.error);
+        });
     } else console.log('wallet not connected');
   }
 
