@@ -5,7 +5,8 @@
       <app-genera-recensione></app-genera-recensione>
     </mat-tab>
       <mat-tab label="Lista-recensioni">
-        <ul>
+        <p *ngIf="len.length==0">Nessuna recensione presente</p>
+        <ul *ngIf="len.length>0">
           <app-recensione *ngFor="let i of len" [index]="i" [Description]="arrayDescriptions[i]" [Rating]="arrayRatings[i]" [Address]="arrayAddresses[i]"></app-recensione>
         </ul>
       </mat-tab>
