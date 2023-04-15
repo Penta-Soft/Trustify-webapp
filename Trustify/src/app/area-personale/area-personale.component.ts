@@ -7,7 +7,7 @@ import { Web3Service } from '../web3.service';
   styleUrls: ['./area-personale.component.css'],
 })
 export class AreaPersonaleComponent implements OnInit{
-  arrayDescriptions: string[] = [];
+  arrayReviews: string[] = [];
   arrayRatings: number[] = [];
   arrayAddresses:  string[] = [];
   len: number[] = [];
@@ -19,8 +19,8 @@ export class AreaPersonaleComponent implements OnInit{
     const reviews = this.web3.GetNMyReview(0, 10);
     reviews
       .then((val) => {
-        this.arrayDescriptions = val[0];
-        // console.log('arrayDescriptions'+this.arrayDescriptions);
+        this.arrayReviews = val[0];
+        // console.log('arrayReviews'+this.arrayReviews);
         this.arrayRatings = val[1];
         this.arrayAddresses = val[2];
         console.log('dim' + val[2].length);
@@ -31,6 +31,11 @@ export class AreaPersonaleComponent implements OnInit{
       .catch((val) => {
         'problem';
       });
+  }
+
+  check(modifica: boolean) {
+    this.modified = modifica;
+    console.log('ap'+this.modified)
   }
 
 }

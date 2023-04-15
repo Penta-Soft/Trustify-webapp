@@ -2,7 +2,7 @@
   <li >
     <p [id]='"indirizzo"+index'>{{Address}}</p>
     <app-star-rating [rating]="Rating" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
-    <p [id]='"descrizione"+index' contenteditable="false">{{Description}}</p><br>
+    <p [id]='"descrizione"+index' contenteditable="false">{{Review}}</p><br>
     <div id="review-buttons">
       <button mat-raised-button [id]='"modifica"+index' (click)="editReview()">Modifica</button>
       <button mat-raised-button [id]='"cancella"+index' (click)="deleteReview()">Cancella</button>

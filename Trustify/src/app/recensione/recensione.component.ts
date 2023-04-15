@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Web3Service } from '../web3.service';
 
 @Component({
@@ -7,16 +7,18 @@ import { Web3Service } from '../web3.service';
   styleUrls: ['./recensione.component.css'],
 })
 export class RecensioneComponent implements OnInit {
-  @Input('Description') Description: string = '';
+  @Input('Review') Review: string = '';
   @Input('Rating') Rating: number = 0;
+  oldRating : number = 0;
   @Input('Address') Address: string = '';
-  modified: boolean = false;
+  @Input('modified')modified: boolean = false;
   @Input('index') index: number = 0;
+  @Output('checkmodified') private checkmodified = new EventEmitter();
 
   constructor(private web3: Web3Service) {}
 
   ngOnInit(): void {
-
+    this.oldRating = this.Rating;
   }
 
   // showStarsReview(this.index: number, status: number) {
@@ -29,6 +31,7 @@ export class RecensioneComponent implements OnInit {
   // }
 
   async editReview() {
+    console.log('rec'+this.modified);
     let btn = document.getElementById('modifica'+this.index);
     let btn2 = document.getElementById('cancella'+this.index);
     let recensione = document.getElementById('descrizione'+this.index);
@@ -38,6 +41,7 @@ export class RecensioneComponent implements OnInit {
       if(btn) btn.innerHTML = 'Fatto';
       if(btn2) btn2.innerHTML = 'Annulla';
       this.modified = true;
+      this.checkmodified.emit(this.modified);
     } else if (this.modified && btn?.innerText == 'Fatto') {
       if(recensione) recensione.setAttribute('contenteditable', 'false');
       if(btn) btn.innerHTML = 'Modifica';
@@ -48,6 +52,7 @@ export class RecensioneComponent implements OnInit {
       console.log(indirizzo);
       this.modified = false;
       console.log('prova'+this.Rating);
+      this.checkmodified.emit(this.modified);
       if(indirizzo) this.web3.WriteAReview(indirizzo,String(recensioneText),this.Rating);
     } else {
       alert('Finisci la modifica');
@@ -60,16 +65,19 @@ export class RecensioneComponent implements OnInit {
       let btn = document.getElementById('modifica'+this.index);
       if(btn) btn.innerHTML = 'Modifica';
       this.modified = false;
+      this.checkmodified.emit(this.modified);
       btn2.innerHTML = 'Cancella';
       let recensione = document.getElementById('descrizione'+this.index);
-      if(recensione) recensione.innerHTML = this.Description;
+      if(recensione) recensione.innerHTML = this.Review;
+      this.Rating = this.oldRating;
     } else {
         await this.web3.DeleteReview(this.Address);
     }
   }
 
   onRatingChanged(rating: number) {
-    if(this.modified) {
+    let btn = document.getElementById('modifica'+this.index);
+    if(this.modified && btn?.innerText == 'Fatto') {
       this.Rating = rating;
     }
   }
