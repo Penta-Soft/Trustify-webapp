@@ -27,6 +27,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { RecensioneComponent } from './recensione/recensione.component';
 import { GeneraRecensioneComponent } from './genera-recensione/genera-recensione.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -56,6 +59,9 @@ import { GeneraRecensioneComponent } from './genera-recensione/genera-recensione
     MatIconModule,
     MatSnackBarModule,
     MatTooltipModule,
+    MatCardModule,
+    MatDividerModule,
+    MatProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent],

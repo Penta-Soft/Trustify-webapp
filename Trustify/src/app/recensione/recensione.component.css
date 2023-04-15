@@ -1,9 +1,20 @@
-li {
+#overview-review {
   display: block;
   padding: 1em;
-  border-bottom: 1px solid #000;
 }
 
-#review-buttons button{
+#status {
+  text-align: right;
+}
+
+mat-card-header{
+  display: block;
+}
+
+button {
   margin: 0 1em;
+}
+
+mat-card-actions{
+  display: inline-flex;
 }

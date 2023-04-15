@@ -10,6 +10,7 @@ export class AreaPersonaleComponent implements OnInit{
   arrayReviews: string[] = [];
   arrayRatings: number[] = [];
   arrayAddresses:  string[] = [];
+  arrayStatus: string[] = [];
   len: number[] = [];
   modified: boolean = false;
 
@@ -20,13 +21,13 @@ export class AreaPersonaleComponent implements OnInit{
     reviews
       .then((val) => {
         this.arrayReviews = val[0];
-        // console.log('arrayReviews'+this.arrayReviews);
         this.arrayRatings = val[1];
         this.arrayAddresses = val[2];
         console.log('dim' + val[2].length);
         for (let i = 0; i < val[2].length; i++) {
           this.len.push(i);
         }
+        this.arrayStatus = val[3];
       })
       .catch((val) => {
         'problem';

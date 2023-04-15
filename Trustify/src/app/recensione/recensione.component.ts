@@ -9,8 +9,9 @@ import { Web3Service } from '../web3.service';
 export class RecensioneComponent implements OnInit {
   @Input('Review') Review: string = '';
   @Input('Rating') Rating: number = 0;
-  oldRating : number = 0;
   @Input('Address') Address: string = '';
+  @Input('Status') Status: string = '';
+  oldRating : number = 0;
   @Input('modified')modified: boolean = false;
   @Input('index') index: number = 0;
   @Output('checkmodified') private checkmodified = new EventEmitter();

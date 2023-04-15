@@ -1,11 +1,19 @@
-<div id="overview-review">
-  <li >
-    <p [id]='"indirizzo"+index'>{{Address}}</p>
-    <app-star-rating [rating]="Rating" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
+<mat-card id="overview-review" class="example-card">
+  <mat-card-header>
+    <mat-card-subtitle id="status" *ngIf="Status!='ACTIVE'">{{Status}}</mat-card-subtitle>
+    <mat-card-subtitle><app-star-rating [rating]="Rating" (ratingUpdated)="onRatingChanged($event)"></app-star-rating></mat-card-subtitle>
+    <mat-card-title [id]='"indirizzo"+index'>{{Address}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
     <p [id]='"descrizione"+index' contenteditable="false">{{Review}}</p><br>
-    <div id="review-buttons">
-      <button mat-raised-button [id]='"modifica"+index' (click)="editReview()">Modifica</button>
-      <button mat-raised-button [id]='"cancella"+index' (click)="deleteReview()">Cancella</button>
-    </div>
-  </li>
-</div>
+    <mat-divider></mat-divider>
+  </mat-card-content>
+  <mat-card-actions id="review-buttons">
+    <button mat-raised-button [id]='"modifica"+index' (click)="editReview()">Modifica</button>
+    <button mat-raised-button [id]='"cancella"+index' (click)="deleteReview()">Cancella</button>
+  </mat-card-actions>
+  <!-- <mat-card-footer>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </mat-card-footer> -->
+</mat-card>
+<mat-divider></mat-divider>
