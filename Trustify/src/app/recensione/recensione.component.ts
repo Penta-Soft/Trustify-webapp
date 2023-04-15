@@ -70,6 +70,7 @@ export class RecensioneComponent implements OnInit {
       let recensione = document.getElementById('descrizione'+this.index);
       if(recensione) recensione.innerHTML = this.Review;
       this.Rating = this.oldRating;
+      if(recensione) recensione.setAttribute('contenteditable', 'false');
     } else {
         await this.web3.DeleteReview(this.Address);
     }
