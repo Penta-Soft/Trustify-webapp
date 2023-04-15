@@ -1,6 +1,13 @@
 #overview-review {
   display: block;
   padding: 1em;
+  margin: 1em;
+  border: 1px solid #000;
+  /* border-radius: 1em; */
+}
+
+li  {
+  margin: 1em;
 }
 
 #status {
