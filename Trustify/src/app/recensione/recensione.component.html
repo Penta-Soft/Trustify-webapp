@@ -6,9 +6,9 @@
   </mat-card-header>
   <mat-card-content>
     <p [id]='"descrizione"+index' contenteditable="false">{{Review}}</p><br>
-    <mat-divider></mat-divider>
+    <mat-divider *ngIf="Status!='DELETED'"></mat-divider>
   </mat-card-content>
-  <mat-card-actions id="review-buttons">
+  <mat-card-actions id="review-buttons" *ngIf="Status!='DELETED'">
     <button mat-raised-button [id]='"modifica"+index' (click)="editReview()">Modifica</button>
     <button mat-raised-button [id]='"cancella"+index' (click)="deleteReview()">Cancella</button>
   </mat-card-actions>
