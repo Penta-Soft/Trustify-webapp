@@ -12,6 +12,7 @@ export class RecensioneComponent implements OnInit {
   @Input('Address') Address: string = '';
   @Input('Status') Status: string = '';
   oldRating : number = 0;
+  isDeleted: boolean = false;
   @Input('modified')modified: boolean = false;
   @Input('index') index: number = 0;
   @Output('checkmodified') private checkmodified = new EventEmitter();
@@ -20,6 +21,8 @@ export class RecensioneComponent implements OnInit {
 
   ngOnInit(): void {
     this.oldRating = this.Rating;
+    if(this.Status=='DELETED')
+    this.isDeleted = true;
   }
 
   // showStarsReview(this.index: number, status: number) {
@@ -43,6 +46,7 @@ export class RecensioneComponent implements OnInit {
       if(btn2) btn2.innerHTML = 'Annulla';
       this.modified = true;
       this.checkmodified.emit(this.modified);
+      if(this.isDeleted) this.isDeleted = false;
     } else if (this.modified && btn?.innerText == 'Fatto') {
       if(recensione) recensione.setAttribute('contenteditable', 'false');
       if(btn) btn.innerHTML = 'Modifica';
@@ -72,8 +76,11 @@ export class RecensioneComponent implements OnInit {
       if(recensione) recensione.innerHTML = this.Review;
       this.Rating = this.oldRating;
       if(recensione) recensione.setAttribute('contenteditable', 'false');
+      if(this.Status=='DELETED' && !this.isDeleted)
+      this.isDeleted = true;
     } else {
         await this.web3.DeleteReview(this.Address);
+        if(!this.isDeleted) this.isDeleted = true;
     }
   }
 
