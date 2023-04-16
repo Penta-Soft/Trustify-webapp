@@ -1,6 +1,6 @@
 <mat-card id="overview-review" class="example-card">
   <mat-card-header>
-    <mat-card-subtitle id="status" *ngIf="Status!='ACTIVE'">{{Status}}</mat-card-subtitle>
+    <mat-card-subtitle class="status" [id]='"status"+index' *ngIf="Status!='ACTIVE'">{{Status}}</mat-card-subtitle>
     <mat-card-subtitle><app-star-rating [rating]="Rating" (ratingUpdated)="onRatingChanged($event)"></app-star-rating></mat-card-subtitle>
     <mat-card-title [id]='"indirizzo"+index'>{{Address}}</mat-card-title>
   </mat-card-header>

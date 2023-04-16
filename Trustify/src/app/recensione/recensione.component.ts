@@ -55,6 +55,8 @@ export class RecensioneComponent implements OnInit {
       console.log(recensione?.innerText);
       let indirizzo = document.getElementById('indirizzo'+this.index)?.innerText;
       console.log(indirizzo);
+      let stato = document.getElementById('status'+this.index);
+      if (stato) stato.innerHTML = 'MODIFIED';
       this.modified = false;
       console.log('prova'+this.Rating);
       this.checkmodified.emit(this.modified);
@@ -81,6 +83,8 @@ export class RecensioneComponent implements OnInit {
     } else {
         await this.web3.DeleteReview(this.Address);
         if(!this.isDeleted) this.isDeleted = true;
+        let stato = document.getElementById('status'+this.index);
+        if (stato) stato.innerHTML = 'DELETED';
     }
   }
 

@@ -10,7 +10,7 @@ li  {
   margin: 1em;
 }
 
-#status {
+.status {
   text-align: right;
 }
 
