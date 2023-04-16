@@ -56,11 +56,14 @@ export class RecensioneComponent implements OnInit {
       let indirizzo = document.getElementById('indirizzo'+this.index)?.innerText;
       console.log(indirizzo);
       let stato = document.getElementById('status'+this.index);
-      if (stato) stato.innerHTML = 'MODIFIED';
       this.modified = false;
       console.log('prova'+this.Rating);
       this.checkmodified.emit(this.modified);
-      if(indirizzo) this.web3.WriteAReview(indirizzo,String(recensioneText),this.Rating);
+      if(!this.isDeleted && this.Status=='DELETED') this.isDeleted = true;
+      if(indirizzo) await this.web3.WriteAReview(indirizzo,String(recensioneText),this.Rating);
+      if (stato) stato.innerText = 'MODIFIED';
+      this.Status = 'MODIFIED'
+      if(this.isDeleted) this.isDeleted = false;
     } else {
       alert('Finisci la modifica');
     }
@@ -85,6 +88,7 @@ export class RecensioneComponent implements OnInit {
         if(!this.isDeleted) this.isDeleted = true;
         let stato = document.getElementById('status'+this.index);
         if (stato) stato.innerHTML = 'DELETED';
+        this.Status = 'DELETED';
     }
   }
 
