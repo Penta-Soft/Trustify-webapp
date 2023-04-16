@@ -2,7 +2,7 @@
   <h1>Trustify</h1>
 </header>
 
-<mat-tab-group [(selectedIndex)]="firstPage">
+<mat-tab-group [selectedIndex]="currentIndex" (selectedIndexChange)="updateCurrentIndex($event)">
   <mat-tab label="Home">
     <app-home-page></app-home-page>
   </mat-tab>
@@ -17,28 +17,13 @@
 
   <mat-tab id="button-tab" disabled>
     <ng-template mat-tab-label>
-      <div
-        class="container-btn"
-        *ngIf="!isMetamaskConnected; else disconnected"
-      >
-        <button
-          class="active-btn"
-          (click)="changeMetamaskState()"
-          color="basic"
-          mat-button
-          extended
-        >
+      <div class="container-btn" *ngIf="!isMetamaskConnected; else disconnected">
+        <button class="active-btn" (click)="changeMetamaskState()" color="basic" mat-button extended>
           <mat-icon id="icon-close">close</mat-icon> Connetti metamask
         </button>
       </div>
       <ng-template class="container-btn" #disconnected>
-        <button
-          class="active-btn"
-          (click)="changeMetamaskState()"
-          color="basic"
-          mat-button
-          extended
-        >
+        <button class="active-btn" (click)="changeMetamaskState()" color="basic" mat-button extended>
           <mat-icon id="icon-done">done</mat-icon> Disconnetti Metamask
         </button>
       </ng-template>
