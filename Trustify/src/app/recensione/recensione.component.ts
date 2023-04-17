@@ -69,12 +69,10 @@ export class RecensioneComponent implements OnInit {
         this.changeButtons(btn,btn2);
         this.checkEdit();
         this.enableDisable_DeleteButton();
-        let indirizzo = document.getElementById('indirizzo'+this.index)?.innerText;
-        let stato = document.getElementById('status'+this.index);
-        if(indirizzo) await this.web3.WriteAReview(indirizzo,String(recensione?.innerText),this.Rating);
+        await this.web3.WriteAReview(this.Address,String(recensione?.innerText),this.Rating);
         //tutto questo viene eseguito solo se writeAReview va a buon fine
-        if (stato) stato.innerText = 'MODIFIED';
         this.Status = 'MODIFIED'
+        this.Review = String(recensione?.innerText);
         this.enableDisable_DeleteButton();
     } else {
       alert('Finisci la modifica');
@@ -94,8 +92,6 @@ export class RecensioneComponent implements OnInit {
       if(recensione) recensione.setAttribute('contenteditable', 'false');
     } else {
         await this.web3.DeleteReview(this.Address);
-        let stato = document.getElementById('status'+this.index);
-        if (stato) stato.innerHTML = 'DELETED';
         this.Status = 'DELETED';
         this.enableDisable_DeleteButton();
     }
