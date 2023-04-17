@@ -3,15 +3,10 @@
         <mat-label>Indirizzo Wallet</mat-label>
         <input type="text" matInput minlength="42" maxlength="42" inputmode="address" placeholder="0x..."
             formControlName="address" #nameInput>
-        <mat-error
-          class="errorMsg"
-          *ngIf="form.controls['address'].errors?.['required']"
-          >Inserire un indirizzo</mat-error
-        >
-        <mat-error
-          class="errorMsg"
-          *ngIf="form.controls['address'].errors?.['pattern']"
-          >L'indirizzo non rispetta il formato corretto
+        <mat-error class="errorMsg" *ngIf="form.controls['address'].errors?.['required']">Inserire un
+            indirizzo</mat-error>
+        <mat-error class="errorMsg" *ngIf="form.controls['address'].errors?.['pattern']">L'indirizzo non rispetta il
+            formato corretto
         </mat-error>
     </mat-form-field>
 
@@ -21,12 +16,7 @@
     </button>
 </form>
 
-<div>{{ form.value | json }}</div>
-
-<ul *ngFor="let recensione of recensioni">
-    <li class="recensione">
-        <span><strong>Indirizzo wallet</strong>: {{recensione.indirizzoWallet}}</span>
-        <span><strong>Valutazione</strong>: {{recensione.valutazione}}</span>
-        <span><strong>Descrizione</strong>: {{recensione.descrizione}}</span>
-    </li>
+<ul *ngIf="len.length>0">
+    <app-recensione *ngFor="let i of len" [index]="i" [Review]="arrayReviews[i]" [Address]="arrayAddresses[i]"
+        [Rating]="arrayRatings[i]" [Status]="arrayStatus[i]" [ActiveAction]="false"></app-recensione>
 </ul>
