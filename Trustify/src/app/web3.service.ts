@@ -101,8 +101,6 @@ export class Web3Service {
         await contract.methods.CheckAllowance().call({ from: this.address[0] })
       );
 
-      console.log(allowance);
-
       if (parseInt(allowance) < amount) {
         await contractTC.methods
           .approve(
@@ -141,7 +139,6 @@ export class Web3Service {
   }
 
   async WriteAReview(address: string, review: string, stars: number) {
-    console.log('Scriviamo');
     if (this.walletConnected) {
       const contract = new this.web3WalletProvider.eth.Contract(
         this.abi.abi,
@@ -161,17 +158,12 @@ export class Web3Service {
   }
 
   async GetNCompanyReview(from: number, to: number, address: string) {
-    console.log('Roma');
-
     const contract = new this.web3WalletProvider.eth.Contract(
       this.abi.abi,
       this.contractAddress
     );
-    let output, dio;
-    output = await contract.methods.GetNCompanyReview(from, to, address).call();
-    console.log(output);
-    console.log(output[0][0], output[0][1]);
-    return [output, dio];
+    let output = await contract.methods.GetNCompanyReview(from, to, address).call();
+    return [output];
   }
 
   async GetSpecificReview(address: string) {
