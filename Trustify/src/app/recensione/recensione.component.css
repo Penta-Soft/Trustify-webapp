@@ -2,11 +2,11 @@
   display: block;
   padding: 1em;
   margin: 1em;
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
   /* border-radius: 1em; */
 }
 
-li  {
+li {
   margin: 1em;
 }
 
@@ -14,7 +14,7 @@ li  {
   text-align: right;
 }
 
-mat-card-header{
+mat-card-header {
   display: block;
 }
 
@@ -22,6 +22,6 @@ button {
   margin: 0 1em;
 }
 
-mat-card-actions{
+mat-card-actions {
   display: inline-flex;
 }
