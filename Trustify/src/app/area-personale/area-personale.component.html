@@ -4,11 +4,12 @@
     <mat-tab label="Nuova-recensione">
       <app-genera-recensione></app-genera-recensione>
     </mat-tab>
-      <mat-tab label="Lista-recensioni">
-        <p *ngIf="len.length==0">Nessuna recensione presente</p>
-        <ul *ngIf="len.length>0">
-          <app-recensione *ngFor="let i of len" [index]="i" [Review]="arrayReviews[i]" [Rating]="arrayRatings[i]" [Address]="arrayAddresses[i]" [Status]="arrayStatus[i]" [modified]="modified" (checkmodified)="check($event)"></app-recensione>
-        </ul>
-      </mat-tab>
+    <mat-tab label="Lista-recensioni">
+      <p *ngIf="len.length==0">Nessuna recensione presente</p>
+      <ul *ngIf="len.length>0">
+        <app-recensione-new *ngFor="let i of len" [Review]="arrayReviews[i]" [Address]="arrayAddresses[i]"
+          [Rating]="arrayRatings[i]" [Status]="arrayStatus[i]" [ActiveAction]="true"></app-recensione-new>
+      </ul>
+    </mat-tab>
   </mat-tab-group>
 </div>
