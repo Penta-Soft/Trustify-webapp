@@ -15,15 +15,13 @@ export class Web3Service {
   private provider!: provider;
   private address!: string[];
   private web3WalletProvider: Web3;
-  private m_wallet: WalletService;
   private readonly infuraHTTPProvider: string =
     'https://sepolia.infura.io/v3/1caadfe504ce4531b041de4bc8927ceb';
   private walletConnected: boolean = false;
   private abi = require('../../contracts/Trustify.json');
   private abiTC = require('../../contracts/TCoin.json');
 
-  constructor() {
-    this.m_wallet = new WalletService();
+  constructor(private walletService: WalletService) {
     this.web3WalletProvider = new Web3(
       new Web3.providers.HttpProvider(this.infuraHTTPProvider)
     );
@@ -43,14 +41,14 @@ export class Web3Service {
   }
 
   async IsWalletConnected() {
-    this.walletConnected = await this.m_wallet.isConnected();
+    this.walletConnected = await this.walletService.isConnected();
     if (this.walletConnected) {
       this.ConnectWallet();
     }
   }
 
   async ConnectWallet() {
-    this.provider = await this.m_wallet.Connect();
+    this.provider = await this.walletService.Connect();
     if (this.provider) {
       this.web3WalletProvider = new Web3(this.provider);
       this.address = await this.web3WalletProvider.eth.getAccounts();
