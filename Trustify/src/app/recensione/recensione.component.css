@@ -1,27 +1,51 @@
-#overview-review {
-  display: block;
-  padding: 1em;
-  margin: 1em;
-  /* border: 1px solid #000; */
-  /* border-radius: 1em; */
+mat-card {
+    display: block;
+    margin: 1.5em 6em;
 }
 
-li {
-  margin: 1em;
+mat-card-header,
+app-star-rating,
+mat-card-title,
+mat-card-subtitle {
+    display: block;
 }
 
-.status {
-  text-align: right;
-}
-
-mat-card-header {
-  display: block;
-}
-
-button {
-  margin: 0 1em;
+app-star-rating {
+    text-align: center;
 }
 
 mat-card-actions {
-  display: inline-flex;
+    display: inline-flex;
+}
+
+mat-divider {
+    margin: 0.5em 0.7em;
+}
+
+mat-card-actions {
+    padding: 0.7em;
+}
+
+mat-form-field {
+    width: 100%;
+    margin-top: 1em;
+}
+
+textarea {
+    color: black !important;
+}
+
+#status {
+    text-align: right;
+}
+
+#address {
+    height: 20px;
+    outline: none;
+    border: 0px;
+    display: inline-block;
+}
+
+button {
+    margin: 0 1em;
 }

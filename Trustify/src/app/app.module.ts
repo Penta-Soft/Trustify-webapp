@@ -25,12 +25,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { RecensioneComponent } from './recensione/recensione.component';
 import { GeneraRecensioneComponent } from './genera-recensione/genera-recensione.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { RecensioneNewComponent } from './recensione-new/recensione-new.component';
+import { RecensioneComponent } from './recensione/recensione.component';
 
 @NgModule({
   declarations: [
@@ -42,9 +41,8 @@ import { RecensioneNewComponent } from './recensione-new/recensione-new.componen
     PagamentoComponent,
     AreaPersonaleComponent,
     StarRatingComponent,
-    RecensioneComponent,
     GeneraRecensioneComponent,
-    RecensioneNewComponent
+    RecensioneComponent
   ],
   imports: [
     BrowserModule,

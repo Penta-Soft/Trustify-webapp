@@ -17,6 +17,6 @@
 </form>
 
 <ul *ngIf="len.length>0">
-    <app-recensione *ngFor="let i of len" [index]="i" [Review]="arrayReviews[i]" [Address]="arrayAddresses[i]"
+    <app-recensione *ngFor="let i of len" [Review]="arrayReviews[i]" [Address]="arrayAddresses[i]"
         [Rating]="arrayRatings[i]" [Status]="arrayStatus[i]" [ActiveAction]="false"></app-recensione>
 </ul>

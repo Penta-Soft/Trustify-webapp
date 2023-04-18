@@ -1,114 +1,72 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { FormGroup, FormBuilder } from "@angular/forms";
 import { Web3Service } from '../web3.service';
 
 @Component({
   selector: 'app-recensione',
   templateUrl: './recensione.component.html',
-  styleUrls: ['./recensione.component.css'],
+  styleUrls: ['./recensione.component.css']
 })
-export class RecensioneComponent implements OnInit {
-  @Input('Review') Review: string = '';
-  @Input('Rating') Rating: number = 0;
-  @Input('Address') Address: string = '';
-  @Input('Status') Status: string = '';
-  @Input('ActiveAction') ActiveAction: boolean = true;
-  oldRating: number = 0;
-  isDeleted: boolean = false;
 
-  @Input('EditInProgress') EditInProgress: boolean = false;
+export class RecensioneComponent {
+  form: FormGroup = new FormGroup({});
 
-  @Input('index') index: number = 0;
-  @Output('checkmodified') private checkmodified = new EventEmitter();
+  @Input('Review') review: string = '';
+  @Input('Rating') rating: number = 0;
+  @Input('Address') address: string = '';
+  @Input('Status') status: string = '';
+  @Input('ActiveAction') activeAction: boolean = true;
 
-  constructor(private web3: Web3Service) { }
+  isReviewEditable: boolean = false;
+  onLoadingReview: boolean = false;
+
+  constructor(private formBuilder: FormBuilder, private web3: Web3Service) { }
 
   ngOnInit(): void {
-    this.oldRating = this.Rating;
-    if (this.Status == 'DELETED')
-      this.isDeleted = true;
+    this.form = this.formBuilder.group({
+      review: this.review,
+      rating: this.rating,
+      address: this.address,
+      status: this.status
+    });
+
+    this.reviewEditable(false);
   }
 
-  async changeButtons(button1: any, button2: any) {
-    if (button1.innerText == 'Modifica') {
-      if (button1) button1.innerText = 'Fatto';
-      if (button2) button2.innerText = 'Annulla';
-    } else {
-      if (button1) button1.innerText = 'Modifica';
-      if (button2) button2.innerText = 'Cancella';
-    }
-  }
 
-  //fa in modo che non ci siano più modifiche in contemporanea
-  async checkEdit() {
-    if (!this.EditInProgress) {
-      this.EditInProgress = true;
-    } else {
-      this.EditInProgress = false;
-    }
+  onRatingChanged(rating: number) {
+    if (this.isReviewEditable) {
+      this.rating = rating;
+      this.form.controls['rating'].setValue(rating);
 
-    this.checkmodified.emit(this.EditInProgress);
-  }
-
-  async enableDisable_DeleteButton() {
-    if (!this.isDeleted && this.Status == 'DELETED') {
-      this.isDeleted = true;
-    } else {
-      this.isDeleted = false;
     }
   }
 
   async editReview() {
+    this.onLoadingReview = true;
 
-    let btn = document.getElementById('modifica' + this.index);
-    let btn2 = document.getElementById('cancella' + this.index);
-    let recensione = document.getElementById('descrizione' + this.index);
+    this.web3.WriteAReview(this.form.value.address, this.form.value.review, this.form.value.rating).then(() => {
+      this.form.controls['status'].setValue('MODIFIED');
+    }).finally(() => this.onLoadingReview = false)
 
-    if (!this.EditInProgress && btn?.innerText == 'Modifica') {
-      if (recensione) recensione.setAttribute('contenteditable', 'true');
-      this.changeButtons(btn, btn2);
-      this.checkEdit();
-      if (this.isDeleted) this.isDeleted = false;
-    } else if (this.EditInProgress && btn?.innerText == 'Fatto') {
-      if (recensione) recensione.setAttribute('contenteditable', 'false');
-      this.changeButtons(btn, btn2);
-      this.checkEdit();
-      this.enableDisable_DeleteButton();
-      await this.web3.WriteAReview(this.Address, String(recensione?.innerText), this.Rating);
-      //tutto questo viene eseguito solo se writeAReview va a buon fine
-      this.Status = 'MODIFIED'
-      this.oldRating = this.Rating;
-      this.Review = String(recensione?.innerText);
-      this.enableDisable_DeleteButton();
-    } else {
-      alert('Finisci la modifica');
-    }
+    this.reviewEditable(false);
   }
 
   async deleteReview() {
+    this.onLoadingReview = true;
 
-    let btn2 = document.getElementById('cancella' + this.index);
-    if (btn2?.innerText == 'Annulla') {
-      let btn = document.getElementById('modifica' + this.index);
-      this.changeButtons(btn, btn2);
-      this.checkEdit();
-      this.enableDisable_DeleteButton();
-      let recensione = document.getElementById('descrizione' + this.index);
-      if (recensione) recensione.innerHTML = this.Review;
-      this.Rating = this.oldRating;
-      if (recensione) recensione.setAttribute('contenteditable', 'false');
+    this.web3.DeleteReview(this.form.value.address).finally(() => this.onLoadingReview = false)
+  }
+
+  reviewEditable(value: boolean) {
+    this.isReviewEditable = value;
+
+    if (this.isReviewEditable) {
+      this.form.controls['rating'].enable();
+      this.form.controls['review'].enable();
     } else {
-      await this.web3.DeleteReview(this.Address);
-      this.Status = 'DELETED';
-      this.enableDisable_DeleteButton();
+      this.form.controls['rating'].disable();
+      this.form.controls['review'].disable();
     }
   }
-
-  onRatingChanged(rating: number) {
-    let btn = document.getElementById('modifica' + this.index);
-    if (this.EditInProgress && btn?.innerText == 'Fatto') {
-      this.Rating = rating;
-    }
-  }
-
 }
-

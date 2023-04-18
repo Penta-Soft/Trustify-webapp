@@ -7,9 +7,9 @@ import { provider } from 'web3-core';
   providedIn: 'root',
 })
 export class Web3Service {
-  private contractAddress = '0x70fd2D79f5188483EF86244d6B3A836b89D85Ac4'; //address del contratto
+  private contractAddress = '0x180Ab83BB942aAA961A726492897Fd4EcBaDA80E'; //address del contratto
   //https://sepolia.etherscan.io/address/0xE45855601095597163f2081d8d1bc26cc283d202
-  private contractAddressTC = '0x0BE57a9883B3CAAE780F52eaE22e052e9A88d806';
+  private contractAddressTC = '0x536883262c847523aa8342b46c9a39f791dEEb3D';
   //https://sepolia.etherscan.io/address/0xDE3160A2B9feE2a47DF91Ce47DA53065EEfa25b1
 
   private provider!: provider;
@@ -164,6 +164,7 @@ export class Web3Service {
     );
     let output = await contract.methods.GetNCompanyReview(from, to, address).call();
     return [output];
+
   }
 
   async GetSpecificReview(address: string) {
@@ -185,7 +186,7 @@ export class Web3Service {
       );
 
       let output = await contract.methods
-        .GetNMyReview(from, to)
+        .GetMyReview(from, to)
         .call({ from: this.address[0] });
       console.log(output);
       return output;

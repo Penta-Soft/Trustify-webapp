@@ -1,23 +1,34 @@
-<mat-card id="overview-review" class="example-card">
-  <mat-card-header>
-    <mat-card-subtitle class="status" [id]='"status"+index' *ngIf="Status!='ACTIVE'">{{Status}}</mat-card-subtitle>
-    <mat-card-subtitle><app-star-rating [rating]="Rating"
-        (ratingUpdated)="onRatingChanged($event)"></app-star-rating></mat-card-subtitle>
-    <mat-card-title [id]='"indirizzo"+index'>{{Address}}</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <p [id]='"descrizione"+index' contenteditable="false">{{Review}}</p><br>
-  </mat-card-content>
-  <div *ngIf="ActiveAction">
-    <mat-divider></mat-divider>
-    <mat-card-actions id="review-buttons">
-      <button mat-raised-button [id]='"modifica"+index' (click)="editReview()">Modifica</button>
-      <button mat-raised-button [id]='"cancella"+index' [disabled]="isDeleted"
-        (click)="deleteReview()">Cancella</button>
-    </mat-card-actions>
-  </div>
-  <!-- <mat-card-footer>
-    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-  </mat-card-footer> -->
+<mat-card [formGroup]="form">
+    <mat-card-header>
+        <mat-card-title>
+            <mat-card-subtitle id="status" *ngIf="status != 'ACTIVE'">{{status}}</mat-card-subtitle>
+            <app-star-rating [rating]="rating" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
+            <input type="hidden" formControlName="rating" />
+        </mat-card-title>
+        <mat-card-subtitle>
+            Address <input id="address" size="43" formControlName="address" readonly />
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+        <mat-form-field appearance="fill">
+            <textarea matInput formControlName="review"></textarea>
+        </mat-form-field>
+    </mat-card-content>
+    <div *ngIf="activeAction">
+        <mat-divider></mat-divider>
+        <mat-card-actions>
+            <div *ngIf="!isReviewEditable">
+                <button mat-raised-button (click)="reviewEditable(true)">Modifica</button>
+                <button mat-raised-button (click)="deleteReview()">Cancella</button>
+            </div>
+            <div *ngIf="isReviewEditable">
+                <button mat-raised-button (click)="editReview()">Fatto</button>
+                <button mat-raised-button (click)="reviewEditable(false)">Annulla</button>
+            </div>
+        </mat-card-actions>
+        <mat-card-footer *ngIf="onLoadingReview">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </mat-card-footer>
+    </div>
 </mat-card>
-<mat-divider></mat-divider>
