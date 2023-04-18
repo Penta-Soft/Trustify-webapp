@@ -3,11 +3,11 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 import { Web3Service } from '../web3.service';
 
 @Component({
-  selector: 'app-recensione-new',
-  templateUrl: './recensione-new.component.html',
-  styleUrls: ['./recensione-new.component.css']
+  selector: 'app-recensione',
+  templateUrl: './recensione.component.html',
+  styleUrls: ['./recensione.component.css']
 })
-export class RecensioneNewComponent {
+export class RecensioneComponent {
   form: FormGroup = new FormGroup({});
 
   @Input('Review') review: string = '';

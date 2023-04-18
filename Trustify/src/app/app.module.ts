@@ -29,7 +29,7 @@ import { GeneraRecensioneComponent } from './genera-recensione/genera-recensione
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { RecensioneNewComponent } from './recensione-new/recensione-new.component';
+import { RecensioneComponent } from './recensione/recensione.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,7 @@ import { RecensioneNewComponent } from './recensione-new/recensione-new.componen
     AreaPersonaleComponent,
     StarRatingComponent,
     GeneraRecensioneComponent,
-    RecensioneNewComponent
+    RecensioneComponent
   ],
   imports: [
     BrowserModule,
