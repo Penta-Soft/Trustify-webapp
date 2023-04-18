@@ -12,7 +12,7 @@ export class AreaPersonaleComponent implements OnInit{
   arrayAddresses:  string[] = [];
   arrayStatus: string[] = [];
   len: number[] = [];
-  modified: boolean = false;
+  EditInProgress: boolean = false;
 
   constructor(private web3: Web3Service) {}
 
@@ -35,8 +35,8 @@ export class AreaPersonaleComponent implements OnInit{
   }
 
   check(modifica: boolean) {
-    this.modified = modifica;
-    console.log('ap'+this.modified)
+    this.EditInProgress = modifica;
+    console.log('ap'+this.EditInProgress)
   }
 
 }

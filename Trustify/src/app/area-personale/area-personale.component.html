@@ -7,7 +7,7 @@
       <mat-tab label="Lista-recensioni">
         <p *ngIf="len.length==0">Nessuna recensione presente</p>
         <ul *ngIf="len.length>0">
-          <app-recensione *ngFor="let i of len" [index]="i" [Review]="arrayReviews[i]" [Rating]="arrayRatings[i]" [Address]="arrayAddresses[i]" [Status]="arrayStatus[i]" [modified]="modified" (checkmodified)="check($event)"></app-recensione>
+          <app-recensione *ngFor="let i of len" [index]="i" [Review]="arrayReviews[i]" [Rating]="arrayRatings[i]" [Address]="arrayAddresses[i]" [Status]="arrayStatus[i]" [EditInProgress]="EditInProgress" (checkmodified)="check($event)"></app-recensione>
         </ul>
       </mat-tab>
   </mat-tab-group>
