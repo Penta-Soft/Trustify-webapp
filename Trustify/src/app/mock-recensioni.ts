@@ -1,9 +1,0 @@
-import { Recensione } from "./recensione";
-
-export const RECENSIONI: Recensione[] = [
-    { indirizzoWallet: 'x0ff34a3', valutazione: 4, descrizione: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam euismod tristique felis non iaculis. In auctor felis a faucibus efficitur. Ut gravida posuere turpis, eu pellentesque est porta non. Quisque vel ligula dapibus, accumsan nulla sit amet, posuere lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit.' },
-    { indirizzoWallet: 'x066cba3', valutazione: 1, descrizione: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam euismod tristique felis non iaculis. In auctor felis a faucibus efficitur. Ut gravida posuere turpis, eu pellentesque est porta non.' },
-    { indirizzoWallet: 'x0fa884e', valutazione: 2, descrizione: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam euismod tristique felis non iaculis. In auctor felis a faucibus efficitur. Ut gravida posuere turpis, eu pellentesque est porta non. Quisque vel ligula dapibus, accumsan nulla sit amet, posuere lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit.' },
-    { indirizzoWallet: 'x07091e3', valutazione: 3, descrizione: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' },
-    { indirizzoWallet: 'x0ab4cc1', valutazione: 5, descrizione: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam euismod tristique felis non iaculis. In auctor felis a faucibus efficitur. Ut gravida posuere turpis, eu pellentesque est porta non. Quisque vel ligula dapibus, accumsan nulla sit amet, posuere lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Nulla placerat ante ut sem dictum consequat. Integer molestie vel sapien eu sollicitudin. Maecenas molestie nec nunc a blandit. Etiam nec dapibus erat, in efficitur diam.' }
-];
