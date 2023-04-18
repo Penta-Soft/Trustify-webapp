@@ -5,31 +5,38 @@ import { WindowRefService } from './window-ref.service';
   providedIn: 'root',
 })
 export class WalletService {
-  private m_windowRef: WindowRefService;
 
-  constructor() {
-    this.m_windowRef = new WindowRefService();
+  constructor(private window: WindowRefService) { }
+
+  isInstalled(): boolean {
+    return (typeof this.window.nativeWindow.ethereum !== "undefined");
   }
 
   async isConnected() {
-    const accounts = await this.m_windowRef.nativeWindow.ethereum.request({
-      method: 'eth_accounts',
-    });
-    if (accounts.length) {
-      return true;
-    } else {
-      console.log('Metamask is not connected');
+    if (this.isInstalled()) {
+      const accounts = await this.window.nativeWindow.ethereum.request({
+        method: 'eth_accounts',
+      });
+      if (accounts.length) {
+        return true;
+      } else {
+        console.log('Metamask is not connected');
+        return false;
+      }
+    }
+    else {
+      console.log("Metamask is not installed");
       return false;
     }
   }
 
   async ConnectToMetamask() {
-    if (this.m_windowRef.nativeWindow.ethereum) {
+    if (this.window.nativeWindow.ethereum) {
       try {
-        await this.m_windowRef.nativeWindow.ethereum.request({
+        await this.window.nativeWindow.ethereum.request({
           method: 'eth_requestAccounts',
         });
-      } catch (err : any) {
+      } catch (err: any) {
         if (err.code === 4001) {
           console.log('Please select an account');
         } else {
@@ -46,15 +53,15 @@ export class WalletService {
 
   async SwitchNetwork() {
     try {
-      await this.m_windowRef.nativeWindow.ethereum.request({
+      await this.window.nativeWindow.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0xAA36A7' }],
       });
-    } catch (switchError : any) {
+    } catch (switchError: any) {
       // This error code indicates that the chain has not been added to MetaMask.
       if (switchError.code === 4902) {
         try {
-          await this.m_windowRef.nativeWindow.ethereum.request({
+          await this.window.nativeWindow.ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [
               {
@@ -76,7 +83,7 @@ export class WalletService {
   async Connect() {
     if (await this.ConnectToMetamask()) {
       await this.SwitchNetwork();
-      return this.m_windowRef.nativeWindow.ethereum;
+      return this.window.nativeWindow.ethereum;
     }
     return null;
   }
