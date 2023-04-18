@@ -72,6 +72,7 @@ export class RecensioneComponent implements OnInit {
         await this.web3.WriteAReview(this.Address,String(recensione?.innerText),this.Rating);
         //tutto questo viene eseguito solo se writeAReview va a buon fine
         this.Status = 'MODIFIED'
+        this.oldRating = this.Rating;
         this.Review = String(recensione?.innerText);
         this.enableDisable_DeleteButton();
     } else {
