@@ -162,7 +162,7 @@ export class Web3Service {
       this.abi.abi,
       this.contractAddress
     );
-    let output = await contract.methods.GetNCompanyReview(from, to, address).call();
+    let output = await contract.methods.GetCompanyReview(from, to, address).call();
     return [output];
 
   }
