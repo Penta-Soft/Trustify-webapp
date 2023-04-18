@@ -27,9 +27,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { RecensioneComponent } from './recensione/recensione.component';
 import { GeneraRecensioneComponent } from './genera-recensione/genera-recensione.component';
-import {MatCardModule} from '@angular/material/card';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
+import { WindowRefService } from './window-ref.service';
 
 @NgModule({
   declarations: [
@@ -63,7 +65,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatDividerModule,
     MatProgressBarModule
   ],
-  providers: [],
+  providers: [WindowRefService],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
