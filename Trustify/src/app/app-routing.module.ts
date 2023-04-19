@@ -4,14 +4,10 @@ import { AreaPersonaleComponent } from './area-personale/area-personale.componen
 import { HomePageComponent } from './home-page/home-page.component';
 import { PagamentoComponent } from './pagamento/pagamento.component';
 
-const routes: Routes = [
-  // { path: 'pagamento', component: PagamentoComponent },
-  // { path: 'areapersonale', component: AreaPersonaleComponent },
-  // { path: '', component: HomePageComponent },
-];
+const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
