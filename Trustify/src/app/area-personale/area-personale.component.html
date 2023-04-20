@@ -5,10 +5,11 @@
       <app-genera-recensione></app-genera-recensione>
     </mat-tab>
     <mat-tab label="Lista-recensioni">
-      <p *ngIf="len.length==0">Nessuna recensione presente</p>
-      <ul *ngIf="len.length>0">
-        <app-recensione *ngFor="let i of len" [Review]="arrayReviews[i]" [Address]="arrayAddresses[i]"
-          [Rating]="arrayRatings[i]" [Status]="arrayStatus[i]" [ActiveAction]="true"></app-recensione>
+      <p *ngIf="reviews.length == 0">Nessuna recensione presente</p>
+      <ul *ngIf="reviews.length > 0">
+        <app-recensione *ngFor="let currentReview of reviews" [Review]="currentReview.getReview()"
+          [Address]="currentReview.getAddress()" [Rating]="currentReview.getRating()"
+          [Status]="currentReview.getStatus()" [ActiveAction]="true"></app-recensione>
       </ul>
     </mat-tab>
   </mat-tab-group>
