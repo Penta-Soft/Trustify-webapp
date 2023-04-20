@@ -16,7 +16,8 @@
     </button>
 </form>
 
-<ul *ngIf="len.length>0">
-    <app-recensione *ngFor="let i of len" [Review]="arrayReviews[i]" [Address]="arrayAddresses[i]"
-        [Rating]="arrayRatings[i]" [Status]="arrayStatus[i]" [ActiveAction]="false"></app-recensione>
+<ul *ngIf="reviews.length > 0">
+    <app-recensione *ngFor="let currentReview of reviews" [Review]="currentReview.getReview()"
+        [Address]="currentReview.getAddress()" [Rating]="currentReview.getRating()" [Status]="currentReview.getStatus()"
+        [ActiveAction]="false"></app-recensione>
 </ul>

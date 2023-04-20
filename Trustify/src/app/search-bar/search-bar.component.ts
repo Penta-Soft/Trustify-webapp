@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Web3Service } from '../web3.service';
+import { RecensioniParserService } from '../recensioni-parser.service';
+import { Recensione } from '../recensione';
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
@@ -11,19 +12,18 @@ import { Web3Service } from '../web3.service';
 export class SearchBarComponent {
 
   form: FormGroup = new FormGroup({});
-  arrayReviews: string[] = [];
-  arrayRatings: number[] = [];
-  arrayAddresses: string[] = [];
-  arrayStatus: string[] = [];
-  len: number[] = [];
+  reviews: Recensione[] = [];
 
+  private readonly ADDRESS_VALIDATOR_PATTERN = "^0x[a-fA-F0-9]{40}$";
   private readonly DEFAULT_ADDRESS = "0x96A85348123DfAd720fFa6193dE5c9792BB65C5e";
+  private readonly REVIEWS_FROM = 0;
+  private readonly REVIEWS_TO = 10;
 
-  constructor(private formBuilder: FormBuilder, private web3: Web3Service) { }
+  constructor(private formBuilder: FormBuilder, private reviewParserService: RecensioniParserService) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      address: [null, [Validators.required, Validators.pattern("^0x[a-fA-F0-9]{40}$")]]
+      address: [null, [Validators.required, Validators.pattern(this.ADDRESS_VALIDATOR_PATTERN)]]
     });
 
     this.getCompanyReview(this.DEFAULT_ADDRESS);
@@ -33,24 +33,7 @@ export class SearchBarComponent {
     this.getCompanyReview(form.value.address);
   }
 
-  getCompanyReview(address: string): void {
-    this.arrayReviews = [];
-    this.arrayRatings = [];
-    this.arrayAddresses = [];
-    this.arrayStatus = [];
-    this.len = [];
-
-    this.web3.GetNCompanyReview(0, 10, address)
-      .then((reviews) => {
-        reviews = reviews[0];
-        this.arrayReviews = reviews[0];
-        this.arrayRatings = reviews[1];
-        this.arrayStatus = reviews[2];
-        for (let i = 0; i < reviews[0].length; i++) {
-          this.len.push(i);
-          this.arrayAddresses.push(address);
-        }
-      })
+  async getCompanyReview(address: string) {
+    this.reviews = await this.reviewParserService.retriveHomePageReviews(this.REVIEWS_FROM, this.REVIEWS_TO, address);
   }
-
 }
