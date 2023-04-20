@@ -163,7 +163,7 @@ export class Web3Service {
       this.contractAddress
     );
     let output = await contract.methods.GetCompanyReview(from, to, address).call();
-    return [output];
+    return output;
 
   }
 
