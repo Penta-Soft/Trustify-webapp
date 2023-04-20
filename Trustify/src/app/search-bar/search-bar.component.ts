@@ -6,9 +6,7 @@ import { Recensione } from '../recensione';
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.css']
-
 })
-
 export class SearchBarComponent {
 
   form: FormGroup = new FormGroup({});

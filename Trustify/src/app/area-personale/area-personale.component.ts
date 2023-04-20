@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RecensioniParserService } from '../recensioni-parser.service';
 import { Recensione } from '../recensione';
+
 @Component({
   selector: 'app-area-personale',
   templateUrl: './area-personale.component.html',
