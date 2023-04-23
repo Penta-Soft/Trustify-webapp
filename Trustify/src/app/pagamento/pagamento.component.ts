@@ -10,12 +10,17 @@ import { Web3Service } from '../web3.service';
 export class PagamentoComponent {
   form: FormGroup = new FormGroup({});
   accountBalance: number = 0;
+  isProgressSpinnerVisible: boolean = false;
   constructor(private formBuilder: FormBuilder, private web3: Web3Service) {
     this.getTokenBalance();
   }
 
   async pay(address: string, amount: string) {
-    this.web3.ApproveAndDepositTokens(address, parseInt(amount));
+    this.isProgressSpinnerVisible = true;
+    this.web3.ApproveAndDepositTokens(address, parseInt(amount)).finally(() => {
+      this.isProgressSpinnerVisible = false;
+      window.location.reload();
+    })
   }
   async getToken() {
     this.web3.pullTCoin();
