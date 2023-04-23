@@ -1,20 +1,19 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PagamentoComponent } from './pagamento/pagamento.component';
-
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
-
 import { HomePageComponent } from './home-page/home-page.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
-
 import { AreaPersonaleComponent } from './area-personale/area-personale.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StarRatingComponent } from './star-rating/star-rating.component';
+import { RecensioneComponent } from './recensione/recensione.component';
+import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.component';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -28,8 +27,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { GeneraRecensioneComponent } from './genera-recensione/genera-recensione.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { RecensioneComponent } from './recensione/recensione.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -42,7 +40,8 @@ import { RecensioneComponent } from './recensione/recensione.component';
     AreaPersonaleComponent,
     StarRatingComponent,
     GeneraRecensioneComponent,
-    RecensioneComponent
+    RecensioneComponent,
+    ProgressSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +60,7 @@ import { RecensioneComponent } from './recensione/recensione.component';
     MatTooltipModule,
     MatCardModule,
     MatDividerModule,
-    MatProgressBarModule
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent],
