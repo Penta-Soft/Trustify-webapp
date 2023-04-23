@@ -4,9 +4,12 @@
     <fieldset>
       <legend>Nuova recensione</legend>
       <mat-form-field appearance="fill">
-        <input matInput minlength="42" maxlength="42" #address inputmode="address" placeholder="Indirizzo attività da recensire" formControlName="address" #nameInput required>
-        <mat-error class="errorMsg" *ngIf="form.controls['address'].errors?.['required']">Inserire un indirizzo</mat-error>
-        <mat-error class="errorMsg" *ngIf="form.controls['address'].errors?.['pattern']">L'indirizzo non rispetta il formato corretto</mat-error>
+        <input matInput minlength="42" maxlength="42" #address inputmode="address"
+          placeholder="Indirizzo attività da recensire" formControlName="address" #nameInput required>
+        <mat-error class="errorMsg" *ngIf="form.controls['address'].errors?.['required']">Inserire un
+          indirizzo</mat-error>
+        <mat-error class="errorMsg" *ngIf="form.controls['address'].errors?.['pattern']">L'indirizzo non rispetta il
+          formato corretto</mat-error>
         <mat-hint>inserire Indirizzo tipo 0x...</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="fill">
@@ -23,3 +26,5 @@
     </fieldset>
   </form>
 </div>
+
+<app-progress-spinner [overlay]="true" *ngIf="isProgressSpinnerVisible"></app-progress-spinner>
