@@ -27,8 +27,7 @@
                 <button mat-raised-button (click)="reviewEditable(false)">Annulla</button>
             </div>
         </mat-card-actions>
-        <mat-card-footer *ngIf="onLoadingReview">
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-        </mat-card-footer>
     </div>
 </mat-card>
+
+<app-progress-spinner [overlay]="true" *ngIf="isProgressSpinnerVisible"></app-progress-spinner>

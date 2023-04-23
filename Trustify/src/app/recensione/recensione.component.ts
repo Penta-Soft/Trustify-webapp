@@ -18,7 +18,7 @@ export class RecensioneComponent {
   @Input('ActiveAction') activeAction: boolean = true;
 
   isReviewEditable: boolean = false;
-  onLoadingReview: boolean = false;
+  isProgressSpinnerVisible: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private web3: Web3Service) { }
 
@@ -33,29 +33,33 @@ export class RecensioneComponent {
     this.reviewEditable(false);
   }
 
-
   onRatingChanged(rating: number) {
     if (this.isReviewEditable) {
       this.rating = rating;
       this.form.controls['rating'].setValue(rating);
-
     }
   }
 
   async editReview() {
-    this.onLoadingReview = true;
+    this.isProgressSpinnerVisible = true;
 
     this.web3.WriteAReview(this.form.value.address, this.form.value.review, this.form.value.rating).then(() => {
       this.form.controls['status'].setValue('MODIFIED');
-    }).finally(() => this.onLoadingReview = false)
+    }).finally(() => {
+      this.isProgressSpinnerVisible = false;
+      window.location.reload();
+    })
 
     this.reviewEditable(false);
   }
 
   async deleteReview() {
-    this.onLoadingReview = true;
+    this.isProgressSpinnerVisible = true;
 
-    this.web3.DeleteReview(this.form.value.address).finally(() => this.onLoadingReview = false)
+    this.web3.DeleteReview(this.form.value.address).finally(() => {
+      this.isProgressSpinnerVisible = false;
+      window.location.reload();
+    })
   }
 
   reviewEditable(value: boolean) {
