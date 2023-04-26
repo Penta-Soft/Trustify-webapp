@@ -28,6 +28,8 @@ import { GeneraRecensioneComponent } from './genera-recensione/genera-recensione
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { WindowRefService } from './window-ref.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     StarRatingComponent,
     GeneraRecensioneComponent,
     RecensioneComponent,
-    ProgressSpinnerComponent
+    ProgressSpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,9 +62,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTooltipModule,
     MatCardModule,
     MatDividerModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
-  providers: [],
+  providers: [WindowRefService],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
