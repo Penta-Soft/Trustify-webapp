@@ -6,11 +6,18 @@ import { WindowRefService } from './window-ref.service';
 })
 export class WalletService {
 
+  private hasDisconnected: boolean = false;
+
+  changeDisconnectedState(newState: boolean): void {
+    this.hasDisconnected = newState;
+  }
+
   constructor(private window: WindowRefService) { }
 
   isInstalled(): boolean {
     return (typeof this.window.nativeWindow.ethereum !== "undefined");
   }
+
 
   async isConnected() {
     if (this.isInstalled()) {
@@ -30,8 +37,28 @@ export class WalletService {
     }
   }
 
+  async gestisciBottone() {
+    if (!this.hasDisconnected) {
+      //è la prima volta che ti connetti
+      await this.window.nativeWindow.ethereum.request({
+        method: 'eth_requestAccounts',
+      });
+    }
+    else {
+      // ti sei precedentemente disconnesso
+      await this.window.nativeWindow.ethereum.request({
+        method: "wallet_requestPermissions",
+        params: [
+          {
+            eth_accounts: {}
+          }
+        ]
+      });
+    }
+  }
+
   async ConnectToMetamask() {
-    if (this.window.nativeWindow.ethereum) {
+    if (this.isInstalled()) {
       try {
         await this.window.nativeWindow.ethereum.request({
           method: 'eth_requestAccounts',
@@ -47,8 +74,10 @@ export class WalletService {
       console.log('connected');
       return true;
     }
-    console.log('Cannot detect browser support');
-    return false;
+    else {
+      console.log('Metamask is not installed');
+      return false;
+    }
   }
 
   async SwitchNetwork() {
