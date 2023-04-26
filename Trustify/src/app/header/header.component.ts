@@ -9,9 +9,12 @@ import { WalletService } from '../wallet.service';
 
 export class HeaderComponent {
 
-  constructor(private WalletService: WalletService) { }
   firstPage: number = 0;
-  isMetamaskConnected: boolean = false;
+  isMetamaskConnected: boolean;
+
+  constructor(private WalletService: WalletService) {
+    this.isMetamaskConnected = localStorage.getItem('isMetamaskConnected') == 'true' ? true : false;
+  }
 
   changeMetamaskState(): void {
     if (this.isMetamaskConnected === false) {
