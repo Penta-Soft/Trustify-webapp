@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ErrorHandlerService } from './error-handler.service';
 import { WindowRefService } from './window-ref.service';
 
 @Injectable({
@@ -12,12 +13,13 @@ export class WalletService {
     this.hasDisconnected = newState;
   }
 
-  constructor(private window: WindowRefService) { }
+  constructor(
+    private errorHandler: ErrorHandlerService,
+    private window: WindowRefService) { }
 
   isInstalled(): boolean {
     return (typeof this.window.nativeWindow.ethereum !== "undefined");
   }
-
 
   async isConnected() {
     if (this.isInstalled()) {
@@ -27,13 +29,13 @@ export class WalletService {
       if (accounts.length) {
         return true;
       } else {
-        console.log('Metamask is not connected');
-        return false;
+        throw new Error('Metamask is not connected');
+        //return false;
       }
     }
     else {
-      console.log("Metamask is not installed");
-      return false;
+      throw new Error('Metamask is not installed');
+      //return false;
     }
   }
 
@@ -109,6 +111,7 @@ export class WalletService {
     }
   }
 
+  // da rimuovere i return
   async Connect() {
     if (await this.ConnectToMetamask()) {
       await this.SwitchNetwork();
