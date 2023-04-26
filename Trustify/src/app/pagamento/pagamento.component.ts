@@ -1,11 +1,16 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
 import { Web3Service } from '../web3.service';
 
 @Component({
   selector: 'app-pagamento',
   templateUrl: './pagamento.component.html',
-  styleUrls: ['./pagamento.component.css']
+  styleUrls: ['./pagamento.component.css'],
 })
 export class PagamentoComponent {
   form: FormGroup = new FormGroup({});
@@ -17,11 +22,14 @@ export class PagamentoComponent {
 
   async pay(address: string, amount: string) {
     this.isProgressSpinnerVisible = true;
-    this.web3.ApproveAndDepositTokens(address, parseInt(amount)).finally(() => {
-      this.isProgressSpinnerVisible = false;
-      window.location.reload();
-    })
+    this.web3.ApproveTokens(parseInt(amount)).finally(() => {
+      this.web3.DepositTokens(address, parseInt(amount)).finally(() => {
+        this.isProgressSpinnerVisible = false;
+        //window.location.reload();
+      });
+    });
   }
+
   async getToken() {
     this.web3.pullTCoin();
   }
@@ -33,8 +41,11 @@ export class PagamentoComponent {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      address: [null, [Validators.required, Validators.pattern("^0x[a-fA-F0-9]{40}$")]],
-      tokens: [null, [Validators.required, Validators.pattern(/^[1-9]\d*$/)]]
+      address: [
+        null,
+        [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
+      ],
+      tokens: [null, [Validators.required, Validators.pattern(/^[1-9]\d*$/)]],
     });
   }
 

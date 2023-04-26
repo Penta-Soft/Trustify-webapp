@@ -86,7 +86,7 @@ export class Web3Service {
     return balance;
   }
 
-  async ApproveAndDepositTokens(address: string, amount: number) {
+  async ApproveTokens(amount: number) {
     if (this.walletConnected) {
       const contractTC = new this.web3WalletProvider.eth.Contract(
         this.abiTC.abi,
@@ -96,7 +96,6 @@ export class Web3Service {
         this.abi.abi,
         this.contractAddress
       );
-
       let allowance = Web3.utils.fromWei(
         await contract.methods.CheckAllowance().call({ from: this.address[0] })
       );
@@ -108,25 +107,6 @@ export class Web3Service {
             Web3.utils.toWei(amount.toString(), 'ether')
           )
           .send({ from: this.address[0] })
-          .on('receipt', async (receipt: any) => {
-            await contract.methods
-              .DepositTokens(
-                address,
-                Web3.utils.toWei(amount.toString(), 'ether')
-              )
-              .send({ from: this.address[0] })
-              .on('transactionHash', function (hash: any) {
-                console.log(hash);
-              })
-              .on('receipt', function (receipt: any) {
-                console.log(receipt + 'Done!');
-              })
-              .on('error', console.error);
-          });
-      } else {
-        await contract.methods
-          .DepositTokens(address, Web3.utils.toWei(amount.toString(), 'ether'))
-          .send({ from: this.address[0] })
           .on('transactionHash', function (hash: any) {
             console.log(hash);
           })
@@ -135,6 +115,25 @@ export class Web3Service {
           })
           .on('error', console.error);
       }
+    } else console.log('wallet not connected');
+  }
+
+  async DepositTokens(address: string, amount: number) {
+    if (this.walletConnected) {
+      const contract = new this.web3WalletProvider.eth.Contract(
+        this.abi.abi,
+        this.contractAddress
+      );
+      await contract.methods
+        .DepositTokens(address, Web3.utils.toWei(amount.toString(), 'ether'))
+        .send({ from: this.address[0] })
+        .on('transactionHash', function (hash: any) {
+          console.log(hash);
+        })
+        .on('receipt', function (receipt: any) {
+          console.log(receipt + 'Done!');
+        })
+        .on('error', console.error);
     } else console.log('wallet not connected');
   }
 
@@ -162,9 +161,10 @@ export class Web3Service {
       this.abi.abi,
       this.contractAddress
     );
-    let output = await contract.methods.GetCompanyReview(from, to, address).call();
+    let output = await contract.methods
+      .GetCompanyReview(from, to, address)
+      .call();
     return output;
-
   }
 
   async GetSpecificReview(address: string) {
