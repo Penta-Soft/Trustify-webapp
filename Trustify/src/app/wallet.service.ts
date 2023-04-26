@@ -11,10 +11,7 @@ export class WalletService {
     this.hasDisconnected = newState;
   }
 
-  constructor(
-    //private errorHandler: ErrorHandlerService,
-    private window: WindowRefService
-  ) {}
+  constructor(private window: WindowRefService) {}
 
   isInstalled(): boolean {
     return this.window.nativeWindow.ethereum;
