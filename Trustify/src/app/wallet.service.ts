@@ -1,35 +1,71 @@
 import { Injectable } from '@angular/core';
+import { ErrorHandlerService } from './error-handler.service';
 import { WindowRefService } from './window-ref.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WalletService {
-  private m_windowRef: WindowRefService;
 
-  constructor() {
-    this.m_windowRef = new WindowRefService();
+  private hasDisconnected: boolean = false;
+
+  changeDisconnectedState(newState: boolean): void {
+    this.hasDisconnected = newState;
+  }
+
+  constructor(
+    private errorHandler: ErrorHandlerService,
+    private window: WindowRefService) { }
+
+  isInstalled(): boolean {
+    return (typeof this.window.nativeWindow.ethereum !== "undefined");
   }
 
   async isConnected() {
-    const accounts = await this.m_windowRef.nativeWindow.ethereum.request({
-      method: 'eth_accounts',
-    });
-    if (accounts.length) {
-      return true;
-    } else {
-      console.log('Metamask is not connected');
-      return false;
+    if (this.isInstalled()) {
+      const accounts = await this.window.nativeWindow.ethereum.request({
+        method: 'eth_accounts',
+      });
+      if (accounts.length) {
+        return true;
+      } else {
+        throw new Error('Metamask is not connected');
+        //return false;
+      }
+    }
+    else {
+      throw new Error('Metamask is not installed');
+      //return false;
+    }
+  }
+
+  async gestisciBottone() {
+    if (!this.hasDisconnected) {
+      //è la prima volta che ti connetti
+      await this.window.nativeWindow.ethereum.request({
+        method: 'eth_requestAccounts',
+      });
+    }
+    else {
+      // ti sei precedentemente disconnesso
+      await this.window.nativeWindow.ethereum.request({
+        method: "wallet_requestPermissions",
+        params: [
+          {
+            eth_accounts: {}
+          }
+        ]
+      });
     }
   }
 
   async ConnectToMetamask() {
-    if (this.m_windowRef.nativeWindow.ethereum) {
+    if (this.isInstalled()) {
       try {
-        await this.m_windowRef.nativeWindow.ethereum.request({
+        await this.window.nativeWindow.ethereum.request({
           method: 'eth_requestAccounts',
         });
-      } catch (err : any) {
+      } catch (err: any) {
         if (err.code === 4001) {
           console.log('Please select an account');
         } else {
@@ -40,21 +76,23 @@ export class WalletService {
       console.log('connected');
       return true;
     }
-    console.log('Cannot detect browser support');
-    return false;
+    else {
+      console.log('Metamask is not installed');
+      return false;
+    }
   }
 
   async SwitchNetwork() {
     try {
-      await this.m_windowRef.nativeWindow.ethereum.request({
+      await this.window.nativeWindow.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0xAA36A7' }],
       });
-    } catch (switchError : any) {
+    } catch (switchError: any) {
       // This error code indicates that the chain has not been added to MetaMask.
       if (switchError.code === 4902) {
         try {
-          await this.m_windowRef.nativeWindow.ethereum.request({
+          await this.window.nativeWindow.ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [
               {
@@ -73,10 +111,11 @@ export class WalletService {
     }
   }
 
+  // da rimuovere i return
   async Connect() {
     if (await this.ConnectToMetamask()) {
       await this.SwitchNetwork();
-      return this.m_windowRef.nativeWindow.ethereum;
+      return this.window.nativeWindow.ethereum;
     }
     return null;
   }
