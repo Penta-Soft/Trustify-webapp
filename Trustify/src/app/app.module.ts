@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -32,6 +32,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { WindowRefService } from './window-ref.service';
+import { ErrorHandlerService } from './error-handler.service';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,7 @@ import { WindowRefService } from './window-ref.service';
     MatDividerModule,
     MatProgressBarModule
   ],
-  providers: [WindowRefService],
+  providers: [WindowRefService, { provide: ErrorHandler, useClass: ErrorHandlerService }],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
