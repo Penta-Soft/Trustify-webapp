@@ -1,30 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../wallet.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
+export class HeaderComponent implements OnInit {
+  //private firstPage: number = 0;
+  private isMetamaskConnected: boolean = false;
 
-export class HeaderComponent {
-
-  firstPage: number = 0;
-  isMetamaskConnected: boolean;
-
-  constructor(private WalletService: WalletService) {
-    this.isMetamaskConnected = localStorage.getItem('isMetamaskConnected') == 'true' ? true : false;
+  async ngOnInit() {
+    if (localStorage.getItem('isMetamaskConnected') == 'true') {
+      if (await this.walletService.Connect()) {
+        this.isMetamaskConnected = true;
+      } else {
+        this.isMetamaskConnected = false;
+      }
+    }
   }
 
-  changeMetamaskState(): void {
-    if (this.isMetamaskConnected === false) {
-      this.WalletService.gestisciBottone();
-    }
-    else if (this.isMetamaskConnected === true) {
-      this.WalletService.changeDisconnectedState(this.isMetamaskConnected);
-    }
-    this.isMetamaskConnected = !this.isMetamaskConnected;
-    this.firstPage = 0;
-  }
+  constructor(private walletService: WalletService) {}
 
+  async changeMetamaskState() {
+    if (!this.isMetamaskConnected) {
+      if (await this.walletService.Connect()) {
+        localStorage.setItem('isMetamaskConnected', 'true');
+        this.isMetamaskConnected = true;
+      }
+    }
+
+    //this.firstPage = 0; //cazzo serve sta roba?
+  }
 }

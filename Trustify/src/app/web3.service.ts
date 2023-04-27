@@ -1,110 +1,74 @@
-import { Injectable, Provider } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { WalletService } from './wallet.service';
 import Web3 from 'web3';
-import { provider } from 'web3-core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Web3Service {
-  private contractAddress = '0x180Ab83BB942aAA961A726492897Fd4EcBaDA80E'; //address del contratto
-  //https://sepolia.etherscan.io/address/0xE45855601095597163f2081d8d1bc26cc283d202
+  private contractAddress = '0x180Ab83BB942aAA961A726492897Fd4EcBaDA80E';
   private contractAddressTC = '0x536883262c847523aa8342b46c9a39f791dEEb3D';
-  //https://sepolia.etherscan.io/address/0xDE3160A2B9feE2a47DF91Ce47DA53065EEfa25b1
 
-  private provider!: provider;
-  private address!: string[];
-  private web3WalletProvider: Web3;
-  private readonly infuraHTTPProvider: string =
-    'https://sepolia.infura.io/v3/1caadfe504ce4531b041de4bc8927ceb';
-  private walletConnected: boolean = false;
   private abi = require('../../contracts/Trustify.json');
   private abiTC = require('../../contracts/TCoin.json');
 
-  constructor(private walletService: WalletService) {
-    this.web3WalletProvider = new Web3(
-      new Web3.providers.HttpProvider(this.infuraHTTPProvider)
-    );
+  private contract = new this.web3.eth.Contract(
+    this.abi.abi,
+    this.contractAddress
+  );
+  private contractTC = new this.web3.eth.Contract(
+    this.abiTC.abi,
+    this.contractAddressTC
+  );
 
-    this.IsWalletConnected();
+  private address = async () => await this.walletService.getAccount();
+
+  constructor(private walletService: WalletService, private web3: Web3) {
+    web3.setProvider(this.walletService.getProvider()); //setting up provider for read-only functions
   }
 
-  public getAddress() {
-    return this.address[0];
+  async refreshConnectWallet() {
+    if (await this.walletService.getAccount()) {
+      await this.walletService.Connect();
+    }
   }
 
   public async getBalance() {
-    const balance = await this.web3WalletProvider.eth.getBalance(
-      this.address[0]
-    );
+    const balance = await this.web3.eth.getBalance(await this.address());
     return Web3.utils.fromWei(balance);
   }
 
-  async IsWalletConnected() {
-    this.walletConnected = await this.walletService.isConnected();
-    if (this.walletConnected) {
-      this.ConnectWallet();
-    }
-  }
-
-  async ConnectWallet() {
-    this.provider = await this.walletService.Connect();
-    if (this.provider) {
-      this.web3WalletProvider = new Web3(this.provider);
-      this.address = await this.web3WalletProvider.eth.getAccounts();
-      console.log(this.address[0]);
-
-      const balance = await this.web3WalletProvider.eth.getBalance(
-        this.address[0]
-      );
-
-      this.walletConnected = true;
-      console.log(Web3.utils.fromWei(balance));
-    }
-  }
-
   async pullTCoin() {
-    const contract = new this.web3WalletProvider.eth.Contract(
-      this.abiTC.abi,
-      this.contractAddressTC
-    );
-    this.ConnectWallet();
-    await contract.methods.drip().send({ from: this.address[0] });
+    await this.contract.methods.drip().send({ from: await this.address() });
   }
 
   async getTokenBalance(): Promise<number> {
-    const contract = new this.web3WalletProvider.eth.Contract(
-      this.abiTC.abi,
-      this.contractAddressTC
-    );
-    let balance = await contract.methods
-      .balanceOf(this.getAddress())
-      .call({ from: this.getAddress() });
-    balance = Web3.utils.fromWei(balance);
-    return balance;
+    await this.refreshConnectWallet();
+    if (await this.walletService.isWalletConnected()) {
+      let balance = await this.contractTC.methods
+        .balanceOf(await this.address())
+        .call({ from: await this.address() });
+      balance = Web3.utils.fromWei(balance);
+      return balance;
+    } else return 0;
   }
 
   async ApproveTokens(amount: number) {
-    if (this.walletConnected) {
-      const contractTC = new this.web3WalletProvider.eth.Contract(
-        this.abiTC.abi,
-        this.contractAddressTC
-      );
-      const contract = new this.web3WalletProvider.eth.Contract(
-        this.abi.abi,
-        this.contractAddress
-      );
+    await this.refreshConnectWallet();
+    if (await this.walletService.isWalletConnected()) {
       let allowance = Web3.utils.fromWei(
-        await contract.methods.CheckAllowance().call({ from: this.address[0] })
+        await this.contract.methods
+          .CheckAllowance()
+          .call({ from: await this.address() })
       );
 
       if (parseInt(allowance) < amount) {
-        await contractTC.methods
+        await this.contractTC.methods
           .approve(
             this.contractAddress,
             Web3.utils.toWei(amount.toString(), 'ether')
           )
-          .send({ from: this.address[0] })
+          .send({ from: await this.address() })
           .on('transactionHash', function (hash: any) {
             console.log(hash);
           })
@@ -113,111 +77,87 @@ export class Web3Service {
           })
           .on('error', console.error);
       }
-    } else console.log('wallet not connected');
+    } else console.log('wallet not connected, approve tokens failed');
   }
 
   async DepositTokens(address: string, amount: number) {
-    if (this.walletConnected) {
-      const contract = new this.web3WalletProvider.eth.Contract(
-        this.abi.abi,
-        this.contractAddress
-      );
-      await contract.methods
+    await this.refreshConnectWallet();
+    if (await this.walletService.isWalletConnected()) {
+      await this.contract.methods
         .DepositTokens(address, Web3.utils.toWei(amount.toString(), 'ether'))
-        .send({ from: this.address[0] })
+        .send({ from: await this.address() })
         .on('transactionHash', function (hash: any) {
           console.log(hash);
         })
         .on('receipt', function (receipt: any) {
-          console.log(receipt + 'Done!');
+          console.log(receipt + 'Token deposited!');
         })
         .on('error', console.error);
-    } else console.log('wallet not connected');
+    } else console.log('wallet not connected, deposit tokens failed');
   }
 
   async WriteAReview(address: string, review: string, stars: number) {
-    if (this.walletConnected) {
-      const contract = new this.web3WalletProvider.eth.Contract(
-        this.abi.abi,
-        this.contractAddress
-      );
-      await contract.methods
+    await this.refreshConnectWallet();
+    if (await this.walletService.isWalletConnected()) {
+      await this.contract.methods
         .WriteAReview(address, review, stars)
-        .send({ from: this.address[0] })
+        .send({ from: await this.address() })
         .on('transactionHash', function (hash: any) {
           console.log(hash);
         })
         .on('receipt', function (receipt: any) {
-          console.log(receipt + 'Done!');
+          console.log(receipt + 'Write a review done!');
         })
         .on('error', console.error);
-    } else console.log('wallet not connected');
+    } else console.log('wallet not connected, write a review failed');
   }
 
-  async GetNCompanyReview(from: number, to: number, address: string) {
-    const contract = new this.web3WalletProvider.eth.Contract(
-      this.abi.abi,
-      this.contractAddress
-    );
-    let output = await contract.methods
+  async GetCompanyReview(from: number, to: number, address: string) {
+    let output = await this.contract.methods
       .GetCompanyReview(from, to, address)
       .call();
     return output;
   }
 
   async GetSpecificReview(address: string) {
-    const contract = new this.web3WalletProvider.eth.Contract(
-      this.abi.abi,
-      this.contractAddress
-    );
     let review: string;
     let star: number;
-    [review, star] = await contract.methods.GetSpecificReview(address).call();
+    [review, star] = await this.contract.methods
+      .GetSpecificReview(address)
+      .call();
     return [review, star];
   }
 
-  async GetNMyReview(from: number, to: number) {
-    if (this.walletConnected) {
-      const contract = new this.web3WalletProvider.eth.Contract(
-        this.abi.abi,
-        this.contractAddress
-      );
-
-      let output = await contract.methods
+  async GetMyReview(from: number, to: number) {
+    await this.refreshConnectWallet();
+    if (await this.walletService.isWalletConnected()) {
+      let output = await this.contract.methods
         .GetMyReview(from, to)
-        .call({ from: this.address[0] });
-      console.log(output);
+        .call({ from: await this.address() });
       return output;
-    } else console.log('wallet not connected');
+    } else console.log('wallet not connected, get my review failed');
   }
 
   async DeleteReview(address: string) {
-    if (this.walletConnected) {
-      const contract = new this.web3WalletProvider.eth.Contract(
-        this.abi.abi,
-        this.contractAddress
-      );
-      await contract.methods
+    await this.refreshConnectWallet();
+    if (await this.walletService.isWalletConnected()) {
+      await this.contract.methods
         .DeleteReview(address)
-        .send({ from: this.address[0] })
+        .send({ from: await this.address() })
         .on('transactionHash', function (hash: any) {
           console.log(hash);
         })
         .on('receipt', function (receipt: any) {
-          console.log(receipt + 'Done!');
+          console.log(receipt + 'Delete review done!');
         })
         .on('error', console.error);
-    } else console.log('wallet not connected');
+    } else console.log('wallet not connected, delete review failed');
   }
 
   //Ritorna un array con tutte le "stars"
   async GetAverageStarsArray(address: string) {
-    const contract = new this.web3WalletProvider.eth.Contract(
-      this.abi.abi,
-      this.contractAddress
-    );
     let stars: number[];
-    stars = await contract.methods.GetAverageStars(address).call();
+    stars = await this.contract.methods.GetAverageStars(address).call();
     return stars;
   }
 
@@ -225,11 +165,6 @@ export class Web3Service {
   async GetAverageStars(address: string) {
     let array: number[];
     array = await this.GetAverageStarsArray(address);
-    /*let sum=0;
-    for(let i=0;i<array.length;i++){
-      sum+=array[i];
-    }
-    return sum/array.length;*/
-    return array.reduce((a, b) => a + b, 0) / array.length; //dovrebbe calcolare la media direttamente così
+    return array.reduce((a, b) => a + b, 0) / array.length;
   }
 }

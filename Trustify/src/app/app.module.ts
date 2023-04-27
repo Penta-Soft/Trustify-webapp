@@ -30,7 +30,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { WindowRefService } from './window-ref.service';
-import { ErrorHandlerService } from './error-handler.service';
+import Web3 from 'web3';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,7 @@ import { ErrorHandlerService } from './error-handler.service';
     StarRatingComponent,
     GeneraRecensioneComponent,
     RecensioneComponent,
-    ProgressSpinnerComponent
+    ProgressSpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,9 +63,9 @@ import { ErrorHandlerService } from './error-handler.service';
     MatTooltipModule,
     MatCardModule,
     MatDividerModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
-  providers: [WindowRefService, { provide: ErrorHandler, useClass: ErrorHandlerService }],
+  providers: [WindowRefService, Web3],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

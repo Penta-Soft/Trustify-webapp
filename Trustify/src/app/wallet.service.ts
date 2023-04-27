@@ -1,82 +1,52 @@
 import { Injectable } from '@angular/core';
 import { ErrorHandlerService } from './error-handler.service';
 import { WindowRefService } from './window-ref.service';
+import Web3 from 'web3';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WalletService {
+  private address!: string;
+  private readonly infuraHTTPProvider: string =
+    'https://sepolia.infura.io/v3/1caadfe504ce4531b041de4bc8927ceb';
+  private isConnected: boolean = false;
 
-  private hasDisconnected: boolean = false;
+  constructor(private window: WindowRefService, private web3: Web3) {}
 
-  changeDisconnectedState(newState: boolean): void {
-    this.hasDisconnected = newState;
+  getProvider() {
+    return this.infuraHTTPProvider;
   }
 
-  constructor(
-    private errorHandler: ErrorHandlerService,
-    private window: WindowRefService) { }
+  async getAccount() {
+    return this.address;
+  }
 
   isInstalled(): boolean {
-    return (typeof this.window.nativeWindow.ethereum !== "undefined");
+    return this.window.nativeWindow.ethereum;
   }
 
-  async isConnected() {
-    if (this.isInstalled()) {
-      const accounts = await this.window.nativeWindow.ethereum.request({
-        method: 'eth_accounts',
-      });
-      if (accounts.length) {
-        return true;
-      } else {
-        throw new Error('Metamask is not connected');
-        //return false;
-      }
-    }
-    else {
-      throw new Error('Metamask is not installed');
-      //return false;
-    }
-  }
-
-  async gestisciBottone() {
-    if (!this.hasDisconnected) {
-      //è la prima volta che ti connetti
-      await this.window.nativeWindow.ethereum.request({
-        method: 'eth_requestAccounts',
-      });
-    }
-    else {
-      // ti sei precedentemente disconnesso
-      await this.window.nativeWindow.ethereum.request({
-        method: "wallet_requestPermissions",
-        params: [
-          {
-            eth_accounts: {}
-          }
-        ]
-      });
-    }
+  async isWalletConnected() {
+    return this.isConnected;
   }
 
   async ConnectToMetamask() {
     if (this.isInstalled()) {
       try {
-        await this.window.nativeWindow.ethereum.request({
+        const accounts = await this.window.nativeWindow.ethereum.request({
           method: 'eth_requestAccounts',
         });
-      } catch (err: any) {
-        if (err.code === 4001) {
-          console.log('Please select an account');
-        } else {
-          console.log(err);
-        }
+        this.address = accounts[0];
+        this.web3.setProvider(await this.window.nativeWindow.ethereum); //Setting metamask as provider for web3
+      } catch (error) {
+        console.log(error);
+        localStorage.setItem('isMetamaskConnected', 'false');
         return false;
       }
-      console.log('connected');
+      console.log('connected with metamask! with address: ' + this.address);
+      this.isConnected = true;
       return true;
-    }
-    else {
+    } else {
       console.log('Metamask is not installed');
       return false;
     }
@@ -99,7 +69,7 @@ export class WalletService {
                 chainId: '0xAA36A7',
                 chainName: 'sepolia',
                 rpcUrls: [
-                  'https://sepolia.infura.io/v3/070cc0651bb440b290dc3da7594140a6', //forse da cambiare
+                  this.infuraHTTPProvider, //forse da cambiare
                 ],
               },
             ],
@@ -113,10 +83,8 @@ export class WalletService {
 
   // da rimuovere i return
   async Connect() {
-    if (await this.ConnectToMetamask()) {
-      await this.SwitchNetwork();
-      return this.window.nativeWindow.ethereum;
-    }
-    return null;
+    let success = await this.ConnectToMetamask();
+    await this.SwitchNetwork();
+    return success;
   }
 }

@@ -1,13 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Web3Service } from '../web3.service';
 
 @Component({
   selector: 'app-recensione',
   templateUrl: './recensione.component.html',
-  styleUrls: ['./recensione.component.css']
+  styleUrls: ['./recensione.component.css'],
 })
-
 export class RecensioneComponent {
   form: FormGroup = new FormGroup({});
 
@@ -20,14 +19,14 @@ export class RecensioneComponent {
   isReviewEditable: boolean = false;
   isProgressSpinnerVisible: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private web3: Web3Service) { }
+  constructor(private formBuilder: FormBuilder, private web3: Web3Service) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       review: this.review,
       rating: this.rating,
       address: this.address,
-      status: this.status
+      status: this.status,
     });
 
     this.reviewEditable(false);
@@ -43,12 +42,19 @@ export class RecensioneComponent {
   async editReview() {
     this.isProgressSpinnerVisible = true;
 
-    this.web3.WriteAReview(this.form.value.address, this.form.value.review, this.form.value.rating).then(() => {
-      this.form.controls['status'].setValue('MODIFIED');
-    }).finally(() => {
-      this.isProgressSpinnerVisible = false;
-      window.location.reload();
-    })
+    this.web3
+      .WriteAReview(
+        this.form.value.address,
+        this.form.value.review,
+        this.form.value.rating
+      )
+      .then(() => {
+        this.form.controls['status'].setValue('MODIFIED');
+      })
+      .finally(() => {
+        this.isProgressSpinnerVisible = false;
+        //window.location.reload();
+      });
 
     this.reviewEditable(false);
   }
@@ -58,8 +64,8 @@ export class RecensioneComponent {
 
     this.web3.DeleteReview(this.form.value.address).finally(() => {
       this.isProgressSpinnerVisible = false;
-      window.location.reload();
-    })
+      //window.location.reload();
+    });
   }
 
   reviewEditable(value: boolean) {

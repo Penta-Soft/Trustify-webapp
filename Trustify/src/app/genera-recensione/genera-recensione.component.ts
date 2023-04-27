@@ -5,7 +5,7 @@ import { Web3Service } from '../web3.service';
 @Component({
   selector: 'app-genera-recensione',
   templateUrl: './genera-recensione.component.html',
-  styleUrls: ['./genera-recensione.component.css']
+  styleUrls: ['./genera-recensione.component.css'],
 })
 export class GeneraRecensioneComponent implements OnInit {
   rating: number = 3;
@@ -13,12 +13,14 @@ export class GeneraRecensioneComponent implements OnInit {
   isProgressSpinnerVisible: boolean = false;
   form: FormGroup = new FormGroup({});
 
-
-  constructor(private web3: Web3Service, private formBuilder: FormBuilder) { }
+  constructor(private web3: Web3Service, private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      address: [null, [Validators.required, Validators.pattern("^0x[a-fA-F0-9]{40}$")]]
+      address: [
+        null,
+        [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
+      ],
     });
   }
 
@@ -30,8 +32,7 @@ export class GeneraRecensioneComponent implements OnInit {
     this.isProgressSpinnerVisible = true;
     await this.web3.WriteAReview(address, review, this.rating).finally(() => {
       this.isProgressSpinnerVisible = false;
-      window.location.reload();
-    })
+      //window.location.reload();
+    });
   }
-
 }
