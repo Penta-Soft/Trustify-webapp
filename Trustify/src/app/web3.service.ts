@@ -12,10 +12,10 @@ export class Web3Service {
   //https://sepolia.etherscan.io/address/0xDE3160A2B9feE2a47DF91Ce47DA53065EEfa25b1
 
   private address = async () => await this.walletService.getAccount();
-  private readonly infuraHTTPProvider: string =
-    'https://sepolia.infura.io/v3/1caadfe504ce4531b041de4bc8927ceb';
   private walletConnected = async () =>
     await this.walletService.isWalletConnected();
+  private readonly infuraHTTPProvider: string =
+    'https://sepolia.infura.io/v3/1caadfe504ce4531b041de4bc8927ceb';
   private abi = require('../../contracts/Trustify.json');
   private abiTC = require('../../contracts/TCoin.json');
 

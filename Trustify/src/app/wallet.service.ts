@@ -1,19 +1,15 @@
 import { Injectable } from '@angular/core';
 import { WindowRefService } from './window-ref.service';
+import Web3 from 'web3';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WalletService {
-  private hasDisconnected: boolean = false;
   private address: string = 'notAVaildAddress';
   private isConnected: boolean = false;
 
-  changeDisconnectedState(newState: boolean): void {
-    this.hasDisconnected = newState;
-  }
-
-  constructor(private window: WindowRefService) {}
+  constructor(private window: WindowRefService, private web3: Web3) {}
 
   isInstalled(): boolean {
     return this.window.nativeWindow.ethereum;
@@ -23,15 +19,6 @@ export class WalletService {
     return this.isConnected;
   }
 
-  async gestisciBottone() {
-    if (!this.hasDisconnected) {
-      //è la prima volta che ti connetti
-      await this.window.nativeWindow.ethereum.request({
-        method: 'eth_requestAccounts',
-      });
-    }
-  }
-
   async ConnectToMetamask() {
     if (this.isInstalled()) {
       try {
@@ -39,6 +26,7 @@ export class WalletService {
           method: 'eth_requestAccounts',
         });
         this.address = accounts[0];
+        this.web3.setProvider(await this.window.nativeWindow.ethereum);
       } catch (error) {
         console.log(error);
       }
