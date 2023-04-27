@@ -7,8 +7,8 @@ import { WalletService } from '../wallet.service';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  //private firstPage: number = 0;
-  private isMetamaskConnected: boolean = false;
+  firstPage: number = 0;
+  isMetamaskConnected: boolean = false;
 
   async ngOnInit() {
     if (localStorage.getItem('isMetamaskConnected') == 'true') {
