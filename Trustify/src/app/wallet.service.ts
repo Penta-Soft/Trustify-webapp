@@ -7,15 +7,25 @@ import Web3 from 'web3';
 })
 export class WalletService {
   private address: string = 'notAVaildAddress';
+  private readonly infuraHTTPProvider: string =
+    'https://sepolia.infura.io/v3/1caadfe504ce4531b041de4bc8927ceb';
   private isConnected: boolean = false;
 
   constructor(private window: WindowRefService, private web3: Web3) {}
+
+  getProvider() {
+    return this.infuraHTTPProvider;
+  }
+
+  async getAccount() {
+    return this.address;
+  }
 
   isInstalled(): boolean {
     return this.window.nativeWindow.ethereum;
   }
 
-  isWalletConnected(): boolean {
+  async isWalletConnected() {
     return this.isConnected;
   }
 
@@ -26,21 +36,17 @@ export class WalletService {
           method: 'eth_requestAccounts',
         });
         this.address = accounts[0];
-        this.web3.setProvider(await this.window.nativeWindow.ethereum);
+        this.web3.setProvider(await this.window.nativeWindow.ethereum); //Setting metamask as provider for web3
       } catch (error) {
         console.log(error);
       }
-      console.log('connected to metamask! with address: ' + this.address);
+      console.log('connected with metamask! with address: ' + this.address);
       this.isConnected = true;
       return true;
     } else {
       console.log('Metamask is not installed');
       return false;
     }
-  }
-
-  async getAccount() {
-    return this.address;
   }
 
   async SwitchNetwork() {
@@ -60,7 +66,7 @@ export class WalletService {
                 chainId: '0xAA36A7',
                 chainName: 'sepolia',
                 rpcUrls: [
-                  'https://sepolia.infura.io/v3/1caadfe504ce4531b041de4bc8927ceb', //forse da cambiare
+                  this.infuraHTTPProvider, //forse da cambiare
                 ],
               },
             ],
