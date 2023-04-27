@@ -31,7 +31,7 @@ export class PagamentoComponent {
   }
 
   async getToken() {
-    this.web3.pullTCoin();
+    await this.web3.pullTCoin();
   }
 
   async getTokenBalance() {
