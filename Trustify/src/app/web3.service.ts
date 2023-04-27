@@ -100,7 +100,7 @@ export class Web3Service {
     } else console.log('wallet not connected, write a review failed');
   }
 
-  async GetNCompanyReview(from: number, to: number, address: string) {
+  async GetCompanyReview(from: number, to: number, address: string) {
     let output = await this.contract.methods
       .GetCompanyReview(from, to, address)
       .call();
@@ -116,7 +116,7 @@ export class Web3Service {
     return [review, star];
   }
 
-  async GetNMyReview(from: number, to: number) {
+  async GetMyReview(from: number, to: number) {
     if (await this.walletService.isWalletConnected()) {
       let output = await this.contract.methods
         .GetMyReview(from, to)
@@ -152,11 +152,6 @@ export class Web3Service {
   async GetAverageStars(address: string) {
     let array: number[];
     array = await this.GetAverageStarsArray(address);
-    /*let sum=0;
-    for(let i=0;i<array.length;i++){
-      sum+=array[i];
-    }
-    return sum/array.length;*/
-    return array.reduce((a, b) => a + b, 0) / array.length; //dovrebbe calcolare la media direttamente così
+    return array.reduce((a, b) => a + b, 0) / array.length;
   }
 }
