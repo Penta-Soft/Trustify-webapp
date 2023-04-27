@@ -39,7 +39,7 @@ export class Web3Service {
   }
 
   async pullTCoin() {
-    await this.contract.methods.drip().send({ from: await this.address() });
+    await this.contractTC.methods.drip().send({ from: await this.address() });
   }
 
   async getTokenBalance(): Promise<number> {
