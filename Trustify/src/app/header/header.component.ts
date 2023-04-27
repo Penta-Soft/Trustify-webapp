@@ -9,6 +9,7 @@ import { WalletService } from '../wallet.service';
 export class HeaderComponent implements OnInit {
   firstPage: number = 0;
   isMetamaskConnected: boolean = false;
+  currentIndex: number = 0;
 
   async ngOnInit() {
     if (localStorage.getItem('isMetamaskConnected') == 'true') {
@@ -18,9 +19,16 @@ export class HeaderComponent implements OnInit {
         this.isMetamaskConnected = false;
       }
     }
+    let index = localStorage.getItem("index");
+    this.currentIndex = index !== null ? parseInt(index) : 0;
   }
 
-  constructor(private walletService: WalletService) {}
+  constructor(private walletService: WalletService) { }
+
+  updateCurrentIndex(index: number): void {
+    this.currentIndex = index;
+    localStorage.setItem("index", index.toString());
+  }
 
   async changeMetamaskState() {
     if (!this.isMetamaskConnected) {
@@ -29,7 +37,6 @@ export class HeaderComponent implements OnInit {
         this.isMetamaskConnected = true;
       }
     }
-
-    //this.firstPage = 0; //cazzo serve sta roba?
+    this.currentIndex = 0;
   }
 }

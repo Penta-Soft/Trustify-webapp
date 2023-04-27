@@ -12,7 +12,7 @@
     height: 100vh;
     width: 100%;
     background-color: rgba(18, 20, 27, 0.583);
-    z-index: 1001;
+    z-index: 1;
     top: 0;
     left: 0;
     position: fixed;
