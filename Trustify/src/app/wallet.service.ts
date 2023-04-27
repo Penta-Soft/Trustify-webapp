@@ -30,7 +30,7 @@ export class WalletService {
     return this.isConnected;
   }
 
-  async ConnectToMetamask() {
+  async connectToMetamask() {
     if (this.isInstalled()) {
       try {
         const accounts = await this.window.nativeWindow.ethereum.request({
@@ -52,7 +52,7 @@ export class WalletService {
     }
   }
 
-  async SwitchNetwork() {
+  async switchNetwork() {
     try {
       await this.window.nativeWindow.ethereum.request({
         method: 'wallet_switchEthereumChain',
@@ -82,9 +82,9 @@ export class WalletService {
   }
 
   // da rimuovere i return
-  async Connect() {
-    let success = await this.ConnectToMetamask();
-    await this.SwitchNetwork();
+  async connect() {
+    let success = await this.connectToMetamask();
+    await this.switchNetwork();
     return success;
   }
 }

@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit {
 
   async ngOnInit() {
     if (localStorage.getItem('isMetamaskConnected') == 'true') {
-      if (await this.walletService.Connect()) {
+      if (await this.walletService.connect()) {
         this.isMetamaskConnected = true;
       } else {
         this.isMetamaskConnected = false;
@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
 
   async changeMetamaskState() {
     if (!this.isMetamaskConnected) {
-      if (await this.walletService.Connect()) {
+      if (await this.walletService.connect()) {
         localStorage.setItem('isMetamaskConnected', 'true');
         this.isMetamaskConnected = true;
       }

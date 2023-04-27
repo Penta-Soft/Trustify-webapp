@@ -29,7 +29,7 @@ export class Web3Service {
 
   async refreshConnectWallet() {
     if (await this.walletService.getAccount()) {
-      await this.walletService.Connect();
+      await this.walletService.connect();
     }
   }
 
@@ -53,7 +53,7 @@ export class Web3Service {
     } else return 0;
   }
 
-  async ApproveTokens(amount: number) {
+  async approveTokens(amount: number) {
     await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       let allowance = Web3.utils.fromWei(
@@ -80,7 +80,7 @@ export class Web3Service {
     } else console.log('wallet not connected, approve tokens failed');
   }
 
-  async DepositTokens(address: string, amount: number) {
+  async depositTokens(address: string, amount: number) {
     await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
@@ -96,7 +96,7 @@ export class Web3Service {
     } else console.log('wallet not connected, deposit tokens failed');
   }
 
-  async WriteAReview(address: string, review: string, stars: number) {
+  async writeAReview(address: string, review: string, stars: number) {
     await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
@@ -112,14 +112,14 @@ export class Web3Service {
     } else console.log('wallet not connected, write a review failed');
   }
 
-  async GetCompanyReview(from: number, to: number, address: string) {
+  async getCompanyReview(from: number, to: number, address: string) {
     let output = await this.contract.methods
       .GetCompanyReview(from, to, address)
       .call();
     return output;
   }
 
-  async GetSpecificReview(address: string) {
+  async getSpecificReview(address: string) {
     let review: string;
     let star: number;
     [review, star] = await this.contract.methods
@@ -128,7 +128,7 @@ export class Web3Service {
     return [review, star];
   }
 
-  async GetMyReview(from: number, to: number) {
+  async getMyReview(from: number, to: number) {
     await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       let output = await this.contract.methods
@@ -138,7 +138,7 @@ export class Web3Service {
     } else console.log('wallet not connected, get my review failed');
   }
 
-  async DeleteReview(address: string) {
+  async deleteReview(address: string) {
     await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
@@ -155,16 +155,16 @@ export class Web3Service {
   }
 
   //Ritorna un array con tutte le "stars"
-  async GetAverageStarsArray(address: string) {
+  async getAverageStarsArray(address: string) {
     let stars: number[];
     stars = await this.contract.methods.GetAverageStars(address).call();
     return stars;
   }
 
   //Ritorna la media effettiva di tutte le "stars"
-  async GetAverageStars(address: string) {
+  async getAverageStars(address: string) {
     let array: number[];
-    array = await this.GetAverageStarsArray(address);
+    array = await this.getAverageStarsArray(address);
     return array.reduce((a, b) => a + b, 0) / array.length;
   }
 }

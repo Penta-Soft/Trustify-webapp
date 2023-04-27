@@ -18,7 +18,7 @@ export class RecensioniParserService {
     to: number,
     address: string
   ): Promise<Recensione[]> {
-    return this.web3.GetCompanyReview(from, to, address).then((reviews) => {
+    return this.web3.getCompanyReview(from, to, address).then((reviews) => {
       let homePageReviews: Recensione[] = [];
       for (
         let currentReview = 0;
@@ -42,7 +42,7 @@ export class RecensioniParserService {
     from: number,
     to: number
   ): Promise<Recensione[]> {
-    return this.web3.GetMyReview(from, to).then((reviews) => {
+    return this.web3.getMyReview(from, to).then((reviews) => {
       let personalAreaReviews: Recensione[] = [];
       for (
         let currentReview = 0;

@@ -22,8 +22,8 @@ export class PagamentoComponent {
 
   async pay(address: string, amount: string) {
     this.isProgressSpinnerVisible = true;
-    this.web3.ApproveTokens(parseInt(amount)).finally(() => {
-      this.web3.DepositTokens(address, parseInt(amount)).finally(() => {
+    this.web3.approveTokens(parseInt(amount)).finally(() => {
+      this.web3.depositTokens(address, parseInt(amount)).finally(() => {
         this.isProgressSpinnerVisible = false;
         //window.location.reload();
       });

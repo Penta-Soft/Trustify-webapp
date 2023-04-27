@@ -30,7 +30,7 @@ export class GeneraRecensioneComponent implements OnInit {
 
   async aggiungi(address: string, review: string) {
     this.isProgressSpinnerVisible = true;
-    await this.web3.WriteAReview(address, review, this.rating).finally(() => {
+    await this.web3.writeAReview(address, review, this.rating).finally(() => {
       this.isProgressSpinnerVisible = false;
       //window.location.reload();
     });

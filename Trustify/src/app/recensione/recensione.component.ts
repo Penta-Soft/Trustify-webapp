@@ -43,7 +43,7 @@ export class RecensioneComponent {
     this.isProgressSpinnerVisible = true;
 
     this.web3
-      .WriteAReview(
+      .writeAReview(
         this.form.value.address,
         this.form.value.review,
         this.form.value.rating
@@ -62,7 +62,7 @@ export class RecensioneComponent {
   async deleteReview() {
     this.isProgressSpinnerVisible = true;
 
-    this.web3.DeleteReview(this.form.value.address).finally(() => {
+    this.web3.deleteReview(this.form.value.address).finally(() => {
       this.isProgressSpinnerVisible = false;
       //window.location.reload();
     });
