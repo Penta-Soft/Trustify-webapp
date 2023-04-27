@@ -1,4 +1,4 @@
-import { Injectable, Provider } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { WalletService } from './wallet.service';
 import Web3 from 'web3';
 
@@ -27,6 +27,12 @@ export class Web3Service {
     web3.setProvider(this.walletService.getProvider()); //setting up provider for read-only functions
   }
 
+  async refreshConnectWallet() {
+    if (await this.walletService.getAccount()) {
+      await this.walletService.Connect();
+    }
+  }
+
   public async getBalance() {
     const balance = await this.web3.eth.getBalance(await this.address());
     return Web3.utils.fromWei(balance);
@@ -37,14 +43,18 @@ export class Web3Service {
   }
 
   async getTokenBalance(): Promise<number> {
-    let balance = await this.contractTC.methods
-      .balanceOf(await this.address())
-      .call({ from: await this.address() });
-    balance = Web3.utils.fromWei(balance);
-    return balance;
+    await this.refreshConnectWallet();
+    if (await this.walletService.isWalletConnected()) {
+      let balance = await this.contractTC.methods
+        .balanceOf(await this.address())
+        .call({ from: await this.address() });
+      balance = Web3.utils.fromWei(balance);
+      return balance;
+    } else return 0;
   }
 
   async ApproveTokens(amount: number) {
+    await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       let allowance = Web3.utils.fromWei(
         await this.contract.methods
@@ -71,6 +81,7 @@ export class Web3Service {
   }
 
   async DepositTokens(address: string, amount: number) {
+    await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
         .DepositTokens(address, Web3.utils.toWei(amount.toString(), 'ether'))
@@ -86,6 +97,7 @@ export class Web3Service {
   }
 
   async WriteAReview(address: string, review: string, stars: number) {
+    await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
         .WriteAReview(address, review, stars)
@@ -117,16 +129,17 @@ export class Web3Service {
   }
 
   async GetMyReview(from: number, to: number) {
+    await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       let output = await this.contract.methods
         .GetMyReview(from, to)
         .call({ from: await this.address() });
-      console.log(output);
       return output;
     } else console.log('wallet not connected, get my review failed');
   }
 
   async DeleteReview(address: string) {
+    await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
         .DeleteReview(address)

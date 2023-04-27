@@ -6,7 +6,7 @@ import Web3 from 'web3';
   providedIn: 'root',
 })
 export class WalletService {
-  private address: string = 'notAVaildAddress';
+  private address!: string;
   private readonly infuraHTTPProvider: string =
     'https://sepolia.infura.io/v3/1caadfe504ce4531b041de4bc8927ceb';
   private isConnected: boolean = false;
@@ -39,6 +39,7 @@ export class WalletService {
         this.web3.setProvider(await this.window.nativeWindow.ethereum); //Setting metamask as provider for web3
       } catch (error) {
         console.log(error);
+        return false;
       }
       console.log('connected with metamask! with address: ' + this.address);
       this.isConnected = true;
@@ -79,7 +80,8 @@ export class WalletService {
   }
 
   async Connect() {
-    await this.ConnectToMetamask();
+    let success = await this.ConnectToMetamask();
     await this.SwitchNetwork();
+    return success;
   }
 }

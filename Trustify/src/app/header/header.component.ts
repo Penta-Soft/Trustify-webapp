@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../wallet.service';
 
 @Component({
@@ -6,17 +6,31 @@ import { WalletService } from '../wallet.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   firstPage: number = 0;
   isMetamaskConnected: boolean = false;
 
-  constructor(private walletService: WalletService) {
-    //this.isMetamaskConnected = localStorage.getItem('isMetamaskConnected') == 'true' ? true : false;
+  async ngOnInit() {
+    if (localStorage.getItem('isMetamaskConnected') == 'true') {
+      await this.walletService.Connect();
+      if (await this.walletService.getAccount()) {
+        this.isMetamaskConnected = true;
+      } else {
+        this.isMetamaskConnected = false;
+      }
+    }
   }
 
+  constructor(private walletService: WalletService) {}
+
   async changeMetamaskState() {
-    await this.walletService.Connect();
-    this.isMetamaskConnected = !this.isMetamaskConnected;
-    this.firstPage = 0;
+    if (!this.isMetamaskConnected) {
+      if (await this.walletService.Connect()) {
+        localStorage.setItem('isMetamaskConnected', 'true');
+        this.isMetamaskConnected = true;
+      }
+    }
+
+    //this.firstPage = 0;
   }
 }
