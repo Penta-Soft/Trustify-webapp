@@ -10,11 +10,12 @@ export class HeaderComponent {
   firstPage: number = 0;
   isMetamaskConnected: boolean = false;
 
-  constructor(private WalletService: WalletService) {
+  constructor(private walletService: WalletService) {
     //this.isMetamaskConnected = localStorage.getItem('isMetamaskConnected') == 'true' ? true : false;
   }
 
-  changeMetamaskState(): void {
+  async changeMetamaskState() {
+    await this.walletService.Connect();
     this.isMetamaskConnected = !this.isMetamaskConnected;
     this.firstPage = 0;
   }

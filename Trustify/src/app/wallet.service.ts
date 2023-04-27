@@ -6,6 +6,8 @@ import { WindowRefService } from './window-ref.service';
 })
 export class WalletService {
   private hasDisconnected: boolean = false;
+  private address: string = 'notAVaildAddress';
+  private isConnected: boolean = false;
 
   changeDisconnectedState(newState: boolean): void {
     this.hasDisconnected = newState;
@@ -17,21 +19,8 @@ export class WalletService {
     return this.window.nativeWindow.ethereum;
   }
 
-  async isConnected() {
-    if (this.isInstalled()) {
-      const accounts = await this.window.nativeWindow.ethereum.request({
-        method: 'eth_accounts',
-      });
-      if (accounts.length) {
-        return true;
-      } else {
-        throw new Error('Metamask is not connected');
-        //return false;
-      }
-    } else {
-      throw new Error('Metamask is not installed');
-      //return false;
-    }
+  isWalletConnected(): boolean {
+    return this.isConnected;
   }
 
   async gestisciBottone() {
@@ -40,39 +29,30 @@ export class WalletService {
       await this.window.nativeWindow.ethereum.request({
         method: 'eth_requestAccounts',
       });
-    } else {
-      // ti sei precedentemente disconnesso
-      await this.window.nativeWindow.ethereum.request({
-        method: 'wallet_requestPermissions',
-        params: [
-          {
-            eth_accounts: {},
-          },
-        ],
-      });
     }
   }
 
   async ConnectToMetamask() {
     if (this.isInstalled()) {
       try {
-        await this.window.nativeWindow.ethereum.request({
+        const accounts = await this.window.nativeWindow.ethereum.request({
           method: 'eth_requestAccounts',
         });
-      } catch (err: any) {
-        if (err.code === 4001) {
-          console.log('Please select an account');
-        } else {
-          console.log(err);
-        }
-        return false;
+        this.address = accounts[0];
+      } catch (error) {
+        console.log(error);
       }
-      console.log('connected');
+      console.log('connected to metamask! with address: ' + this.address);
+      this.isConnected = true;
       return true;
     } else {
       console.log('Metamask is not installed');
       return false;
     }
+  }
+
+  async getAccount() {
+    return this.address;
   }
 
   async SwitchNetwork() {
@@ -92,7 +72,7 @@ export class WalletService {
                 chainId: '0xAA36A7',
                 chainName: 'sepolia',
                 rpcUrls: [
-                  'https://sepolia.infura.io/v3/070cc0651bb440b290dc3da7594140a6', //forse da cambiare
+                  'https://sepolia.infura.io/v3/1caadfe504ce4531b041de4bc8927ceb', //forse da cambiare
                 ],
               },
             ],
@@ -105,10 +85,7 @@ export class WalletService {
   }
 
   async Connect() {
-    if (await this.ConnectToMetamask()) {
-      await this.SwitchNetwork();
-      return this.window.nativeWindow.ethereum;
-    }
-    return null;
+    await this.ConnectToMetamask();
+    await this.SwitchNetwork();
   }
 }
