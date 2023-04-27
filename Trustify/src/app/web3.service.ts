@@ -43,7 +43,7 @@ export class Web3Service {
   }
 
   async getTokenBalance(): Promise<number> {
-    await this.refreshConnectWallet();
+    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       let balance = await this.contractTC.methods
         .balanceOf(await this.address())
@@ -54,7 +54,7 @@ export class Web3Service {
   }
 
   async approveTokens(amount: number) {
-    await this.refreshConnectWallet();
+    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       let allowance = Web3.utils.fromWei(
         await this.contract.methods
@@ -81,7 +81,7 @@ export class Web3Service {
   }
 
   async depositTokens(address: string, amount: number) {
-    await this.refreshConnectWallet();
+    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
         .DepositTokens(address, Web3.utils.toWei(amount.toString(), 'ether'))
@@ -97,7 +97,7 @@ export class Web3Service {
   }
 
   async writeAReview(address: string, review: string, stars: number) {
-    await this.refreshConnectWallet();
+    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
         .WriteAReview(address, review, stars)
@@ -129,7 +129,7 @@ export class Web3Service {
   }
 
   async getMyReview(from: number, to: number) {
-    await this.refreshConnectWallet();
+    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       let output = await this.contract.methods
         .GetMyReview(from, to)
@@ -139,7 +139,7 @@ export class Web3Service {
   }
 
   async deleteReview(address: string) {
-    await this.refreshConnectWallet();
+    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
         .DeleteReview(address)
