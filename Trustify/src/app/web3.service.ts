@@ -6,8 +6,8 @@ import Web3 from 'web3';
   providedIn: 'root',
 })
 export class Web3Service {
-  private contractAddress = '0x180Ab83BB942aAA961A726492897Fd4EcBaDA80E';
-  private contractAddressTC = '0x536883262c847523aa8342b46c9a39f791dEEb3D';
+  private contractAddress = '0x45d66c4f3B299a56Ddb4283851BaC8dA52a0e477';
+  private contractAddressTC = '0xA73b3971D222DCd80B36EF8A4ea234666f205B39';
 
   private abi = require('../../contracts/Trustify.json');
   private abiTC = require('../../contracts/TCoin.json');
@@ -56,11 +56,9 @@ export class Web3Service {
   async approveTokens(amount: number) {
     //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
-      let allowance = Web3.utils.fromWei(
-        await this.contract.methods
-          .CheckAllowance()
-          .call({ from: await this.address() })
-      );
+      let allowance = await this.contractTC.methods
+        .allowance(await this.address(), this.contractAddress)
+        .call();
 
       if (parseInt(allowance) < amount) {
         await this.contractTC.methods
@@ -84,7 +82,7 @@ export class Web3Service {
     //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
-        .DepositTokens(address, Web3.utils.toWei(amount.toString(), 'ether'))
+        .depositTokens(address, Web3.utils.toWei(amount.toString(), 'ether'))
         .send({ from: await this.address() })
         .on('transactionHash', function (hash: any) {
           console.log(hash);
@@ -100,7 +98,7 @@ export class Web3Service {
     //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
-        .WriteAReview(address, review, stars)
+        .writeAReview(address, review, stars)
         .send({ from: await this.address() })
         .on('transactionHash', function (hash: any) {
           console.log(hash);
@@ -114,7 +112,7 @@ export class Web3Service {
 
   async getCompanyReview(from: number, to: number, address: string) {
     let output = await this.contract.methods
-      .GetCompanyReview(from, to, address)
+      .getCompanyReview(from, to, address)
       .call();
     return output;
   }
@@ -123,7 +121,7 @@ export class Web3Service {
     let review: string;
     let star: number;
     [review, star] = await this.contract.methods
-      .GetSpecificReview(address)
+      .getSpecificReview(address)
       .call();
     return [review, star];
   }
@@ -132,7 +130,7 @@ export class Web3Service {
     //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       let output = await this.contract.methods
-        .GetMyReview(from, to)
+        .getMyReview(from, to)
         .call({ from: await this.address() });
       return output;
     } else console.log('wallet not connected, get my review failed');
@@ -142,7 +140,7 @@ export class Web3Service {
     //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
-        .DeleteReview(address)
+        .deleteReview(address)
         .send({ from: await this.address() })
         .on('transactionHash', function (hash: any) {
           console.log(hash);
