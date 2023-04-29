@@ -12,28 +12,28 @@ export class HeaderComponent implements OnInit {
   currentIndex: number = 0;
 
   async ngOnInit() {
-    if (localStorage.getItem('isMetamaskConnected') == 'true') {
+    if (sessionStorage.getItem('isMetamaskConnected') == 'true') {
       if (await this.walletService.connect()) {
         this.isMetamaskConnected = true;
       } else {
         this.isMetamaskConnected = false;
       }
     }
-    let index = localStorage.getItem("index");
+    let index = sessionStorage.getItem('index');
     this.currentIndex = index !== null ? parseInt(index) : 0;
   }
 
-  constructor(private walletService: WalletService) { }
+  constructor(private walletService: WalletService) {}
 
   updateCurrentIndex(index: number): void {
     this.currentIndex = index;
-    localStorage.setItem("index", index.toString());
+    sessionStorage.setItem('index', index.toString());
   }
 
   async changeMetamaskState() {
     if (!this.isMetamaskConnected) {
       if (await this.walletService.connect()) {
-        localStorage.setItem('isMetamaskConnected', 'true');
+        sessionStorage.setItem('isMetamaskConnected', 'true');
         this.isMetamaskConnected = true;
       }
     }

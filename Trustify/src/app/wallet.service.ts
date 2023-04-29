@@ -40,7 +40,7 @@ export class WalletService {
         this.web3.setProvider(await this.window.nativeWindow.ethereum); //Setting metamask as provider for web3
       } catch (error) {
         console.log(error);
-        localStorage.setItem('isMetamaskConnected', 'false');
+        sessionStorage.setItem('isMetamaskConnected', 'false');
         return false;
       }
       console.log('connected with metamask! with address: ' + this.address);
@@ -67,7 +67,7 @@ export class WalletService {
             params: [
               {
                 chainId: '0xAA36A7',
-                chainName: 'sepolia',
+                chainName: 'sepolia test network',
                 rpcUrls: [
                   this.infuraHTTPProvider, //forse da cambiare
                 ],
