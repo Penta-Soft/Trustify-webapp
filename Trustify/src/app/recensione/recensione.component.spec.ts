@@ -1,14 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RecensioneComponent } from './recensione.component';
+import { Web3Service } from '../web3.service';
 
 describe('RecensioneComponent', () => {
   let component: RecensioneComponent;
   let fixture: ComponentFixture<RecensioneComponent>;
 
   beforeEach(async () => {
+
+    let web3ServiceSpy = jasmine.createSpyObj('Web3Service', ['writeAReview', 'deleteReview']);
+
     await TestBed.configureTestingModule({
-      declarations: [RecensioneComponent]
+      declarations: [RecensioneComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [{ provide: Web3Service, useValue: web3ServiceSpy }]
     })
       .compileComponents();
 
