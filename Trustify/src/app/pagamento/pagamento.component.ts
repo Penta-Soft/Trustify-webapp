@@ -1,10 +1,5 @@
 import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormBuilder,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Web3Service } from '../web3.service';
 
 @Component({
@@ -41,10 +36,7 @@ export class PagamentoComponent {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      address: [
-        null,
-        [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
-      ],
+      address: [null, [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')]],
       tokens: [null, [Validators.required, Validators.pattern(/^[1-9]\d*$/)]],
     });
   }
