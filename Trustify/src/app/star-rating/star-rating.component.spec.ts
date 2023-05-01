@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { StarRatingComponent } from './star-rating.component';
 
 describe('StarRatingComponent', () => {
@@ -8,9 +8,10 @@ describe('StarRatingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StarRatingComponent ]
+      declarations: [StarRatingComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(StarRatingComponent);
     component = fixture.componentInstance;
