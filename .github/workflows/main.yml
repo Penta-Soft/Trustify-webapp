@@ -1,0 +1,22 @@
+name: node CI with NPM 
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up node
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: 'npm'
+    - name: Change folder
+      run: cd .\Trustify\
+    - name: Install dependencies
+      run: npm install
+      
+      
