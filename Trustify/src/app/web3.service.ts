@@ -6,8 +6,8 @@ import Web3 from 'web3';
   providedIn: 'root',
 })
 export class Web3Service {
-  private contractAddress = '0x45d66c4f3B299a56Ddb4283851BaC8dA52a0e477';
-  private contractAddressTC = '0xA73b3971D222DCd80B36EF8A4ea234666f205B39';
+  private contractAddress = '0x396C5aE78b9a3132D72358A93772231B791d4e01';
+  private contractAddressTC = '0x9C390b3373EA845C2dadB4b0f4a4e757493FC671';
 
   private abi = require('../../contracts/Trustify.json');
   private abiTC = require('../../contracts/TCoin.json');
@@ -93,16 +93,26 @@ export class Web3Service {
 
   async writeAReview(address: string, review: string, stars: number) {
     if (await this.walletService.isWalletConnected()) {
-      await this.contract.methods
-        .writeAReview(address, review, stars)
-        .send({ from: await this.address() })
-        .on('transactionHash', function (hash: any) {
-          console.log(hash);
-        })
-        .on('receipt', function (receipt: any) {
-          console.log(receipt + 'Write a review done!');
-        })
-        .on('error', console.error);
+      if (
+        await this.contract.methods
+          .havePayed(await this.address(), address)
+          .call()
+      ) {
+        await this.contract.methods
+          .writeAReview(address, review, stars)
+          .send({ from: await this.address() })
+          .on('transactionHash', function (hash: any) {
+            console.log(hash);
+          })
+          .on('receipt', function (receipt: any) {
+            console.log(receipt + 'Write a review done!');
+          })
+          .on('error', console.error);
+      } else {
+        throw new Error(
+          'writeAReview: you have not a transaction with this company'
+        );
+      }
     } else console.log('wallet not connected, write a review failed');
   }
 
