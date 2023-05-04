@@ -13,7 +13,7 @@ export class GeneraRecensioneComponent implements OnInit {
   isProgressSpinnerVisible: boolean = false;
   form: FormGroup = new FormGroup({});
 
-  constructor(private web3: Web3Service, private formBuilder: FormBuilder) {}
+  constructor(private web3: Web3Service, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -21,6 +21,7 @@ export class GeneraRecensioneComponent implements OnInit {
         null,
         [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
       ],
+      review: []
     });
   }
 
@@ -28,9 +29,9 @@ export class GeneraRecensioneComponent implements OnInit {
     this.rating = rating;
   }
 
-  async aggiungi(address: string, review: string) {
+  async onSubmit(form: any) {
     this.isProgressSpinnerVisible = true;
-    await this.web3.writeAReview(address, review, this.rating).finally(() => {
+    await this.web3.writeAReview(form.value.address, form.value.review, this.rating).finally(() => {
       this.isProgressSpinnerVisible = false;
       //window.location.reload();
     });
