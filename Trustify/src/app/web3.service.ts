@@ -43,7 +43,6 @@ export class Web3Service {
   }
 
   async getTokenBalance(): Promise<number> {
-    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       let balance = await this.contractTC.methods
         .balanceOf(await this.address())
@@ -54,7 +53,6 @@ export class Web3Service {
   }
 
   async approveTokens(amount: number) {
-    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       let allowance = await this.contractTC.methods
         .allowance(await this.address(), this.contractAddress)
@@ -79,7 +77,6 @@ export class Web3Service {
   }
 
   async depositTokens(address: string, amount: number) {
-    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
         .depositTokens(address, Web3.utils.toWei(amount.toString(), 'ether'))
@@ -95,7 +92,6 @@ export class Web3Service {
   }
 
   async writeAReview(address: string, review: string, stars: number) {
-    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
         .writeAReview(address, review, stars)
@@ -111,9 +107,16 @@ export class Web3Service {
   }
 
   async getCompanyReview(from: number, to: number, address: string) {
-    let output = await this.contract.methods
-      .getCompanyReview(from, to, address)
-      .call();
+    let output;
+    try {
+      output = await this.contract.methods
+        .getCompanyReview(from, to, address)
+        .call();
+    } catch (e) {
+      throw new Error(
+        'getCompanyReview: this address does not have any reviews'
+      );
+    }
     return output;
   }
 
@@ -127,17 +130,20 @@ export class Web3Service {
   }
 
   async getMyReview(from: number, to: number) {
-    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
-      let output = await this.contract.methods
-        .getMyReview(from, to)
-        .call({ from: await this.address() });
+      let output;
+      try {
+        output = await this.contract.methods
+          .getMyReview(from, to)
+          .call({ from: await this.address() });
+      } catch (e) {
+        throw new Error('getMyReview: this address does not have any reviews');
+      }
       return output;
     } else console.log('wallet not connected, get my review failed');
   }
 
   async deleteReview(address: string) {
-    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
         .deleteReview(address)
