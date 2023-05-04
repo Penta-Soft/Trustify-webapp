@@ -22,6 +22,7 @@ describe('GeneraRecensioneComponent', () => {
       providers: [
         { provide: Web3Service, useValue: web3ServiceSpy }
       ],
+
       imports: [
         FormsModule,
         ReactiveFormsModule
@@ -49,5 +50,56 @@ describe('GeneraRecensioneComponent', () => {
     const addressElement = fixture.debugElement.query(By.css('#review'));
     expect(addressElement).toBeTruthy();
     expect(addressElement.nativeElement.getAttribute('formControlName')).toEqual('review');
+  })
+
+  it('rating starCount should be equal to 5', () => {
+    expect(component.starCount).toEqual(5);
+  })
+
+  it('review should update the rating value on call onRatingChanged(rating) with valid rating', () => {
+    const ratingElement = fixture.debugElement.query(By.css('#rating'));
+    let ratingTextContent = '';
+
+    component.onRatingChanged(1);
+    fixture.detectChanges();
+    ratingTextContent = 'Your rated ' + component.rating + ' / ' + component.starCount;
+    expect(component.rating).toEqual(1);
+    expect(ratingElement.nativeElement.textContent).toContain(ratingTextContent);
+
+    component.onRatingChanged(2);
+    fixture.detectChanges();
+    ratingTextContent = 'Your rated ' + component.rating + ' / ' + component.starCount;
+    expect(component.rating).toEqual(2);
+    expect(ratingElement.nativeElement.textContent).toContain(ratingTextContent);
+
+    component.onRatingChanged(3);
+    fixture.detectChanges();
+    ratingTextContent = 'Your rated ' + component.rating + ' / ' + component.starCount;
+    expect(component.rating).toEqual(3);
+    expect(ratingElement.nativeElement.textContent).toContain(ratingTextContent);
+
+    component.onRatingChanged(4);
+    fixture.detectChanges();
+    ratingTextContent = 'Your rated ' + component.rating + ' / ' + component.starCount;
+    expect(component.rating).toEqual(4);
+    expect(ratingElement.nativeElement.textContent).toContain(ratingTextContent);
+
+    component.onRatingChanged(5);
+    fixture.detectChanges();
+    ratingTextContent = 'Your rated ' + component.rating + ' / ' + component.starCount;
+    expect(component.rating).toEqual(5);
+    expect(ratingElement.nativeElement.textContent).toContain(ratingTextContent);
+  })
+
+  it('review should not allow to update the rating value on call onRatingChanged(rating) with invalid rating', () => {
+    let oldRatingValue = component.rating;
+
+    component.onRatingChanged(6);
+    fixture.detectChanges();
+    expect(component.rating).toEqual(oldRatingValue);
+
+    component.onRatingChanged(-1);
+    fixture.detectChanges();
+    expect(component.rating).toEqual(oldRatingValue);
   })
 });

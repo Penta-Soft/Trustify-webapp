@@ -26,7 +26,9 @@ export class GeneraRecensioneComponent implements OnInit {
   }
 
   onRatingChanged(rating: number) {
-    this.rating = rating;
+    if (rating > 0 && rating < 6) {
+      this.rating = rating;
+    }
   }
 
   async onSubmit(form: any) {
