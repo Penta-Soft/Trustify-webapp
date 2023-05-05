@@ -5,9 +5,7 @@ on: [push]
 jobs:
   build:
 
-    # Machine environment:
-    # https://help.github.com/en/articles/software-in-virtual-environments-for-github-actions#ubuntu-1804-lts
-    # We specify the Node.js version manually below, and use versioned Chrome from Puppeteer.
+
     runs-on: ubuntu-latest
 
     steps:
@@ -16,7 +14,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 18
-    - name: Install dependencies
-      run: npm install
-    - name: Test
-      run: npm test
+    - name: Install dependencies and make test 
+      run: |
+        cd Trustify
+        npm install
+        npm test
+ 
