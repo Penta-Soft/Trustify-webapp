@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ErrorHandlerService } from './error-handler.service';
 import { WindowRefService } from './window-ref.service';
 import Web3 from 'web3';
 
