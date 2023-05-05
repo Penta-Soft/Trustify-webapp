@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RecensioniParserService } from '../recensioni-parser.service';
 import { Recensione } from '../recensione';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
@@ -20,7 +21,8 @@ export class SearchBarComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private reviewParserService: RecensioniParserService
+    private reviewParserService: RecensioniParserService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -48,7 +50,8 @@ export class SearchBarComponent {
         this.REVIEWS_TO,
         address
       );
-    } catch (error) {
+    } catch (error: any) {
+      this.snackBar.open(error.message, 'Chiudi', { duration: 5000 });
       this.reviews = [];
     }
   }
