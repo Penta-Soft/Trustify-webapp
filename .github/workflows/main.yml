@@ -18,5 +18,5 @@ jobs:
       run: |
         cd Trustify
         npm install
-        npm test
+        npm test -no-watch --no-progress --watch=false --code-coverage --browsers=ChromeHeadlessCI
  
