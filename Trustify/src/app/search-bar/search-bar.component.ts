@@ -2,26 +2,38 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RecensioniParserService } from '../recensioni-parser.service';
 import { Recensione } from '../recensione';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.css']
+  styleUrls: ['./search-bar.component.css'],
 })
 export class SearchBarComponent {
-
   form: FormGroup = new FormGroup({});
   reviews: Recensione[] = [];
 
-  private readonly ADDRESS_VALIDATOR_PATTERN = "^0x[a-fA-F0-9]{40}$";
-  private readonly DEFAULT_ADDRESS = "0x96A85348123DfAd720fFa6193dE5c9792BB65C5e";
+  private readonly ADDRESS_VALIDATOR_PATTERN = '^0x[a-fA-F0-9]{40}$';
+
+  private readonly DEFAULT_ADDRESS =
+    '0x43aB5C6Ea8728c34cc779d9a4f9E2aF8Cd923C5D';
   private readonly REVIEWS_FROM = 0;
   private readonly REVIEWS_TO = 10;
 
-  constructor(private formBuilder: FormBuilder, private reviewParserService: RecensioniParserService) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private reviewParserService: RecensioniParserService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      address: [null, [Validators.required, Validators.pattern(this.ADDRESS_VALIDATOR_PATTERN)]]
+      address: [
+        null,
+        [
+          Validators.required,
+          Validators.pattern(this.ADDRESS_VALIDATOR_PATTERN),
+        ],
+      ],
     });
 
     this.getCompanyReview(this.DEFAULT_ADDRESS);
@@ -32,6 +44,15 @@ export class SearchBarComponent {
   }
 
   async getCompanyReview(address: string) {
-    this.reviews = await this.reviewParserService.retriveHomePageReviews(this.REVIEWS_FROM, this.REVIEWS_TO, address);
+    try {
+      this.reviews = await this.reviewParserService.retriveHomePageReviews(
+        this.REVIEWS_FROM,
+        this.REVIEWS_TO,
+        address
+      );
+    } catch (error: any) {
+      this.snackBar.open(error.message, 'Chiudi', { duration: 5000 });
+      this.reviews = [];
+    }
   }
 }

@@ -16,3 +16,8 @@ form {
     width: 50%;
     padding: 0em 1em;
 }
+
+p{
+    display: block;
+    text-align: center;
+}

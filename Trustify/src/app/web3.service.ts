@@ -6,8 +6,8 @@ import Web3 from 'web3';
   providedIn: 'root',
 })
 export class Web3Service {
-  private contractAddress = '0x45d66c4f3B299a56Ddb4283851BaC8dA52a0e477';
-  private contractAddressTC = '0xA73b3971D222DCd80B36EF8A4ea234666f205B39';
+  private contractAddress = '0x396C5aE78b9a3132D72358A93772231B791d4e01';
+  private contractAddressTC = '0x9C390b3373EA845C2dadB4b0f4a4e757493FC671';
 
   private abi = require('../../contracts/Trustify.json');
   private abiTC = require('../../contracts/TCoin.json');
@@ -43,7 +43,6 @@ export class Web3Service {
   }
 
   async getTokenBalance(): Promise<number> {
-    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       let balance = await this.contractTC.methods
         .balanceOf(await this.address())
@@ -54,7 +53,6 @@ export class Web3Service {
   }
 
   async approveTokens(amount: number) {
-    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       let allowance = await this.contractTC.methods
         .allowance(await this.address(), this.contractAddress)
@@ -79,7 +77,6 @@ export class Web3Service {
   }
 
   async depositTokens(address: string, amount: number) {
-    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
         .depositTokens(address, Web3.utils.toWei(amount.toString(), 'ether'))
@@ -95,25 +92,41 @@ export class Web3Service {
   }
 
   async writeAReview(address: string, review: string, stars: number) {
-    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
-      await this.contract.methods
-        .writeAReview(address, review, stars)
-        .send({ from: await this.address() })
-        .on('transactionHash', function (hash: any) {
-          console.log(hash);
-        })
-        .on('receipt', function (receipt: any) {
-          console.log(receipt + 'Write a review done!');
-        })
-        .on('error', console.error);
+      if (
+        await this.contract.methods
+          .havePayed(await this.address(), address)
+          .call()
+      ) {
+        await this.contract.methods
+          .writeAReview(address, review, stars)
+          .send({ from: await this.address() })
+          .on('transactionHash', function (hash: any) {
+            console.log(hash);
+          })
+          .on('receipt', function (receipt: any) {
+            console.log(receipt + 'Write a review done!');
+          })
+          .on('error', console.error);
+      } else {
+        throw new Error(
+          'Non hai effettuato una transazione per questa azienda'
+        );
+      }
     } else console.log('wallet not connected, write a review failed');
   }
 
   async getCompanyReview(from: number, to: number, address: string) {
-    let output = await this.contract.methods
-      .getCompanyReview(from, to, address)
-      .call();
+    let output;
+    try {
+      output = await this.contract.methods
+        .getCompanyReview(from, to, address)
+        .call();
+    } catch (e) {
+      throw new Error(
+        'Questo indirizzo non ha ancora ricevuto nessuna recensione'
+      );
+    }
     return output;
   }
 
@@ -127,17 +140,27 @@ export class Web3Service {
   }
 
   async getMyReview(from: number, to: number) {
-    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
-      let output = await this.contract.methods
-        .getMyReview(from, to)
-        .call({ from: await this.address() });
+      let output;
+      try {
+        output = await this.contract.methods
+          .getMyReview(from, to)
+          .call({ from: await this.address() });
+      } catch (e) {
+        throw new Error(
+          'Questo indirizzo non ha ancora ricevuto nessuna review'
+        );
+      }
       return output;
-    } else console.log('wallet not connected, get my review failed');
+    } else {
+      console.log('wallet not connected, get my review failed');
+      throw new Error(
+        'Wallet non connesso, impossibile recuperare la tua review'
+      );
+    }
   }
 
   async deleteReview(address: string) {
-    //await this.refreshConnectWallet();
     if (await this.walletService.isWalletConnected()) {
       await this.contract.methods
         .deleteReview(address)
@@ -149,7 +172,12 @@ export class Web3Service {
           console.log(receipt + 'Delete review done!');
         })
         .on('error', console.error);
-    } else console.log('wallet not connected, delete review failed');
+    } else {
+      console.log('wallet not connected, get my review failed');
+      throw new Error(
+        'Wallet non connesso, impossibile recuperare la tua review'
+      );
+    }
   }
 
   //Ritorna un array con tutte le "stars"

@@ -13,11 +13,9 @@ export class HeaderComponent implements OnInit {
 
   async ngOnInit() {
     if (sessionStorage.getItem('isMetamaskConnected') == 'true') {
-      if (await this.walletService.connect()) {
-        this.isMetamaskConnected = true;
-      } else {
-        this.isMetamaskConnected = false;
-      }
+      (await this.walletService.connect())
+        ? (this.isMetamaskConnected = true)
+        : (this.isMetamaskConnected = false);
     }
     let index = sessionStorage.getItem('index');
     this.currentIndex = index !== null ? parseInt(index) : 0;

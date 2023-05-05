@@ -18,47 +18,55 @@ export class RecensioniParserService {
     to: number,
     address: string
   ): Promise<Recensione[]> {
-    return this.web3.getCompanyReview(from, to, address).then((reviews) => {
-      let homePageReviews: Recensione[] = [];
-      for (
-        let currentReview = 0;
-        currentReview < reviews[this.REVIEW_INDEX].length;
-        currentReview++
-      ) {
-        homePageReviews.push(
-          new Recensione(
-            reviews[this.REVIEW_INDEX][currentReview],
-            reviews[this.RATING_INDEX][currentReview],
-            reviews[this.STATUS_INDEX][currentReview],
-            address
-          )
-        );
-      }
-      return homePageReviews;
-    });
+    try {
+      return this.web3.getCompanyReview(from, to, address).then((reviews) => {
+        let homePageReviews: Recensione[] = [];
+        for (
+          let currentReview = 0;
+          currentReview < reviews[this.REVIEW_INDEX].length;
+          currentReview++
+        ) {
+          homePageReviews.push(
+            new Recensione(
+              reviews[this.REVIEW_INDEX][currentReview],
+              reviews[this.RATING_INDEX][currentReview],
+              reviews[this.STATUS_INDEX][currentReview],
+              address
+            )
+          );
+        }
+        return homePageReviews;
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   async retrivePersonalAreaReviews(
     from: number,
     to: number
   ): Promise<Recensione[]> {
-    return this.web3.getMyReview(from, to).then((reviews) => {
-      let personalAreaReviews: Recensione[] = [];
-      for (
-        let currentReview = 0;
-        currentReview < reviews[this.REVIEW_INDEX].length;
-        currentReview++
-      ) {
-        personalAreaReviews.push(
-          new Recensione(
-            reviews[this.REVIEW_INDEX][currentReview],
-            reviews[this.RATING_INDEX][currentReview],
-            reviews[this.STATUS_INDEX][currentReview],
-            reviews[this.ADDRESS_INDEX][currentReview]
-          )
-        );
-      }
-      return personalAreaReviews;
-    });
+    try {
+      return this.web3.getMyReview(from, to).then((reviews) => {
+        let personalAreaReviews: Recensione[] = [];
+        for (
+          let currentReview = 0;
+          currentReview < reviews[this.REVIEW_INDEX].length;
+          currentReview++
+        ) {
+          personalAreaReviews.push(
+            new Recensione(
+              reviews[this.REVIEW_INDEX][currentReview],
+              reviews[this.RATING_INDEX][currentReview],
+              reviews[this.STATUS_INDEX][currentReview],
+              reviews[this.ADDRESS_INDEX][currentReview]
+            )
+          );
+        }
+        return personalAreaReviews;
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 }
