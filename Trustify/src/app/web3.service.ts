@@ -124,7 +124,7 @@ export class Web3Service {
         .call();
     } catch (e) {
       throw new Error(
-        'getCompanyReview: this address does not have any reviews'
+        'Questo indirizzo non ha ancora ricevuto nessuna recensione'
       );
     }
     return output;
@@ -147,10 +147,17 @@ export class Web3Service {
           .getMyReview(from, to)
           .call({ from: await this.address() });
       } catch (e) {
-        throw new Error('getMyReview: this address does not have any reviews');
+        throw new Error(
+          'Questo indirizzo non ha ancora ricevuto nessuna review'
+        );
       }
       return output;
-    } else console.log('wallet not connected, get my review failed');
+    } else {
+      console.log('wallet not connected, get my review failed');
+      throw new Error(
+        'Wallet non connesso, impossibile recuperare la tua review'
+      );
+    }
   }
 
   async deleteReview(address: string) {
@@ -165,7 +172,12 @@ export class Web3Service {
           console.log(receipt + 'Delete review done!');
         })
         .on('error', console.error);
-    } else console.log('wallet not connected, delete review failed');
+    } else {
+      console.log('wallet not connected, get my review failed');
+      throw new Error(
+        'Wallet non connesso, impossibile recuperare la tua review'
+      );
+    }
   }
 
   //Ritorna un array con tutte le "stars"
