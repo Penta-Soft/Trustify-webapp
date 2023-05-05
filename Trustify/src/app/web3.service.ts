@@ -110,7 +110,7 @@ export class Web3Service {
           .on('error', console.error);
       } else {
         throw new Error(
-          'writeAReview: you have not a transaction with this company'
+          'Non hai effettuato una transazione per questa azienda'
         );
       }
     } else console.log('wallet not connected, write a review failed');
