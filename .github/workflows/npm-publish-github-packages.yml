@@ -15,7 +15,7 @@ jobs:
           node-version: 18
       - run: | 
               cd Trustify
-              npm install
+              ls
               
 
   
