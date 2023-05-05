@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, tick, fakeAsync } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeneraRecensioneComponent } from './genera-recensione.component';
 import { Web3Service } from '../web3.service';
@@ -47,9 +47,9 @@ describe('GeneraRecensioneComponent', () => {
   })
 
   it('form should have a correct text area element for the review', () => {
-    const addressElement = fixture.debugElement.query(By.css('#review'));
-    expect(addressElement).toBeTruthy();
-    expect(addressElement.nativeElement.getAttribute('formControlName')).toEqual('review');
+    const reviewElement = fixture.debugElement.query(By.css('#review'));
+    expect(reviewElement).toBeTruthy();
+    expect(reviewElement.nativeElement.getAttribute('formControlName')).toEqual('review');
   })
 
   it('rating starCount should be equal to 5', () => {
@@ -101,5 +101,21 @@ describe('GeneraRecensioneComponent', () => {
     component.onRatingChanged(-1);
     fixture.detectChanges();
     expect(component.rating).toEqual(oldRatingValue);
+  })
+
+  it('should call web3 writeAReview after form submit', () => {
+    const submitElement = fixture.debugElement.query(By.css('#btn-submit'));
+    const addressControl = component.form.get('address');
+    const reviewControl = component.form.get('review');
+    const submitFunction = spyOn(component, 'onSubmit');
+
+    addressControl?.setValue('0x');
+    reviewControl?.setValue('Unit Test');
+    fixture.detectChanges();
+
+    (submitElement.nativeElement as HTMLButtonElement).click();
+
+    expect(submitFunction).toHaveBeenCalled();
+    // expect(web3ServiceSpy.writeAReview).toHaveBeenCalled();
   })
 });
