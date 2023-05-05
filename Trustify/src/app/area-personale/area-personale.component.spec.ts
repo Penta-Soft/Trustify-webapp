@@ -31,18 +31,17 @@ describe('AreaPersonaleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call retrivePersonalAreaReviews after component initialize', () => {
-    let getReviewSpy = reviewParserServiceSpy.retrivePersonalAreaReviews.and.returnValue(Rx.of([]));
+  it('should call web3 retrivePersonalAreaReviews after component initialize', () => {
     fixture.detectChanges();
-    expect(getReviewSpy).toHaveBeenCalled();
+    expect(reviewParserServiceSpy.retrivePersonalAreaReviews).toHaveBeenCalled();
   });
 
   it('should display review after component initialize', () => {
-    const testReview = new Recensione('Test', 5, 'ACTIVE', '0x')
-    component.reviews = [testReview];
+    const testReviews = [new Recensione('Test', 5, 'ACTIVE', '0x')];
+    component.reviews = testReviews;
     fixture.detectChanges();
-    expect(component.reviews).toEqual([testReview])
-    expect(component.reviews.length).toBe(1)
+    expect(component.reviews).toEqual(testReviews);
+    expect(component.reviews.length).toBe(1);
   })
 
 });
