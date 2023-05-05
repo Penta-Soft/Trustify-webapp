@@ -28,11 +28,12 @@
         Paga
       </button>
 
-      <button color="primary" type="submit" value="Continua" (click)="getToken()" mat-fab extended>
-        Ottieni token free!
-      </button>
     </fieldset>
   </form>
+
+  <button color="primary" type="submit" value="Continua" (click)="getToken()" mat-fab extended>
+    Ottieni token free!
+  </button>
 </div>
 
 <app-progress-spinner [overlay]="true" *ngIf="isProgressSpinnerVisible"></app-progress-spinner>
