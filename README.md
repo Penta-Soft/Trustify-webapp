@@ -12,7 +12,7 @@ Per fare l'update del backend fare:
 
 To make test use:
 - `npm run test`
-To make the code coverage of a test-sute use: 
+To make the code coverage of a test-suite use: 
 - `npm run coverage`
 To start the server use:
 - `npm run start`
