@@ -3,25 +3,25 @@
 </header>
 
 <mat-tab-group [selectedIndex]="currentIndex" (selectedIndexChange)="updateCurrentIndex($event)">
-  <mat-tab label="Home">
+  <mat-tab id="home" label="Home">
     <app-home-page></app-home-page>
   </mat-tab>
-  <div *ngIf="isMetamaskConnected">
-    <mat-tab label="Effettua un pagamento">
+  <ng-container *ngIf="isMetamaskConnected">
+    <mat-tab id="pagamento" label="Effettua un pagamento">
       <app-pagamento></app-pagamento>
     </mat-tab>
-    <mat-tab label="Area personale">
+    <mat-tab id="area-personale" label="Area personale">
       <app-area-personale></app-area-personale>
     </mat-tab>
-  </div>
+  </ng-container>
 
   <mat-tab id="button-tab" disabled>
     <ng-template mat-tab-label>
-      <div class="container-btn" *ngIf="!isMetamaskConnected; else disconnected">
-        <button class="active-btn" (click)="changeMetamaskState()" color="basic" mat-button extended>
+      <ng-container class="container-btn" *ngIf="!isMetamaskConnected; else disconnected">
+        <button id="btn-connect" class="active-btn" (click)="changeMetamaskState()" color="basic" mat-button extended>
           <mat-icon id="icon-close">close</mat-icon> Connetti Metamask
         </button>
-      </div>
+      </ng-container>
       <ng-template class="container-btn" #disconnected>
         <button class="active-btn" (click)="changeMetamaskState()" color="basic" mat-button extended disabled>
           <mat-icon id="icon-done">done</mat-icon> Connesso con Metamask
