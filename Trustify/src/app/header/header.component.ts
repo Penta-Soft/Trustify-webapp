@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../wallet.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-header',
@@ -11,17 +12,36 @@ export class HeaderComponent implements OnInit {
   isMetamaskConnected: boolean = false;
   currentIndex: number = 0;
 
+  async connectToMetamask() {
+    try {
+      await this.walletService.connect().finally(() => {
+        this.isMetamaskConnected = true;
+        sessionStorage.setItem('isMetamaskConnected', 'true');
+        this.snackBar.open('Connected with Metamask', 'Close', {
+          duration: 10000,
+        });
+      });
+    } catch (e: any) {
+      this.snackBar.open(e.message, 'Close', {
+        duration: 10000,
+      });
+      this.isMetamaskConnected = false;
+      sessionStorage.setItem('isMetamaskConnected', 'false');
+    }
+  }
+
   async ngOnInit() {
     if (sessionStorage.getItem('isMetamaskConnected') == 'true') {
-      (await this.walletService.connect())
-        ? (this.isMetamaskConnected = true)
-        : (this.isMetamaskConnected = false);
+      await this.connectToMetamask();
     }
     let index = sessionStorage.getItem('index');
     this.currentIndex = index !== null ? parseInt(index) : 0;
   }
 
-  constructor(private walletService: WalletService) {}
+  constructor(
+    private walletService: WalletService,
+    private snackBar: MatSnackBar
+  ) {}
 
   updateCurrentIndex(index: number): void {
     this.currentIndex = index;
@@ -30,10 +50,7 @@ export class HeaderComponent implements OnInit {
 
   async changeMetamaskState() {
     if (!this.isMetamaskConnected) {
-      if (await this.walletService.connect()) {
-        sessionStorage.setItem('isMetamaskConnected', 'true');
-        this.isMetamaskConnected = true;
-      }
+      await this.connectToMetamask();
     }
     this.currentIndex = 0;
   }

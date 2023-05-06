@@ -40,14 +40,13 @@ export class WalletService {
       } catch (error) {
         console.log(error);
         sessionStorage.setItem('isMetamaskConnected', 'false');
-        return false;
+        throw new Error('Error while connecting with Metamask');
       }
       console.log('connected with metamask! with address: ' + this.address);
       this.isConnected = true;
-      return true;
     } else {
       console.log('Metamask is not installed');
-      return false;
+      throw new Error('Metamask is not installed');
     }
   }
 
@@ -82,8 +81,7 @@ export class WalletService {
 
   // da rimuovere i return
   async connect() {
-    let success = await this.connectToMetamask();
+    await this.connectToMetamask();
     await this.switchNetwork();
-    return success;
   }
 }
