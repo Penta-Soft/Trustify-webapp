@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RecensioniParserService } from '../recensioni-parser.service';
 import { Recensione } from '../recensione';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table'
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
@@ -10,7 +13,26 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class SearchBarComponent {
   form: FormGroup = new FormGroup({});
-  reviews: Recensione[] = [];
+  reviews: Recensione[] = [
+    new Recensione("a", 2, "A", "0x"),
+    new Recensione("a", 2, "A", "0x"),
+    new Recensione("a", 2, "A", "0x"),
+    new Recensione("a", 2, "A", "0x"),
+    new Recensione("a", 2, "A", "0x"),
+    new Recensione("a", 2, "A", "0x"),
+    new Recensione("b", 2, "b", "0x"),
+    new Recensione("b", 2, "b", "0x"),
+    new Recensione("b", 2, "b", "0x"),
+    new Recensione("b", 2, "b", "0x"),
+    new Recensione("b", 2, "b", "0x"),
+    new Recensione("b", 2, "b", "0x"),
+    new Recensione("b", 2, "b", "0x"),
+
+  ];
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  obs!: Observable<any>;
+  dataSource: MatTableDataSource<Recensione> = new MatTableDataSource<Recensione>(this.reviews)
 
   private readonly ADDRESS_VALIDATOR_PATTERN = '^0x[a-fA-F0-9]{40}$';
 
@@ -22,8 +44,9 @@ export class SearchBarComponent {
   constructor(
     private formBuilder: FormBuilder,
     private reviewParserService: RecensioniParserService,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+    private changeDetectorRef: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -36,7 +59,11 @@ export class SearchBarComponent {
       ],
     });
 
-    this.getCompanyReview(this.DEFAULT_ADDRESS);
+    this.changeDetectorRef.detectChanges();
+    this.dataSource.paginator = this.paginator;
+    this.obs = this.dataSource.connect();
+
+    //this.getCompanyReview(this.DEFAULT_ADDRESS);
   }
 
   onSubmit(form: any) {

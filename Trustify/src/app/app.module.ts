@@ -30,6 +30,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { WindowRefService } from './window-ref.service';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import Web3 from 'web3';
 
 @NgModule({
@@ -65,8 +66,9 @@ import Web3 from 'web3';
     MatDividerModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+    MatTableModule
   ],
   providers: [WindowRefService, Web3],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
