@@ -18,8 +18,8 @@ export class SearchBarComponent {
     '0xC4D68860Af6a1190B69d80567E8Cd688E1bAE5ce';
   private address: string = this.DEFAULT_ADDRESS;
   private readonly REVIEW_INDEX_ADDER = 10;
-  private reviewsFrom = 0;
-  private reviewsTo = 9;
+  private reviewsStartFrom = 0;
+  private reviewsEndTo = 9;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -42,8 +42,8 @@ export class SearchBarComponent {
   }
 
   async loadMoreReview() {
-    this.reviewsFrom += this.REVIEW_INDEX_ADDER;
-    this.reviewsTo += this.REVIEW_INDEX_ADDER;
+    this.reviewsStartFrom = this.reviewsEndTo + 1;
+    this.reviewsEndTo += this.REVIEW_INDEX_ADDER;
 
     await this.getCompanyReview(this.DEFAULT_ADDRESS);
   }
@@ -56,8 +56,8 @@ export class SearchBarComponent {
   async getCompanyReview(address: string) {
     try {
       let tmpReviews = await this.reviewParserService.retriveHomePageReviews(
-        this.reviewsFrom,
-        this.reviewsTo,
+        this.reviewsStartFrom,
+        this.reviewsEndTo,
         address
       );
       for (let rev of tmpReviews) {
