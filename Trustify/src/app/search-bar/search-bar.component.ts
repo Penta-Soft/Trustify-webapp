@@ -4,7 +4,7 @@ import { RecensioniParserService } from '../recensioni-parser.service';
 import { Recensione } from '../recensione';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table'
+import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 @Component({
   selector: 'app-search-bar',
@@ -13,26 +13,11 @@ import { Observable } from 'rxjs';
 })
 export class SearchBarComponent {
   form: FormGroup = new FormGroup({});
-  reviews: Recensione[] = [
-    new Recensione("a", 2, "A", "0x"),
-    new Recensione("a", 2, "A", "0x"),
-    new Recensione("a", 2, "A", "0x"),
-    new Recensione("a", 2, "A", "0x"),
-    new Recensione("a", 2, "A", "0x"),
-    new Recensione("a", 2, "A", "0x"),
-    new Recensione("b", 2, "b", "0x"),
-    new Recensione("b", 2, "b", "0x"),
-    new Recensione("b", 2, "b", "0x"),
-    new Recensione("b", 2, "b", "0x"),
-    new Recensione("b", 2, "b", "0x"),
-    new Recensione("b", 2, "b", "0x"),
-    new Recensione("b", 2, "b", "0x"),
-
-  ];
+  reviews: Recensione[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   obs!: Observable<any>;
-  dataSource: MatTableDataSource<Recensione> = new MatTableDataSource<Recensione>(this.reviews)
+  dataSource!: MatTableDataSource<Recensione>;
 
   private readonly ADDRESS_VALIDATOR_PATTERN = '^0x[a-fA-F0-9]{40}$';
 
@@ -46,9 +31,9 @@ export class SearchBarComponent {
     private reviewParserService: RecensioniParserService,
     private snackBar: MatSnackBar,
     private changeDetectorRef: ChangeDetectorRef
-  ) { }
+  ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.form = this.formBuilder.group({
       address: [
         null,
@@ -59,11 +44,12 @@ export class SearchBarComponent {
       ],
     });
 
+    await this.getCompanyReview(this.DEFAULT_ADDRESS);
+    this.dataSource = new MatTableDataSource<Recensione>(this.reviews);
+
     this.changeDetectorRef.detectChanges();
     this.dataSource.paginator = this.paginator;
     this.obs = this.dataSource.connect();
-
-    //this.getCompanyReview(this.DEFAULT_ADDRESS);
   }
 
   onSubmit(form: any) {
