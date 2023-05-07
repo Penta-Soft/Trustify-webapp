@@ -6,8 +6,8 @@ import Web3 from 'web3';
   providedIn: 'root',
 })
 export class Web3Service {
-  private contractAddress = '0x0B4f569E7156AFC8DC66956EfaAaEe31A9Ce7e35';
-  private contractAddressTC = '0x67B03aacE6eb0EeDB0a0B6d662451dDb64DaC321';
+  private contractAddress = '0xbAE276a7070C80940699Cb695dcF170A6104BCD3';
+  private contractAddressTC = '0x368df0F43469f5D6Ca65b24A813DD08c164CCF02';
 
   private abi = require('../../contracts/Trustify.json');
   private abiTC = require('../../contracts/TCoin.json');
@@ -118,15 +118,9 @@ export class Web3Service {
 
   async getCompanyReview(from: number, to: number, address: string) {
     let output;
-    try {
-      output = await this.contract.methods
-        .getCompanyReview(from, to, address)
-        .call();
-    } catch (e) {
-      throw new Error(
-        'Questo indirizzo non ha ancora ricevuto nessuna recensione'
-      );
-    }
+    output = await this.contract.methods
+      .getCompanyReview(from, to, address)
+      .call();
     return output;
   }
 

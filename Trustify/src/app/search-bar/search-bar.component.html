@@ -17,11 +17,12 @@
 </form>
 
 <ul *ngIf="reviews.length > 0; else errorMessage">
-    <app-recensione *ngFor="let currentReview of obs | async" [Review]="currentReview.getReview()"
+    <app-recensione *ngFor="let currentReview of reviews" [Review]="currentReview.getReview()"
         [Address]="currentReview.getAddress()" [Rating]="currentReview.getRating()" [Status]="currentReview.getStatus()"
         [ActiveAction]="false"></app-recensione>
 </ul>
-<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+<button (click)="loadMoreReview()">get more review</button>
+
 <ng-template #errorMessage>
     <p>Nessuna recensione trovata</p>
 </ng-template>
