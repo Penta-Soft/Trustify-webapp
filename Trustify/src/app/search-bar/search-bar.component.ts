@@ -15,7 +15,7 @@ export class SearchBarComponent {
   private readonly ADDRESS_VALIDATOR_PATTERN = '^0x[a-fA-F0-9]{40}$';
 
   private readonly DEFAULT_ADDRESS =
-    '0x43aB5C6Ea8728c34cc779d9a4f9E2aF8Cd923C5D';
+    '0x73A31b79043c11ec8E9B453625f42388E5D1b797';
   private readonly REVIEWS_FROM = 0;
   private readonly REVIEWS_TO = 10;
 

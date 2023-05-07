@@ -6,8 +6,8 @@ import Web3 from 'web3';
   providedIn: 'root',
 })
 export class Web3Service {
-  private contractAddress = '0x396C5aE78b9a3132D72358A93772231B791d4e01';
-  private contractAddressTC = '0x9C390b3373EA845C2dadB4b0f4a4e757493FC671';
+  private contractAddress = '0x0B4f569E7156AFC8DC66956EfaAaEe31A9Ce7e35';
+  private contractAddressTC = '0x67B03aacE6eb0EeDB0a0B6d662451dDb64DaC321';
 
   private abi = require('../../contracts/Trustify.json');
   private abiTC = require('../../contracts/TCoin.json');

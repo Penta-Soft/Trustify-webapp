@@ -7,8 +7,7 @@ import Web3 from 'web3';
 })
 export class WalletService {
   private address!: string;
-  private readonly infuraHTTPProvider: string =
-    'https://sepolia.infura.io/v3/1caadfe504ce4531b041de4bc8927ceb';
+  private readonly infuraHTTPProvider: string = 'HTTP://127.0.0.1:8545';
   private isConnected: boolean = false;
 
   constructor(private window: WindowRefService, private web3: Web3) {}
@@ -82,6 +81,6 @@ export class WalletService {
   // da rimuovere i return
   async connect() {
     await this.connectToMetamask();
-    await this.switchNetwork();
+    //await this.switchNetwork();
   }
 }
