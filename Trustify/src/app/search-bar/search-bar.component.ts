@@ -15,7 +15,7 @@ export class SearchBarComponent {
   private readonly ADDRESS_VALIDATOR_PATTERN = '^0x[a-fA-F0-9]{40}$';
 
   private readonly DEFAULT_ADDRESS =
-    '0xC4D68860Af6a1190B69d80567E8Cd688E1bAE5ce';
+    '0x43aB5C6Ea8728c34cc779d9a4f9E2aF8Cd923C5D';
   private address: string = this.DEFAULT_ADDRESS;
   private readonly REVIEW_INDEX_ADDER = 10;
   private reviewsStartFrom = 0;
@@ -66,7 +66,7 @@ export class SearchBarComponent {
     } catch (error: any) {
       if (
         error.message.includes(
-          'revert Start must be less than the length of the array'
+          'Start must be less than the length of the array'
         )
       ) {
         this.snackBar.open('Non ci sono più recensioni da caricare', 'Chiudi', {

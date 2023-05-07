@@ -43,7 +43,7 @@ export class AreaPersonaleComponent implements OnInit {
     } catch (error: any) {
       if (
         error.message.includes(
-          'revert Start must be less than the length of the array'
+          'Start must be less than the length of the array'
         )
       ) {
         this.snackBar.open('Non ci sono più recensioni da caricare', 'Chiudi', {
