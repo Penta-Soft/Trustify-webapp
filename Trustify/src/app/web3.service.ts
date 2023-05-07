@@ -6,8 +6,8 @@ import Web3 from 'web3';
   providedIn: 'root',
 })
 export class Web3Service {
-  private contractAddress = '0xbAE276a7070C80940699Cb695dcF170A6104BCD3';
-  private contractAddressTC = '0x368df0F43469f5D6Ca65b24A813DD08c164CCF02';
+  private contractAddress = '0xEfa19dEFbF9e07AD812D7BFebd08150E7aAFd401';
+  private contractAddressTC = '0x63A9B22aef2f8f94Ef255827b6fabf221F5679f9';
 
   private abi = require('../../contracts/Trustify.json');
   private abiTC = require('../../contracts/TCoin.json');
@@ -136,15 +136,9 @@ export class Web3Service {
   async getMyReview(from: number, to: number) {
     if (await this.walletService.isWalletConnected()) {
       let output;
-      try {
-        output = await this.contract.methods
-          .getMyReview(from, to)
-          .call({ from: await this.address() });
-      } catch (e) {
-        throw new Error(
-          'Questo indirizzo non ha ancora ricevuto nessuna review'
-        );
-      }
+      output = await this.contract.methods
+        .getMyReview(from, to)
+        .call({ from: await this.address() });
       return output;
     } else {
       console.log('wallet not connected, get my review failed');
