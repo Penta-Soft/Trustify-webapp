@@ -9,11 +9,9 @@ import { Web3Service } from '../web3.service';
 })
 export class PagamentoComponent {
   form: FormGroup = new FormGroup({});
-  accountBalance: number = 0;
+  balance: number = 0;
   isProgressSpinnerVisible: boolean = false;
-  constructor(private formBuilder: FormBuilder, private web3: Web3Service) {
-    this.getTokenBalance();
-  }
+  constructor(private formBuilder: FormBuilder, private web3: Web3Service) { }
 
   async pay(address: string, amount: string) {
     this.isProgressSpinnerVisible = true;
@@ -30,8 +28,7 @@ export class PagamentoComponent {
   }
 
   async getTokenBalance() {
-    let balance = await this.web3.getTokenBalance();
-    this.accountBalance = balance;
+    this.balance = await this.web3.getTokenBalance();
   }
 
   ngOnInit(): void {
@@ -39,6 +36,8 @@ export class PagamentoComponent {
       address: [null, [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')]],
       tokens: [null, [Validators.required, Validators.pattern(/^[1-9]\d*$/)]],
     });
+
+    this.getTokenBalance();
   }
 
   onSubmit(form: any): void {

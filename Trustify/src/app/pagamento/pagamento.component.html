@@ -20,10 +20,10 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <input matInput disabled class="accountBalance" value="Hai {{accountBalance}} token a disposizione" />
+        <input matInput disabled class="accountBalance" value="Hai {{balance}} token a disposizione" />
       </mat-form-field>
 
-      <button color="primary" type="submit" [disabled]="!form.valid" mat-fab extended>
+      <button id="btn-submit" color="primary" type="submit" [disabled]="!form.valid" mat-fab extended>
         <mat-icon>shopping_cart_checkout</mat-icon>
         Paga
       </button>
