@@ -103,7 +103,7 @@ describe('GeneraRecensioneComponent', () => {
     expect(component.rating).toEqual(oldRatingValue);
   })
 
-  it('should call web3 writeAReview after form submit', () => {
+  it('should call component onSubmit() after form submit', () => {
     const submitElement = fixture.debugElement.query(By.css('#btn-submit'));
     const addressControl = component.form.get('address');
     const reviewControl = component.form.get('review');
@@ -116,6 +116,5 @@ describe('GeneraRecensioneComponent', () => {
     (submitElement.nativeElement as HTMLButtonElement).click();
 
     expect(submitFunction).toHaveBeenCalled();
-    // expect(web3ServiceSpy.writeAReview).toHaveBeenCalled();
   })
 });
