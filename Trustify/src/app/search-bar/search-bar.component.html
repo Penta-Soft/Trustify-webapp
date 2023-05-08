@@ -21,6 +21,7 @@
         [Address]="currentReview.getAddress()" [Rating]="currentReview.getRating()" [Status]="currentReview.getStatus()"
         [ActiveAction]="false"></app-recensione>
 </ul>
+<button (click)="loadMoreReview()">get more review</button>
 
 <ng-template #errorMessage>
     <p>Nessuna recensione trovata</p>

@@ -118,15 +118,9 @@ export class Web3Service {
 
   async getCompanyReview(from: number, to: number, address: string) {
     let output;
-    try {
-      output = await this.contract.methods
-        .getCompanyReview(from, to, address)
-        .call();
-    } catch (e) {
-      throw new Error(
-        'Questo indirizzo non ha ancora ricevuto nessuna recensione'
-      );
-    }
+    output = await this.contract.methods
+      .getCompanyReview(from, to, address)
+      .call();
     return output;
   }
 
@@ -142,15 +136,9 @@ export class Web3Service {
   async getMyReview(from: number, to: number) {
     if (await this.walletService.isWalletConnected()) {
       let output;
-      try {
-        output = await this.contract.methods
-          .getMyReview(from, to)
-          .call({ from: await this.address() });
-      } catch (e) {
-        throw new Error(
-          'Questo indirizzo non ha ancora ricevuto nessuna review'
-        );
-      }
+      output = await this.contract.methods
+        .getMyReview(from, to)
+        .call({ from: await this.address() });
       return output;
     } else {
       console.log('wallet not connected, get my review failed');
