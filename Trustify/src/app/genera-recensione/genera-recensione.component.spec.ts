@@ -38,42 +38,73 @@ describe('GeneraRecensioneComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('form should have a correct input element for the address', () => {
-    const addressElement = fixture.debugElement.query(By.css('#address'));
-    expect(addressElement).toBeTruthy();
-    expect(addressElement.nativeElement.getAttribute('formControlName')).toEqual('address');
-    expect(addressElement.nativeElement.getAttribute('minlength')).toEqual('42');
-    expect(addressElement.nativeElement.getAttribute('maxlength')).toEqual('42');
-  })
+  it('RFO2 - user should be able to release a review after the purchase phase', () => {
 
-  it('user should be able to insert the activity address', () => {
+  });
+
+  it('RFO2.1 - user should be able to see the error message if the connection is lost', () => {
+
+  });
+
+  it('RFO2.2 - user should be able to enter the activity address', () => {
     fixture.detectChanges();
     const addressControl = component.form.controls['address'];
     addressControl.setValue('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
 
     expect(component.form.value.address).toEqual('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
 
-  })
+  });
 
-  it('form should have a correct text area element for the review', () => {
-    const reviewElement = fixture.debugElement.query(By.css('#review'));
-    expect(reviewElement).toBeTruthy();
-    expect(reviewElement.nativeElement.getAttribute('formControlName')).toEqual('review');
-  })
+  it('RFO2.2.1 - user should be able to see the error message if the address is empty', () => {
+    fixture.detectChanges();
+    const addressControl = component.form.controls['address'];
+    addressControl.setValue('');
+    fixture.detectChanges();
 
-  it('user should be able to insert the activity review', () => {
+    const addressErrorElement = fixture.debugElement.query(By.css('.errorMsg'));
+    expect(addressErrorElement.nativeElement).toBeTruthy();
+    expect(addressErrorElement.nativeElement.textContent).toEqual('Inserire un indirizzo');
+  });
+
+  it('RFO2.2.2 - user should be able to see the error message if the address is invalid', () => {
+    fixture.detectChanges();
+    const addressControl = component.form.controls['address'];
+    addressControl.setValue('0x invalidAddress');
+    fixture.detectChanges();
+
+    const addressErrorElement = fixture.debugElement.query(By.css('.errorMsg'));
+    expect(addressErrorElement.nativeElement).toBeTruthy();
+    expect(addressErrorElement.nativeElement.textContent).toEqual('L\'indirizzo non rispetta il formato corretto');
+  });
+
+  it('RFO2.3 - user should be able to enter the review description', () => {
     fixture.detectChanges();
     const reviewControl = component.form.controls['review'];
     reviewControl.setValue('Test review');
 
     expect(component.form.value.review).toEqual('Test review');
-  })
+  });
 
-  it('rating starCount should be equal to 5', () => {
-    expect(component.starCount).toEqual(5);
-  })
+  it('RFO2.4 - user should be able to enter the review rating parameter', () => {
+    const ratingElement = fixture.debugElement.query(By.css('#rating'));
+    let ratingTextContent = '';
 
-  it('review should update the rating value on call onRatingChanged(rating) with valid rating', () => {
+    component.onRatingChanged(5);
+    fixture.detectChanges();
+    ratingTextContent = 'Your rated ' + component.rating + ' / ' + component.starCount;
+    expect(component.rating).toEqual(5);
+    expect(ratingElement.nativeElement.textContent).toContain(ratingTextContent);
+  });
+
+  it('RFO2.4.1 - user should be able to see the error message if the rating parameter is empty', () => {
+
+  });
+
+  it('RFO2.4.2 - user should be able to see the error message if the rating parameter is invalid', () => {
+
+  });
+
+  it('RFO2.4.3 - user should be able to enter a rating value of 1', () => {
     const ratingElement = fixture.debugElement.query(By.css('#rating'));
     let ratingTextContent = '';
 
@@ -82,31 +113,73 @@ describe('GeneraRecensioneComponent', () => {
     ratingTextContent = 'Your rated ' + component.rating + ' / ' + component.starCount;
     expect(component.rating).toEqual(1);
     expect(ratingElement.nativeElement.textContent).toContain(ratingTextContent);
+  });
+
+  it('RFO2.4.4 - user should be able to enter a rating value of 2', () => {
+    const ratingElement = fixture.debugElement.query(By.css('#rating'));
+    let ratingTextContent = '';
 
     component.onRatingChanged(2);
     fixture.detectChanges();
     ratingTextContent = 'Your rated ' + component.rating + ' / ' + component.starCount;
     expect(component.rating).toEqual(2);
     expect(ratingElement.nativeElement.textContent).toContain(ratingTextContent);
+  });
+
+  it('RFO2.4.5 - user should be able to enter a rating value of 3', () => {
+    const ratingElement = fixture.debugElement.query(By.css('#rating'));
+    let ratingTextContent = '';
 
     component.onRatingChanged(3);
     fixture.detectChanges();
     ratingTextContent = 'Your rated ' + component.rating + ' / ' + component.starCount;
     expect(component.rating).toEqual(3);
     expect(ratingElement.nativeElement.textContent).toContain(ratingTextContent);
+  });
+
+  it('RFO2.4.6 - user should be able to enter a rating value of 4', () => {
+    const ratingElement = fixture.debugElement.query(By.css('#rating'));
+    let ratingTextContent = '';
 
     component.onRatingChanged(4);
     fixture.detectChanges();
     ratingTextContent = 'Your rated ' + component.rating + ' / ' + component.starCount;
     expect(component.rating).toEqual(4);
     expect(ratingElement.nativeElement.textContent).toContain(ratingTextContent);
+  });
+
+  it('RFO2.4.7 - user should be able to enter a rating value of 5', () => {
+    const ratingElement = fixture.debugElement.query(By.css('#rating'));
+    let ratingTextContent = '';
 
     component.onRatingChanged(5);
     fixture.detectChanges();
     ratingTextContent = 'Your rated ' + component.rating + ' / ' + component.starCount;
     expect(component.rating).toEqual(5);
     expect(ratingElement.nativeElement.textContent).toContain(ratingTextContent);
+  });
+
+  // test non tracciati nel documento AdR
+
+  it('form should have a correct input element for the address', () => {
+    const addressElement = fixture.debugElement.query(By.css('#address'));
+    expect(addressElement).toBeTruthy();
+    expect(addressElement.nativeElement.getAttribute('formControlName')).toEqual('address');
+    expect(addressElement.nativeElement.getAttribute('minlength')).toEqual('42');
+    expect(addressElement.nativeElement.getAttribute('maxlength')).toEqual('42');
   })
+
+  it('form should have a correct text area element for the review', () => {
+    const reviewElement = fixture.debugElement.query(By.css('#review'));
+    expect(reviewElement).toBeTruthy();
+    expect(reviewElement.nativeElement.getAttribute('formControlName')).toEqual('review');
+  })
+
+
+  it('rating starCount should be equal to 5', () => {
+    expect(component.starCount).toEqual(5);
+  })
+
 
   it('review should not allow to update the rating value on call onRatingChanged(rating) with invalid rating', () => {
     let oldRatingValue = component.rating;
