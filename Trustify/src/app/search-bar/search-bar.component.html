@@ -21,3 +21,6 @@
         [Address]="currentReview.getAddress()" [Rating]="currentReview.getRating()" [Status]="currentReview.getStatus()"
         [ActiveAction]="false"></app-recensione>
 </ul>
+<div *ngIf="reviews.length === 0">
+    <p class="reviewErrorMsg">Non ci sono recensioni!</p>
+</div>
