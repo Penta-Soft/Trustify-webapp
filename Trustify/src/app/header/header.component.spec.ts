@@ -28,20 +28,7 @@ describe('HeaderComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should not detect Metamask connection state on component initialize', () => {
-    component.ngOnInit();
-    fixture.detectChanges();
-    expect(walletServiceSpy.connect).not.toHaveBeenCalled();
-  })
-
-  it('should detect Metamask connection state on component reload', () => {
-    spyOn(window.localStorage, 'getItem').and.returnValue('true');
-    component.ngOnInit();
-    fixture.detectChanges();
-    expect(walletServiceSpy.connect).toHaveBeenCalled();
-  })
-
-  it('should connect Metamask on button click', () => {
+  it('RFO1 - should connect user wallet via Metamask', () => {
     component.isMetamaskConnected = false;
     fixture.detectChanges();
 
@@ -53,7 +40,30 @@ describe('HeaderComponent', () => {
     (connectMetamaskButton.nativeElement as HTMLButtonElement).click();
 
     expect(connectMetamaskFunction).toHaveBeenCalled();
+  });
+
+  it('RFO1.1 - user should be able to see the error message if Metamask is not installed', () => {
+
   })
+
+  it('RFO1.2 - user should be able to see the approval message if his wallet connects successfully', () => {
+
+  })
+
+  // test non tracciati nel documento AdR
+
+  it('should not detect Metamask connection state on component initialize', () => {
+    component.ngOnInit();
+    fixture.detectChanges();
+    expect(walletServiceSpy.connect).not.toHaveBeenCalled();
+  });
+
+  it('should detect Metamask connection state on component reload', () => {
+    spyOn(window.localStorage, 'getItem').and.returnValue('true');
+    component.ngOnInit();
+    fixture.detectChanges();
+    expect(walletServiceSpy.connect).toHaveBeenCalled();
+  });
 
   it('should show pagamento and areaPersonale pages on Metamask connected', () => {
     component.isMetamaskConnected = true;
