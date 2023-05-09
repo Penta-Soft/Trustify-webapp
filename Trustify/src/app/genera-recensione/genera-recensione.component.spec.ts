@@ -46,10 +46,27 @@ describe('GeneraRecensioneComponent', () => {
     expect(addressElement.nativeElement.getAttribute('maxlength')).toEqual('42');
   })
 
+  it('user should be able to insert the activity address', () => {
+    fixture.detectChanges();
+    const addressControl = component.form.controls['address'];
+    addressControl.setValue('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
+
+    expect(component.form.value.address).toEqual('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
+
+  })
+
   it('form should have a correct text area element for the review', () => {
     const reviewElement = fixture.debugElement.query(By.css('#review'));
     expect(reviewElement).toBeTruthy();
     expect(reviewElement.nativeElement.getAttribute('formControlName')).toEqual('review');
+  })
+
+  it('user should be able to insert the activity review', () => {
+    fixture.detectChanges();
+    const reviewControl = component.form.controls['review'];
+    reviewControl.setValue('Test review');
+
+    expect(component.form.value.review).toEqual('Test review');
   })
 
   it('rating starCount should be equal to 5', () => {
@@ -109,7 +126,7 @@ describe('GeneraRecensioneComponent', () => {
     const reviewControl = component.form.get('review');
     const submitFunction = spyOn(component, 'onSubmit');
 
-    addressControl?.setValue('0x');
+    addressControl?.setValue('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
     reviewControl?.setValue('Unit Test');
     fixture.detectChanges();
 
