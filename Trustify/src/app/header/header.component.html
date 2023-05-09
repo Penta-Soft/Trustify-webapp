@@ -18,7 +18,7 @@
   <mat-tab id="button-tab" disabled>
     <ng-template mat-tab-label>
       <ng-container class="container-btn" *ngIf="!isMetamaskConnected; else disconnected">
-        <button id="btn-connect" class="active-btn" (click)="changeMetamaskState()" color="basic" mat-button extended>
+        <button id="connect-btn" class="active-btn" (click)="changeMetamaskState()" color="basic" mat-button extended>
           <mat-icon id="icon-close">close</mat-icon> Connetti Metamask
         </button>
       </ng-container>

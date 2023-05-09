@@ -41,11 +41,18 @@ describe('HeaderComponent', () => {
     expect(walletServiceSpy.connect).toHaveBeenCalled();
   })
 
-  it('should call changeMetamaskState() on button click', () => {
-    const metamaskFunction = spyOn(component, 'changeMetamaskState');
-    component.changeMetamaskState();
+  it('should connect Metamask on button click', () => {
+    component.isMetamaskConnected = false;
+    fixture.detectChanges();
 
-    expect(metamaskFunction).toHaveBeenCalled();
+    const connectMetamaskFunction = spyOn(component, 'changeMetamaskState');
+    const connectMetamaskButton = fixture.debugElement.query(By.css('#connect-btn'));
+    fixture.detectChanges();
+
+    expect(connectMetamaskButton).not.toBeNull();
+    (connectMetamaskButton.nativeElement as HTMLButtonElement).click();
+
+    expect(connectMetamaskFunction).toHaveBeenCalled();
   })
 
   it('should show pagamento and areaPersonale pages on Metamask connected', () => {
