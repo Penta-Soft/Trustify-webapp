@@ -85,7 +85,7 @@ describe('GeneraRecensioneComponent', () => {
     expect(component.form.value.review).toEqual('Test review');
   });
 
-  it('RFO2.4 - user should be able to enter the review rating parameter', () => {
+  it('RFO2.4 - user should be able to enter the review\'s rating parameter', () => {
     const ratingElement = fixture.debugElement.query(By.css('#rating'));
     let ratingTextContent = '';
 
