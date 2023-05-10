@@ -30,4 +30,52 @@ describe('RecensioneComponent', () => {
   it('RFO3.3.2.1 / RFO4.3.2.1 - user should be able to see the approval message if the review\'s description is empty', () => {
 
   });
+
+  it('RFO5 - user should be able to modify a review', () => {
+
+  });
+
+  it('RFO5.1 - user should be able to see the error message if connection is lost', () => {
+
+  });
+
+  it('RFO5.2 - user should be able to modify the review\'s rating parameter' , () => {
+
+  });
+
+  it('RFO5.2.1 - user should be able to see the error message if he didn\'t inserted the rating parameter', () => {
+
+  });
+
+  it('RFO5.2.2 - user should be able to see the error message if the inserted rating parameter is invalid', () => {
+
+  });
+
+  it('RFO5.2.3 - user should be able to modify the rating parameter value to 1', () => {
+
+  });
+
+  it('RFO5.2.4 - user should be able to modify the rating parameter value to 2', () => {
+
+  });
+
+  it('RFO5.2.5 - user should be able to modify the rating parameter value to 3', () => {
+
+  });
+
+  it('RFO5.2.6 - user should be able to modify the rating parameter value to 4', () => {
+
+  });
+
+  it('RFO5.2.7 - user should be able to modify the rating parameter value to 5', () => {
+
+  });
+
+  it('RFO5.2.3 - user should be able to modify the rating parameter value to 1', () => {
+
+  });
+
+  it('RFO5.3 - user should be able to modify the review\'s description', () => {
+
+  });
 });
