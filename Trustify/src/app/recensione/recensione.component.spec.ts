@@ -27,7 +27,7 @@ describe('RecensioneComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('RFO3.3.2.1 - user should be able to see the approval message if the review\'s description is empty', () => {
+  it('RFO3.3.2.1 / RFO4.3.2.1 - user should be able to see the approval message if the review\'s description is empty', () => {
 
   });
 });
