@@ -2,23 +2,33 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AreaPersonaleComponent } from './area-personale.component';
 import { RecensioniParserService } from '../recensioni-parser.service';
-import * as Rx from 'rxjs';
 import { Recensione } from '../recensione';
+import { By } from '@angular/platform-browser';
 
 describe('AreaPersonaleComponent', () => {
   let component: AreaPersonaleComponent;
   let fixture: ComponentFixture<AreaPersonaleComponent>;
-  let reviewParserServiceSpy: any;
-
+  let reviewParserService: any;
+  let testReviewsList: Recensione[];
+  let retrivePersonalAreaReviewsSpy: any;
+ 
   beforeEach(async () => {
 
-    reviewParserServiceSpy = jasmine.createSpyObj('RecensioniParserService', ['retrivePersonalAreaReviews']);
+    reviewParserService = jasmine.createSpyObj('RecensioniParserService', ['retrivePersonalAreaReviews']);
+
+    testReviewsList = [
+      new Recensione('Test1', 5, 'ACTIVE', '0x96A85348123DfAc720fFa6193dE5c9792BB65C5e'),
+      new Recensione('Test2', 3, 'ACTIVE', '0x96A85345123DfAc720fFa6193dE5c9792BB65C5e'),
+      new Recensione('Test3', 1, 'ACTIVE', '0x96A85346123DfAc720fFa6193dE5c9792BB65C5e')
+    ];
+
+    retrivePersonalAreaReviewsSpy = reviewParserService.retrivePersonalAreaReviews.and.returnValue(testReviewsList);
 
     await TestBed.configureTestingModule({
       declarations: [AreaPersonaleComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
-        { provide: RecensioniParserService, useValue: reviewParserServiceSpy },
+        { provide: RecensioniParserService, useValue: reviewParserService },
       ]
     })
       .compileComponents();
@@ -32,44 +42,75 @@ describe('AreaPersonaleComponent', () => {
   });
 
   it('RFO4 - user should be able to see the list of his released reviews', fakeAsync(()=> {
+    fixture.detectChanges();
 
+    tick();
+
+    fixture.detectChanges();
+
+    expect(retrivePersonalAreaReviewsSpy.calls.count()).toBe(1);
+    expect(retrivePersonalAreaReviewsSpy).toHaveBeenCalled();
+    expect(component.reviews.length).toEqual(3);
+    expect(component.reviews).toEqual(testReviewsList)
   }));
 
-  it('RFO4.1 - user should be able to see the approval message if he didn\'t released any review', () => {
+  it('RFO4.1 - user should be able to see the approval message if he didn\'t released any review', fakeAsync(() => {
+    const testReviewsList: Recensione[] = [];
 
-  });
+    let retrivePersonalAreaReviewsSpy = reviewParserService.retrivePersonalAreaReviews.and.returnValue(testReviewsList);
+    fixture.detectChanges();
+
+    tick();
+
+    fixture.detectChanges();
+
+    const errorMsgElement = fixture.debugElement.query(By.css('.errorMsg'));
+    expect(retrivePersonalAreaReviewsSpy.calls.count()).toBe(1);
+    expect(retrivePersonalAreaReviewsSpy).toHaveBeenCalled();
+    expect(errorMsgElement.nativeElement).not.toBeNull();
+    expect(errorMsgElement.nativeElement.textContent).toEqual('Nessuna recensione presente');
+  }));
 
   it('RFO4.2 - user should be able to see the error message if the connection is lost', () => {
 
   });
 
-  it('RFO4.3 - user should be able to see a single review of his own released review list', () => {
-
-  });
-
-  it('RFO4.3.1 - user should be able to see a single review\'s rating parameter', () => {
-
-  });
-
-  it('RFO4.3.2 - user should be able to see a single review\'s description', () => {
-
-  });
-
-  it('RFO4.3.3 - user should be able to see a single review\'s address', () => {
-
-  });
-
-  it('should call web3 retrivePersonalAreaReviews after component initialize', () => {
+  it('RFO4.3 - user should be able to see a single review of his own released review list', fakeAsync(() => {
     fixture.detectChanges();
-    expect(reviewParserServiceSpy.retrivePersonalAreaReviews).toHaveBeenCalled();
-  });
 
-  it('should display review after component initialize', () => {
-    const testReviews = [new Recensione('Test', 5, 'ACTIVE', '0x')];
-    component.reviews = testReviews;
+    tick();
+
     fixture.detectChanges();
-    expect(component.reviews).toEqual(testReviews);
-    expect(component.reviews.length).toBe(1);
-  })
+    expect(component.reviews.at(0)).toBeDefined();
+  }));
 
+  it('RFO4.3.1 - user should be able to see a single review\'s rating parameter', fakeAsync(() => {
+    fixture.detectChanges();
+
+    tick();
+
+    fixture.detectChanges();
+    expect(component.reviews.at(0)).toBeDefined();
+    expect(component.reviews.at(0)?.getRating()).toEqual(5);
+  }));
+
+  it('RFO4.3.2 - user should be able to see a single review\'s description', fakeAsync(() => {
+    fixture.detectChanges();
+
+    tick();
+
+    fixture.detectChanges();
+    expect(component.reviews.at(0)).toBeDefined();
+    expect(component.reviews.at(0)?.getReview()).toEqual('Test1');
+  }));
+
+  it('RFO4.3.3 - user should be able to see a single review\'s address', fakeAsync(() => {
+    fixture.detectChanges();
+
+    tick();
+
+    fixture.detectChanges();
+    expect(component.reviews.at(0)).toBeDefined();
+    expect(component.reviews.at(0)?.getAddress()).toEqual('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
+  }));
 });

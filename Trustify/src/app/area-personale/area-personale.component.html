@@ -5,7 +5,7 @@
       <app-genera-recensione></app-genera-recensione>
     </mat-tab>
     <mat-tab label="Lista-recensioni">
-      <p *ngIf="reviews.length == 0">Nessuna recensione presente</p>
+      <p class="errorMsg" *ngIf="reviews.length == 0">Nessuna recensione presente</p>
       <ul *ngIf="reviews.length > 0">
         <app-recensione *ngFor="let currentReview of reviews" [Review]="currentReview.getReview()"
           [Address]="currentReview.getAddress()" [Rating]="currentReview.getRating()"
