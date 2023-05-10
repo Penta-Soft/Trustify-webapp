@@ -11,7 +11,9 @@
           [Address]="currentReview.getAddress()" [Rating]="currentReview.getRating()"
           [Status]="currentReview.getStatus()" [ActiveAction]="true"></app-recensione>
       </ul>
-      <button (click)="loadMoreReview()">get more review</button>
+      <button color="primary" type="submit" value="Continua" (click)="loadMoreReview()" mat-fab extended>
+        Carica altre recensioni
+    </button>
     </mat-tab>
   </mat-tab-group>
 </div>
