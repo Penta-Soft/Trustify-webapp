@@ -46,7 +46,7 @@ export class WalletService {
       this.isConnected = true;
     } else {
       console.log('Metamask is not installed');
-      throw new Error('Metamask is not installed');
+      throw new Error('Metamask non è installato');
     }
   }
 

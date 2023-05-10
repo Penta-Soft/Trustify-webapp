@@ -17,8 +17,8 @@ export class HeaderComponent implements OnInit {
       await this.walletService.connect().finally(() => {
         this.isMetamaskConnected = true;
         sessionStorage.setItem('isMetamaskConnected', 'true');
-        this.snackBar.open('Connected with Metamask', 'Close', {
-          duration: 10000,
+        this.snackBar.open('Connesso con Metamask', 'Close', {
+          duration: 4000,
         });
       });
     } catch (e: any) {
