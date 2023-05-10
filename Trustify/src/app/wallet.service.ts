@@ -79,9 +79,8 @@ export class WalletService {
     }
   }
 
-  // da rimuovere i return
   async connect() {
     await this.connectToMetamask();
-    //await this.switchNetwork();
+    await this.switchNetwork();
   }
 }
