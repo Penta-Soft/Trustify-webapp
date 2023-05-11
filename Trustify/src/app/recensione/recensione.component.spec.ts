@@ -3,6 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RecensioneComponent } from './recensione.component';
 import { Web3Service } from '../web3.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { By } from '@angular/platform-browser';
 
 describe('RecensioneComponent', () => {
   let component: RecensioneComponent;
@@ -36,23 +37,79 @@ describe('RecensioneComponent', () => {
 
   it('RFO5.1 - user should be able to see the error message if connection is lost', () => {});
 
-  it("RFO5.2 - user should be able to modify the review's rating parameter", () => {});
+  it('RFO5 - user should be able to modify a review', () => {
+    component.activeAction = true;
+    component.isReviewEditable = true;
+    const editReviewSpy = spyOn(component, 'editReview');
+
+    fixture.detectChanges();
+
+    const editButton = fixture.debugElement.query(By.css('#edit-btn'));
+    (editButton.nativeElement as HTMLButtonElement).click();
+
+    expect(editReviewSpy).toHaveBeenCalled();
+  });
+
+  it("RFO5.2 - user should be able to modify the review's rating parameter", () => {
+    fixture.detectChanges();
+    component.reviewEditable(true);
+    const onRatingChangedSpy = spyOn(component, 'onRatingChanged');
+
+    component.onRatingChanged(1);
+    expect(onRatingChangedSpy).toHaveBeenCalled();
+  });
 
   it("RFO5.2.1 - user should be able to see the error message if he didn't inserted the rating parameter", () => {});
 
   it('RFO5.2.2 - user should be able to see the error message if the inserted rating parameter is invalid', () => {});
 
-  it('RFO5.2.3 - user should be able to modify the rating parameter value to 1', () => {});
+  it('RFO5.2.3 - user should be able to modify the rating parameter value to 1', () => {
+    fixture.detectChanges();
+    component.reviewEditable(true);
 
-  it('RFO5.2.4 - user should be able to modify the rating parameter value to 2', () => {});
+    component.onRatingChanged(1);
+    expect(component.form.value.rating).toEqual(1);
+  });
 
-  it('RFO5.2.5 - user should be able to modify the rating parameter value to 3', () => {});
+  it('RFO5.2.4 - user should be able to modify the rating parameter value to 2', () => {
+    fixture.detectChanges();
+    component.reviewEditable(true);
 
-  it('RFO5.2.6 - user should be able to modify the rating parameter value to 4', () => {});
+    component.onRatingChanged(2);
+    expect(component.form.value.rating).toEqual(2);
+  });
 
-  it('RFO5.2.7 - user should be able to modify the rating parameter value to 5', () => {});
+  it('RFO5.2.5 - user should be able to modify the rating parameter value to 3', () => {
+    fixture.detectChanges();
+    component.reviewEditable(true);
 
-  it('RFO5.2.3 - user should be able to modify the rating parameter value to 1', () => {});
+    component.onRatingChanged(3);
+    expect(component.form.value.rating).toEqual(3);
+  });
 
-  it("RFO5.3 - user should be able to modify the review's description", () => {});
+  it('RFO5.2.6 - user should be able to modify the rating parameter value to 4', () => {
+    fixture.detectChanges();
+    component.reviewEditable(true);
+
+    component.onRatingChanged(4);
+    expect(component.form.value.rating).toEqual(4);
+  });
+
+  it('RFO5.2.7 - user should be able to modify the rating parameter value to 5', () => {
+    fixture.detectChanges();
+    component.reviewEditable(true);
+
+    component.onRatingChanged(5);
+    expect(component.form.value.rating).toEqual(5);
+  });
+
+  it("RFO5.3 - user should be able to modify the review's description", () => {
+    fixture.detectChanges();
+    component.reviewEditable(true);
+
+    const reviewControl = component.form.controls['review'];
+    reviewControl.setValue('Test review');
+
+    expect(component.form.value.review).toEqual('Test review');
+  });
 });

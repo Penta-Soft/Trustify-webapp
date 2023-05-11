@@ -23,7 +23,7 @@
                 <button mat-raised-button (click)="deleteReview()">Cancella</button>
             </div>
             <div *ngIf="isReviewEditable">
-                <button mat-raised-button (click)="editReview()">Fatto</button>
+                <button id="edit-btn" mat-raised-button (click)="editReview()">Fatto</button>
                 <button mat-raised-button (click)="reviewEditable(false)">Annulla</button>
             </div>
         </mat-card-actions>
