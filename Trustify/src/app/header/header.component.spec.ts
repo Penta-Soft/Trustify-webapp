@@ -3,6 +3,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HeaderComponent } from './header.component';
 import { WalletService } from '../wallet.service';
 import { By } from '@angular/platform-browser';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -10,15 +11,14 @@ describe('HeaderComponent', () => {
   let walletServiceSpy: any;
 
   beforeEach(async () => {
-
-    walletServiceSpy = jasmine.createSpyObj('WalletService', ['connect'])
+    walletServiceSpy = jasmine.createSpyObj('WalletService', ['connect']);
 
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [{ provide: WalletService, useValue: walletServiceSpy }]
-    })
-      .compileComponents();
+      providers: [{ provide: WalletService, useValue: walletServiceSpy }],
+      imports: [MatSnackBarModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
@@ -33,7 +33,9 @@ describe('HeaderComponent', () => {
     fixture.detectChanges();
 
     const connectMetamaskFunction = spyOn(component, 'changeMetamaskState');
-    const connectMetamaskButton = fixture.debugElement.query(By.css('#connect-btn'));
+    const connectMetamaskButton = fixture.debugElement.query(
+      By.css('#connect-btn')
+    );
     fixture.detectChanges();
 
     expect(connectMetamaskButton).not.toBeNull();
@@ -42,13 +44,9 @@ describe('HeaderComponent', () => {
     expect(connectMetamaskFunction).toHaveBeenCalled();
   });
 
-  it('RFO1.1 - user should be able to see the error message if Metamask is not installed', () => {
+  it('RFO1.1 - user should be able to see the error message if Metamask is not installed', () => {});
 
-  })
-
-  it('RFO1.2 - user should be able to see the approval message if his wallet connects successfully', () => {
-
-  })
+  it('RFO1.2 - user should be able to see the approval message if his wallet connects successfully', () => {});
 
   // test non tracciati nel documento AdR
 
@@ -70,18 +68,24 @@ describe('HeaderComponent', () => {
     fixture.detectChanges();
 
     const pagamentoTab = fixture.debugElement.query(By.css('#pagamento'));
-    const areaPersonaleTab = fixture.debugElement.query(By.css('#area-personale'));
+    const areaPersonaleTab = fixture.debugElement.query(
+      By.css('#area-personale')
+    );
 
     expect(pagamentoTab).toBeTruthy();
-    expect(pagamentoTab.nativeElement.getAttribute('label')).toEqual('Effettua un pagamento');
+    expect(pagamentoTab.nativeElement.getAttribute('label')).toEqual(
+      'Effettua un pagamento'
+    );
     expect(areaPersonaleTab).toBeTruthy();
-    expect(areaPersonaleTab.nativeElement.getAttribute('label')).toEqual('Area personale');
-  })
+    expect(areaPersonaleTab.nativeElement.getAttribute('label')).toEqual(
+      'Area personale'
+    );
+  });
 
   it('should not show pagamento and areaPersonale pages on Metamask disconnected', () => {
     component.isMetamaskConnected = false;
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('#pagamento'))).toBeNull();
     expect(fixture.debugElement.query(By.css('#area-personale'))).toBeNull();
-  })
+  });
 });

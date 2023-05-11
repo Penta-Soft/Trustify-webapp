@@ -1,10 +1,17 @@
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { PagamentoComponent } from './pagamento.component';
 import { Web3Service } from '../web3.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import * as Rx from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('PagamentoComponent', () => {
   let component: PagamentoComponent;
@@ -12,19 +19,19 @@ describe('PagamentoComponent', () => {
   let web3ServiceSpy: any;
 
   beforeEach(async () => {
-
-    web3ServiceSpy = jasmine.createSpyObj('Web3Service', ['approveTokens', 'depositTokens', 'pullTCoin', 'getTokenBalance']);
+    web3ServiceSpy = jasmine.createSpyObj('Web3Service', [
+      'approveTokens',
+      'depositTokens',
+      'pullTCoin',
+      'getTokenBalance',
+    ]);
 
     await TestBed.configureTestingModule({
       declarations: [PagamentoComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
       providers: [{ provide: Web3Service, useValue: web3ServiceSpy }],
-      imports: [
-        FormsModule,
-        ReactiveFormsModule
-      ]
-    })
-      .compileComponents();
+      imports: [FormsModule, ReactiveFormsModule, MatSnackBarModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PagamentoComponent);
     component = fixture.componentInstance;
@@ -35,14 +42,16 @@ describe('PagamentoComponent', () => {
   });
 
   it('should call component getTokenBalance() on component initialize', () => {
-    spyOn(component, 'getTokenBalance');;
+    spyOn(component, 'getTokenBalance');
     fixture.detectChanges();
     expect(component.getTokenBalance).toHaveBeenCalled();
-  })
+  });
 
   it('should call web3 getTokenBalance() on component getTokenBalance() call', fakeAsync(() => {
     let testBalance = 10;
-    let getTokenBalanceSpy = web3ServiceSpy.getTokenBalance.and.returnValue(Rx.of(testBalance));
+    let getTokenBalanceSpy = web3ServiceSpy.getTokenBalance.and.returnValue(
+      Rx.of(testBalance)
+    );
 
     fixture.detectChanges();
     tick();
@@ -51,7 +60,7 @@ describe('PagamentoComponent', () => {
     expect(getTokenBalanceSpy).toHaveBeenCalled();
     expect(getTokenBalanceSpy.calls.any()).toBe(true);
     expect(component.balance).toBeDefined();
-  }))
+  }));
 
   it('should call component pay() after form submit', waitForAsync(() => {
     const addressControl = component.form.get('address');
@@ -66,5 +75,5 @@ describe('PagamentoComponent', () => {
     fixture.detectChanges();
 
     expect(submitFunction).toHaveBeenCalled();
-  }))
+  }));
 });
