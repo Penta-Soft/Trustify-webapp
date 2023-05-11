@@ -36,29 +36,21 @@ export class GeneraRecensioneComponent implements OnInit {
     }
   }
 
-  async aggiungi(address: string, review: string) {
+  //forse da cancellare
+  async onSubmit(form: any) {
     try {
       this.isProgressSpinnerVisible = true;
-      await this.web3.writeAReview(address, review, this.rating).finally(() => {
-        this.isProgressSpinnerVisible = false;
-        this.snackBar.open('Recensione aggiunta con successo!', 'Chiudi', {
-          duration: 5000,
+      await this.web3
+        .writeAReview(form.value.address, form.value.review, this.rating)
+        .finally(() => {
+          this.isProgressSpinnerVisible = false;
+          this.snackBar.open('Recensione aggiunta con successo!', 'Chiudi', {
+            duration: 5000,
+          });
+          //window.location.reload();
         });
-        //window.location.reload();
-      });
     } catch (error: any) {
       this.snackBar.open(error.message, 'Chiudi', { duration: 10000 });
     }
-  }
-
-  //forse da cancellare
-  async onSubmit(form: any) {
-    this.isProgressSpinnerVisible = true;
-    await this.web3
-      .writeAReview(form.value.address, form.value.review, this.rating)
-      .finally(() => {
-        this.isProgressSpinnerVisible = false;
-        //window.location.reload();
-      });
   }
 }
