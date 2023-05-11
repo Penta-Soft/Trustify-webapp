@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ProgressSpinnerComponent } from './progress-spinner.component';
 
 describe('ProgessSpinnerComponent', () => {
@@ -8,7 +8,8 @@ describe('ProgessSpinnerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ProgressSpinnerComponent]
+      declarations: [ProgressSpinnerComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
       .compileComponents();
 

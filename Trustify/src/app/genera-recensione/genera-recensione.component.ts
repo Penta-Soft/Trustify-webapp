@@ -26,11 +26,14 @@ export class GeneraRecensioneComponent implements OnInit {
         null,
         [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
       ],
+      review: [],
     });
   }
 
   onRatingChanged(rating: number) {
-    this.rating = rating;
+    if (rating > 0 && rating < 6) {
+      this.rating = rating;
+    }
   }
 
   async aggiungi(address: string, review: string) {
@@ -46,5 +49,16 @@ export class GeneraRecensioneComponent implements OnInit {
     } catch (error: any) {
       this.snackBar.open(error.message, 'Chiudi', { duration: 10000 });
     }
+  }
+
+  //forse da cancellare
+  async onSubmit(form: any) {
+    this.isProgressSpinnerVisible = true;
+    await this.web3
+      .writeAReview(form.value.address, form.value.review, this.rating)
+      .finally(() => {
+        this.isProgressSpinnerVisible = false;
+        //window.location.reload();
+      });
   }
 }

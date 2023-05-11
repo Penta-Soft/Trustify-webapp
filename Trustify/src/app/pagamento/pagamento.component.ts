@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class PagamentoComponent {
   form: FormGroup = new FormGroup({});
-  accountBalance: number = 0;
+  balance: number = 0;
   isProgressSpinnerVisible: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
@@ -57,8 +57,7 @@ export class PagamentoComponent {
   }
 
   async getTokenBalance() {
-    let balance = await this.web3.getTokenBalance();
-    this.accountBalance = balance;
+    this.balance = await this.web3.getTokenBalance();
   }
 
   ngOnInit(): void {
@@ -69,6 +68,8 @@ export class PagamentoComponent {
       ],
       tokens: [null, [Validators.required, Validators.pattern(/^[1-9]\d*$/)]],
     });
+
+    this.getTokenBalance();
   }
 
   onSubmit(form: any): void {

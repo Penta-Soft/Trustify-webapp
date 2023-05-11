@@ -1,10 +1,10 @@
 <div id="form-new-review">
   <h2>Inserisci nuova recensione</h2>
-  <form [formGroup]="form">
+  <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
     <fieldset>
       <legend>Nuova recensione</legend>
       <mat-form-field appearance="fill">
-        <input matInput minlength="42" maxlength="42" #address inputmode="address"
+        <input id="address" matInput minlength="42" maxlength="42" #address inputmode="address"
           placeholder="Indirizzo attività da recensire" formControlName="address" #nameInput required>
         <mat-error class="errorMsg" *ngIf="form.controls['address'].errors?.['required']">Inserire un
           indirizzo</mat-error>
@@ -13,16 +13,17 @@
         <mat-hint>inserire Indirizzo tipo 0x...</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="fill">
-        <textarea matInput rows="8" #review placeholder="Recensione" required></textarea>
+        <textarea id="review" matInput rows="8" #review placeholder="Recensione" formControlName="review"
+          required></textarea>
         <mat-hint>inserire recensione</mat-hint>
       </mat-form-field>
 
       <h3>Valutazione:</h3>
       <app-star-rating [rating]="rating" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
-      <p class="body-2">
+      <p id="rating" class="body-2">
         Your rated <span class="body-2">{{rating}}</span> / <span class="body-2">{{starCount}}</span>
       </p>
-      <button mat-raised-button (click)="aggiungi(address.value,review.value)">Inserisci</button>
+      <button id="btn-submit" mat-raised-button type="submit">Inserisci</button>
     </fieldset>
   </form>
 </div>
