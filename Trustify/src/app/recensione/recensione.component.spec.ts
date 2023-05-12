@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RecensioneComponent } from './recensione.component';
 import { Web3Service } from '../web3.service';
@@ -8,12 +8,12 @@ import { By } from '@angular/platform-browser';
 describe('RecensioneComponent', () => {
   let component: RecensioneComponent;
   let fixture: ComponentFixture<RecensioneComponent>;
+  let writeAReviewSpy: any;
 
   beforeEach(async () => {
-    let web3ServiceSpy = jasmine.createSpyObj('Web3Service', [
-      'writeAReview',
-      'deleteReview',
-    ]);
+    const web3ServiceSpy = jasmine.createSpyObj('Web3Service', ['writeAReview', 'deleteReview']);
+    writeAReviewSpy = web3ServiceSpy.writeAReview.and.returnValue(Promise.resolve(true))
+
 
     await TestBed.configureTestingModule({
       declarations: [RecensioneComponent],
@@ -31,13 +31,11 @@ describe('RecensioneComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it("RFO3.3.2.1 / RFO4.3.2.1 - user should be able to see the approval message if the review's description is empty", () => {});
+  it("RFO3.3.2.1 / RFO4.3.2.1 - user should be able to see the approval message if the review's description is empty", () => { });
 
-  it('RFO5 - user should be able to modify a review', () => {});
 
-  it('RFO5.1 - user should be able to see the error message if connection is lost', () => {});
 
-  it('RFO5 - user should be able to modify a review', () => {
+  it('RFO5 - user should be able to modify a review calling editReview', () => {
     component.activeAction = true;
     component.isReviewEditable = true;
     const editReviewSpy = spyOn(component, 'editReview');
@@ -50,7 +48,25 @@ describe('RecensioneComponent', () => {
     expect(editReviewSpy).toHaveBeenCalled();
   });
 
-  it("RFO5.2 - user should be able to modify the review's rating parameter", () => {
+
+  it('RFO5 - user should be able to modify a review calling writeAReview', fakeAsync(() => {
+    component.isReviewEditable = true;
+    fixture.detectChanges();
+    component.editReview();
+
+    tick();
+
+    fixture.detectChanges();
+    expect(writeAReviewSpy).toHaveBeenCalled();
+
+    expect(component.form.value.status).toEqual('MODIFIED');
+  }));
+
+  it('RFO5.1 - user should be able to see the error message if connection is lost', () => {
+
+  });
+
+  it('RFO5.2 - user should be able to modify the review\'s rating parameter', () => {
     fixture.detectChanges();
     component.reviewEditable(true);
     const onRatingChangedSpy = spyOn(component, 'onRatingChanged');
@@ -59,9 +75,9 @@ describe('RecensioneComponent', () => {
     expect(onRatingChangedSpy).toHaveBeenCalled();
   });
 
-  it("RFO5.2.1 - user should be able to see the error message if he didn't inserted the rating parameter", () => {});
+  it("RFO5.2.1 - user should be able to see the error message if he didn't inserted the rating parameter", () => { });
 
-  it('RFO5.2.2 - user should be able to see the error message if the inserted rating parameter is invalid', () => {});
+  it('RFO5.2.2 - user should be able to see the error message if the inserted rating parameter is invalid', () => { });
 
   it('RFO5.2.3 - user should be able to modify the rating parameter value to 1', () => {
     fixture.detectChanges();
