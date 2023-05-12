@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../wallet.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { CustomErrorHandler } from '../custom-error-interceptor';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -17,14 +16,10 @@ export class HeaderComponent implements OnInit {
       await this.walletService.connect().finally(() => {
         this.isMetamaskConnected = true;
         sessionStorage.setItem('isMetamaskConnected', 'true');
-        this.snackBar.open('Connesso con Metamask', 'Close', {
-          duration: 4000,
-        });
+        this.errorHandler.displayMessage('Metamask connesso con successo!');
       });
     } catch (e: any) {
-      this.snackBar.open(e.message, 'Close', {
-        duration: 10000,
-      });
+      this.errorHandler.handleError(e);
       this.isMetamaskConnected = false;
       sessionStorage.setItem('isMetamaskConnected', 'false');
     }
@@ -40,7 +35,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private walletService: WalletService,
-    private snackBar: MatSnackBar
+    private errorHandler: CustomErrorHandler
   ) {}
 
   updateCurrentIndex(index: number): void {

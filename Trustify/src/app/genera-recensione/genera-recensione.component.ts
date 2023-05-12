@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Web3Service } from '../web3.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { CustomErrorHandler } from '../custom-error-interceptor';
 @Component({
   selector: 'app-genera-recensione',
   templateUrl: './genera-recensione.component.html',
@@ -17,7 +16,7 @@ export class GeneraRecensioneComponent implements OnInit {
   constructor(
     private web3: Web3Service,
     private formBuilder: FormBuilder,
-    private snackBar: MatSnackBar
+    private errorHandler: CustomErrorHandler
   ) {}
 
   ngOnInit(): void {
@@ -44,13 +43,10 @@ export class GeneraRecensioneComponent implements OnInit {
         .writeAReview(form.value.address, form.value.review, this.rating)
         .finally(() => {
           this.isProgressSpinnerVisible = false;
-          this.snackBar.open('Recensione aggiunta con successo!', 'Chiudi', {
-            duration: 5000,
-          });
-          //window.location.reload();
+          this.errorHandler.displayMessage('Recensione inviata con successo!');
         });
     } catch (error: any) {
-      this.snackBar.open(error.message, 'Chiudi', { duration: 10000 });
+      this.errorHandler.handleError(error);
     }
   }
 }

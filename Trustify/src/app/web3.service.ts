@@ -65,7 +65,10 @@ export class Web3Service {
           })
           .on('error', console.error);
       }
-    } else console.log('wallet not connected, approve tokens failed');
+    } else {
+      console.log('wallet non connesso, approve tokens fallito');
+      throw new Error('wallet non connesso, approve tokens fallito');
+    }
   }
 
   async depositTokens(address: string, amount: number) {
@@ -80,7 +83,10 @@ export class Web3Service {
           console.log(receipt + 'Token deposited!');
         })
         .on('error', console.error);
-    } else console.log('wallet not connected, deposit tokens failed');
+    } else {
+      console.log('wallet non connesso, deposit tokens fallito');
+      throw new Error('wallet non connesso, deposit tokens fallito');
+    }
   }
 
   async writeAReview(address: string, review: string, stars: number) {
@@ -105,7 +111,10 @@ export class Web3Service {
           'Non hai effettuato una transazione per questa azienda'
         );
       }
-    } else console.log('wallet not connected, write a review failed');
+    } else {
+      console.log('wallet not connected, write a review failed');
+      throw new Error('Wallet non connesso, impossibile scrivere una review');
+    }
   }
 
   async getCompanyReview(from: number, to: number, address: string) {
@@ -133,7 +142,7 @@ export class Web3Service {
         .call({ from: await this.address() });
       return output;
     } else {
-      console.log('wallet not connected, get my review failed');
+      console.log('Wallet non connesso, impossibile recuperare la tua review');
       throw new Error(
         'Wallet non connesso, impossibile recuperare la tua review'
       );
@@ -153,9 +162,9 @@ export class Web3Service {
         })
         .on('error', console.error);
     } else {
-      console.log('wallet not connected, get my review failed');
+      console.log('Wallet non connesso, impossibile cancellare la tua review');
       throw new Error(
-        'Wallet non connesso, impossibile recuperare la tua review'
+        'Wallet non connesso, impossibile cancellare la tua review'
       );
     }
   }

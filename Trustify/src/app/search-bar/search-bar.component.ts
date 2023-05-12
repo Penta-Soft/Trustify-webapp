@@ -2,7 +2,8 @@ import { Component, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RecensioniParserService } from '../recensioni-parser.service';
 import { Recensione } from '../recensione';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { CustomErrorHandler } from '../custom-error-interceptor';
+
 @Component({
   selector: 'app-search-bar',
   templateUrl: './search-bar.component.html',
@@ -16,7 +17,6 @@ export class SearchBarComponent {
 
   private readonly DEFAULT_ADDRESS =
     '0x43aB5C6Ea8728c34cc779d9a4f9E2aF8Cd923C5D';
-  private address: string = this.DEFAULT_ADDRESS;
   private readonly REVIEW_INDEX_ADDER = 10;
   private reviewsStartFrom = 0;
   private reviewsEndTo = 9;
@@ -24,7 +24,7 @@ export class SearchBarComponent {
   constructor(
     private formBuilder: FormBuilder,
     private reviewParserService: RecensioniParserService,
-    private snackBar: MatSnackBar
+    private errorHandler: CustomErrorHandler
   ) {}
 
   async ngOnInit() {
@@ -49,7 +49,7 @@ export class SearchBarComponent {
   }
 
   onSubmit(form: any) {
-    this.address = form.value.address;
+    this.reviews = [];
     this.getCompanyReview(form.value.address);
   }
 
@@ -64,20 +64,7 @@ export class SearchBarComponent {
         this.reviews.push(rev);
       }
     } catch (error: any) {
-      if (
-        error.message.includes(
-          'Start must be less than the length of the array'
-        )
-      ) {
-        this.snackBar.open('Non ci sono più recensioni da caricare', 'Chiudi', {
-          duration: 5000,
-        });
-      } else {
-        this.snackBar.open('Questo indirizzo non ha recensioni', 'Chiudi', {
-          duration: 5000,
-        });
-        this.reviews = [];
-      }
+      this.errorHandler.handleError(error);
     }
   }
 }

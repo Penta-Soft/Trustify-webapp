@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Web3Service } from '../web3.service';
+import { CustomErrorHandler } from '../custom-error-interceptor';
 
 @Component({
   selector: 'app-recensione',
@@ -19,7 +20,11 @@ export class RecensioneComponent {
   isReviewEditable: boolean = false;
   isProgressSpinnerVisible: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private web3: Web3Service) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private web3: Web3Service,
+    private errorHandler: CustomErrorHandler
+  ) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -42,30 +47,41 @@ export class RecensioneComponent {
   async editReview() {
     this.isProgressSpinnerVisible = true;
 
-    this.web3
-      .writeAReview(
-        this.form.value.address,
-        this.form.value.review,
-        this.form.value.rating
-      )
-      .then(() => {
-        this.form.controls['status'].setValue('MODIFIED');
-      })
-      .finally(() => {
-        this.isProgressSpinnerVisible = false;
-        //window.location.reload();
-      });
+    try {
+      await this.web3
+        .writeAReview(
+          this.form.value.address,
+          this.form.value.review,
+          this.form.value.rating
+        )
+        .then(() => {
+          this.form.controls['status'].setValue('MODIFIED');
+        })
+        .finally(() => {
+          this.isProgressSpinnerVisible = false;
+          this.errorHandler.displayMessage(
+            'Recensione modificata con successo!'
+          );
+        });
+    } catch (error: any) {
+      this.errorHandler.handleError(error);
+      this.isProgressSpinnerVisible = false;
+    }
 
     this.reviewEditable(false);
   }
 
   async deleteReview() {
     this.isProgressSpinnerVisible = true;
-
-    this.web3.deleteReview(this.form.value.address).finally(() => {
+    try {
+      await this.web3.deleteReview(this.form.value.address).finally(() => {
+        this.isProgressSpinnerVisible = false;
+        this.errorHandler.displayMessage('Recensione eliminata con successo!');
+      });
+    } catch (error: any) {
+      this.errorHandler.handleError(error);
       this.isProgressSpinnerVisible = false;
-      //window.location.reload();
-    });
+    }
   }
 
   reviewEditable(value: boolean) {
