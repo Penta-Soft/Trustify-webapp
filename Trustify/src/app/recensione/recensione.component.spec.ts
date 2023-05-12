@@ -9,11 +9,12 @@ describe('RecensioneComponent', () => {
   let component: RecensioneComponent;
   let fixture: ComponentFixture<RecensioneComponent>;
   let writeAReviewSpy: any;
+  let deleteReviewSpy: any;
 
   beforeEach(async () => {
     const web3ServiceSpy = jasmine.createSpyObj('Web3Service', ['writeAReview', 'deleteReview']);
     writeAReviewSpy = web3ServiceSpy.writeAReview.and.returnValue(Promise.resolve(true))
-
+    deleteReviewSpy = web3ServiceSpy.deleteReview.and.returnValue(Promise.resolve(true));
 
     await TestBed.configureTestingModule({
       declarations: [RecensioneComponent],
@@ -35,7 +36,7 @@ describe('RecensioneComponent', () => {
 
 
 
-  it('RFO5 - user should be able to modify a review calling editReview', () => {
+  it('RFO5 - user should be able to modify a review calling component editReview', () => {
     component.activeAction = true;
     component.isReviewEditable = true;
     const editReviewSpy = spyOn(component, 'editReview');
@@ -49,7 +50,7 @@ describe('RecensioneComponent', () => {
   });
 
 
-  it('RFO5 - user should be able to modify a review calling writeAReview', fakeAsync(() => {
+  it('RFO5 - user should be able to modify a review calling web3 writeAReview', fakeAsync(() => {
     component.isReviewEditable = true;
     fixture.detectChanges();
     component.editReview();
@@ -127,5 +128,33 @@ describe('RecensioneComponent', () => {
     reviewControl.setValue('Test review');
 
     expect(component.form.value.review).toEqual('Test review');
+  });
+
+  it('RFO6 - user should be able to delete a review calling component deleteReview', () => {
+    component.activeAction = true;
+    component.isReviewEditable = false;
+    const deleteReviewSpy = spyOn(component, 'deleteReview');
+
+    fixture.detectChanges();
+
+    const editButton = fixture.debugElement.query(By.css('#delete-btn'));
+    (editButton.nativeElement as HTMLButtonElement).click();
+
+    expect(deleteReviewSpy).toHaveBeenCalled();
+  });
+
+  it('RFO6 - user should be able to delete a review calling web3 deleteReview', fakeAsync(() => {
+    component.isReviewEditable = true;
+    fixture.detectChanges();
+    component.deleteReview();
+
+    tick();
+
+    fixture.detectChanges();
+    expect(deleteReviewSpy).toHaveBeenCalled();
+  }));
+
+  it('RFO6.1 - user should be able to see the error message if the connection is lost', () => {
+
   });
 });
