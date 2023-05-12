@@ -18,8 +18,10 @@ export class SearchBarComponent {
   private readonly DEFAULT_ADDRESS =
     '0x43aB5C6Ea8728c34cc779d9a4f9E2aF8Cd923C5D';
   private readonly REVIEW_INDEX_ADDER = 10;
-  private reviewsStartFrom = 0;
-  private reviewsEndTo = 9;
+  private readonly REVIEW_INDEX_START = 0;
+  private readonly REVIEW_INDEX_END = 9;
+  private reviewsStartFrom = this.REVIEW_INDEX_START;
+  private reviewsEndTo = this.REVIEW_INDEX_END;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,9 +50,11 @@ export class SearchBarComponent {
     await this.getCompanyReview(this.DEFAULT_ADDRESS);
   }
 
-  onSubmit(form: any) {
+  async onSubmit(form: any) {
     this.reviews = [];
-    this.getCompanyReview(form.value.address);
+    this.reviewsStartFrom = this.REVIEW_INDEX_START;
+    this.reviewsEndTo = this.REVIEW_INDEX_END;
+    await this.getCompanyReview(form.value.address);
   }
 
   async getCompanyReview(address: string) {
