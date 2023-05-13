@@ -40,7 +40,7 @@ export class CustomErrorHandler implements ErrorHandler {
 
     if (this.errorMessage != '') {
       this.snackBar.open(this.errorMessage, 'Close', {
-        duration: 10000,
+        duration: 5000,
         verticalPosition: 'bottom',
         horizontalPosition: 'center',
       });
