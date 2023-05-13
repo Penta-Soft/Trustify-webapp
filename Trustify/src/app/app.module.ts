@@ -31,6 +31,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { WindowRefService } from './window-ref.service';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { CustomErrorHandler } from './custom-error-interceptor';
 import Web3 from 'web3';
 
 @NgModule({
@@ -66,9 +67,9 @@ import Web3 from 'web3';
     MatDividerModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
   ],
-  providers: [WindowRefService, Web3],
+  providers: [WindowRefService, Web3, CustomErrorHandler],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RecensioniParserService } from '../recensioni-parser.service';
 import { Recensione } from '../recensione';
-import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { CustomErrorHandler } from '../custom-error-interceptor';
 @Component({
   selector: 'app-area-personale',
   templateUrl: './area-personale.component.html',
@@ -16,7 +15,7 @@ export class AreaPersonaleComponent implements OnInit {
 
   constructor(
     private reviewParserService: RecensioniParserService,
-    private snackBar: MatSnackBar
+    private errorHandler: CustomErrorHandler
   ) {}
 
   async ngOnInit() {
@@ -41,17 +40,7 @@ export class AreaPersonaleComponent implements OnInit {
         this.reviews.push(rev);
       }
     } catch (error: any) {
-      if (
-        error.message.includes(
-          'Start must be less than the length of the array'
-        )
-      ) {
-        this.snackBar.open('Non ci sono più recensioni da caricare', 'Chiudi', {
-          duration: 5000,
-        });
-      } else {
-        this.reviews = [];
-      }
+      this.errorHandler.handleError(error);
     }
   }
 }

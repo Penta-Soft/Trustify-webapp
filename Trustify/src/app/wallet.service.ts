@@ -29,20 +29,14 @@ export class WalletService {
     return this.isConnected;
   }
 
-  async connectToMetamask() {
+  private async connectToMetamask() {
     if (this.isInstalled()) {
-      try {
-        const accounts = await this.window.nativeWindow.ethereum.request({
-          method: 'eth_requestAccounts',
-        });
-        this.address = accounts[0];
-        this.web3.setProvider(await this.window.nativeWindow.ethereum); //Setting metamask as provider for web3
-      } catch (error) {
-        console.log(error);
-        sessionStorage.setItem('isMetamaskConnected', 'false');
-        throw new Error('Error while connecting with Metamask');
-      }
-      console.log('connected with metamask! with address: ' + this.address);
+      const accounts = await this.window.nativeWindow.ethereum.request({
+        method: 'eth_requestAccounts',
+      });
+      this.address = accounts[0];
+      this.web3.setProvider(await this.window.nativeWindow.ethereum); //Setting metamask as provider for web3
+      console.log('Connected with metamask! with address: ' + this.address);
       this.isConnected = true;
     } else {
       console.log('Metamask is not installed');
@@ -50,14 +44,16 @@ export class WalletService {
     }
   }
 
-  async switchNetwork() {
+  private async switchNetwork() {
     try {
       await this.window.nativeWindow.ethereum.request({
         method: 'wallet_switchEthereumChain',
         params: [{ chainId: '0xAA36A7' }],
       });
     } catch (switchError: any) {
+      console.log("metamask doesn't support chain switching now");
       // This error code indicates that the chain has not been added to MetaMask.
+      /*
       if (switchError.code === 4902) {
         try {
           await this.window.nativeWindow.ethereum.request({
@@ -66,9 +62,7 @@ export class WalletService {
               {
                 chainId: '0xAA36A7',
                 chainName: 'sepolia test network',
-                rpcUrls: [
-                  this.infuraHTTPProvider, //forse da cambiare
-                ],
+                rpcUrls: [this.infuraHTTPProvider],
               },
             ],
           });
@@ -76,6 +70,7 @@ export class WalletService {
           console.log('Cannot add ETH chain sepolia');
         }
       }
+      */
     }
   }
 
