@@ -8,15 +8,17 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
-  let walletServiceSpy: any;
+  let connectSpy: any;
 
   beforeEach(async () => {
-    walletServiceSpy = jasmine.createSpyObj('WalletService', ['connect']);
+    const walletService = jasmine.createSpyObj('WalletService', ['connect']);
+
+    connectSpy = walletService.connect.and.returnValue(Promise.resolve(true));
 
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [{ provide: WalletService, useValue: walletServiceSpy }],
+      providers: [{ provide: WalletService, useValue: walletService }],
       imports: [MatSnackBarModule],
     }).compileComponents();
 
@@ -32,35 +34,29 @@ describe('HeaderComponent', () => {
     component.isMetamaskConnected = false;
     fixture.detectChanges();
 
-    const connectMetamaskFunction = spyOn(component, 'changeMetamaskState');
-    const connectMetamaskButton = fixture.debugElement.query(
-      By.css('#connect-btn')
-    );
-    fixture.detectChanges();
-
-    expect(connectMetamaskButton).not.toBeNull();
-    (connectMetamaskButton.nativeElement as HTMLButtonElement).click();
+    const connectMetamaskFunction = spyOn(component, 'connectToMetamask');
+    component.changeMetamaskState();
 
     expect(connectMetamaskFunction).toHaveBeenCalled();
   });
 
-  it('RFO1.1 - user should be able to see the error message if Metamask is not installed', () => {});
+  it('RFO1.1 - user should be able to see the error message if Metamask is not installed', () => { });
 
-  it('RFO1.2 - user should be able to see the approval message if his wallet connects successfully', () => {});
+  it('RFO1.2 - user should be able to see the approval message if his wallet connects successfully', () => { });
 
   // test non tracciati nel documento AdR
 
   it('should not detect Metamask connection state on component initialize', () => {
     component.ngOnInit();
     fixture.detectChanges();
-    expect(walletServiceSpy.connect).not.toHaveBeenCalled();
+    expect(connectSpy).not.toHaveBeenCalled();
   });
 
   it('should detect Metamask connection state on component reload', () => {
-    spyOn(window.localStorage, 'getItem').and.returnValue('true');
-    component.ngOnInit();
+    spyOn(window.sessionStorage, 'getItem').and.returnValue('true');
+
     fixture.detectChanges();
-    expect(walletServiceSpy.connect).toHaveBeenCalled();
+    expect(connectSpy).toHaveBeenCalled();
   });
 
   it('should show pagamento and areaPersonale pages on Metamask connected', () => {

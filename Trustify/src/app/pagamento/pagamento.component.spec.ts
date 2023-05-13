@@ -1,9 +1,9 @@
 import {
   ComponentFixture,
   fakeAsync,
+  flush,
   TestBed,
-  tick,
-  waitForAsync,
+  tick
 } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { PagamentoComponent } from './pagamento.component';
@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import * as Rx from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('PagamentoComponent', () => {
   let component: PagamentoComponent;
@@ -35,7 +36,7 @@ describe('PagamentoComponent', () => {
       declarations: [PagamentoComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
       providers: [{ provide: Web3Service, useValue: web3ServiceSpy }],
-      imports: [FormsModule, ReactiveFormsModule, MatSnackBarModule],
+      imports: [FormsModule, ReactiveFormsModule, MatSnackBarModule, BrowserAnimationsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PagamentoComponent);
@@ -69,6 +70,7 @@ describe('PagamentoComponent', () => {
 
     fixture.detectChanges();
     expect(approveTokensSpy).toHaveBeenCalled();
+    flush();
   }));
 
   it('RFO7.1 - user should be able to see the error message if the connection is lost', () => {

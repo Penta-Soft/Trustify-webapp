@@ -1,9 +1,10 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RecensioneComponent } from './recensione.component';
 import { Web3Service } from '../web3.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('RecensioneComponent', () => {
   let component: RecensioneComponent;
@@ -20,7 +21,7 @@ describe('RecensioneComponent', () => {
       declarations: [RecensioneComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [{ provide: Web3Service, useValue: web3ServiceSpy }],
-      imports: [MatSnackBarModule],
+      imports: [MatSnackBarModule, BrowserAnimationsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RecensioneComponent);
@@ -61,6 +62,7 @@ describe('RecensioneComponent', () => {
     expect(writeAReviewSpy).toHaveBeenCalled();
 
     expect(component.form.value.status).toEqual('MODIFIED');
+    flush();
   }));
 
   it('RFO5.1 - user should be able to see the error message if connection is lost', () => {
@@ -152,6 +154,7 @@ describe('RecensioneComponent', () => {
 
     fixture.detectChanges();
     expect(deleteReviewSpy).toHaveBeenCalled();
+    flush();
   }));
 
   it('RFO6.1 - user should be able to see the error message if the connection is lost', () => {
