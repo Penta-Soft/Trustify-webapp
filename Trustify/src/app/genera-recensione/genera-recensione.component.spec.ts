@@ -99,10 +99,6 @@ describe('GeneraRecensioneComponent', () => {
     );
   });
 
-  it('RFO2.4.1 - user should be able to see the error message if the rating parameter is empty', () => { });
-
-  it('RFO2.4.2 - user should be able to see the error message if the rating parameter is invalid', () => { });
-
   it('RFO2.4.3 - user should be able to enter a rating value of 1', () => {
     const ratingElement = fixture.debugElement.query(By.css('#rating'));
     let ratingTextContent = '';

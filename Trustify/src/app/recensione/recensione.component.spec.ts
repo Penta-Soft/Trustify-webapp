@@ -78,10 +78,6 @@ describe('RecensioneComponent', () => {
     expect(onRatingChangedSpy).toHaveBeenCalled();
   });
 
-  it("RFO5.2.1 - user should be able to see the error message if he didn't inserted the rating parameter", () => { });
-
-  it('RFO5.2.2 - user should be able to see the error message if the inserted rating parameter is invalid', () => { });
-
   it('RFO5.2.3 - user should be able to modify the rating parameter value to 1', () => {
     fixture.detectChanges();
     component.reviewEditable(true);

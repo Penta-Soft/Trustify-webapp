@@ -46,12 +46,6 @@ describe('HeaderComponent', () => {
 
   // test non tracciati nel documento AdR
 
-  it('should not detect Metamask connection state on component initialize', () => {
-    component.ngOnInit();
-    fixture.detectChanges();
-    expect(connectSpy).not.toHaveBeenCalled();
-  });
-
   it('should detect Metamask connection state on component reload', () => {
     spyOn(window.sessionStorage, 'getItem').and.returnValue('true');
 

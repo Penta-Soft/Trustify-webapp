@@ -78,7 +78,7 @@ describe('SearchBarComponent', () => {
     expect(component.reviews).toEqual(testReviewsList);
   }));
 
-  it('RFO3.1 - user should be able to see the error message if the connection is lost', () => {});
+  it('RFO3.1 - user should be able to see the error message if the connection is lost', () => { });
 
   it('RFO3.2 - user should be able to see the approval message if the list of reviews is empty', fakeAsync(() => {
     const testReviewsList: Recensione[] = [];
@@ -144,5 +144,10 @@ describe('SearchBarComponent', () => {
     expect(component.reviews.at(0)?.getAddress()).toEqual(
       '0x96A85348123DfAc720fFa6193dE5c9792BB65C5e'
     );
+
   }));
+
+  it('RFO8.1 - controllare che esca fuori la frase "Non hai nessuna recensione"', () => {
+
+  });
 });
