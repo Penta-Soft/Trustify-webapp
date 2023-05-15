@@ -70,6 +70,7 @@ describe('PagamentoComponent', () => {
 
     fixture.detectChanges();
     expect(approveTokensSpy).toHaveBeenCalled();
+    expect(depositTokensSpy).toHaveBeenCalled();
     flush();
   }));
 
@@ -78,28 +79,77 @@ describe('PagamentoComponent', () => {
   });
 
   it('RFO7.2 - user should be able to enter the address of the wallet intended to receive the payment', () => {
+    fixture.detectChanges();
 
+    const addressControl = component.form.controls['address'];
+    addressControl.setValue('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
+
+    fixture.detectChanges();
+
+    expect(component.form.value.address).toEqual('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
   });
 
   it('RFO7.2.1 - user should be able to see the error message if the address is empty', () => {
+    fixture.detectChanges();
+    const addressControl = component.form.controls['address'];
+    addressControl.setValue('');
+    fixture.detectChanges();
 
+    const addressErrorElement = fixture.debugElement.query(By.css('.errorMsg'));
+    expect(addressErrorElement.nativeElement).toBeTruthy();
+    expect(addressErrorElement.nativeElement.textContent).toEqual(
+      'Inserire un indirizzo'
+    );
   });
 
   it('RFO7.2.2 - user should be able to see the error message if the address is invalid', () => {
+    fixture.detectChanges();
+    const addressControl = component.form.controls['address'];
+    addressControl.setValue('0x invalidAddress');
+    fixture.detectChanges();
 
+    const addressErrorElement = fixture.debugElement.query(By.css('.errorMsg'));
+    expect(addressErrorElement.nativeElement).toBeTruthy();
+    expect(addressErrorElement.nativeElement.textContent).toEqual(
+      "L'indirizzo non rispetta il formato corretto"
+    );
   });
 
   it('RFO7.3 - user should be able to enter the amount of ERC20 token to send', () => {
+    fixture.detectChanges();
+    const tokensControl = component.form.controls['tokens'];
+    tokensControl.setValue('99');
 
+    expect(component.form.value.tokens).toEqual('99');
   });
 
   it('RFO7.3.1 - user should be able to see the error message is the token amount is empty', () => {
+    fixture.detectChanges();
+    const tokensControl = component.form.controls['tokens'];
+    tokensControl.setValue('');
+    fixture.detectChanges();
 
+    const tokensErrorElement = fixture.debugElement.query(By.css('.tErrorMsg'));
+    expect(tokensErrorElement.nativeElement).toBeTruthy();
+    expect(tokensErrorElement.nativeElement.textContent).toEqual(
+      ' Inserire un importo di token'
+    );
   })
 
   it('RFO7.3.2 - user should be able to see the error message is the token amount is invalid', () => {
+    fixture.detectChanges();
+    const tokensControl = component.form.controls['tokens'];
+    tokensControl.setValue('-1');
+    fixture.detectChanges();
 
+    const tokensErrorElement = fixture.debugElement.query(By.css('.tErrorMsg'));
+    expect(tokensErrorElement.nativeElement).toBeTruthy();
+    expect(tokensErrorElement.nativeElement.textContent).toEqual(
+      ' L\'importo dev\'essere un intero maggiore di zero '
+    );
   })
+
+  // test non tracciati
 
   it('should call component getTokenBalance() on component initialize', () => {
     spyOn(component, 'getTokenBalance');

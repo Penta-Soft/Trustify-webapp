@@ -3,7 +3,8 @@
     <fieldset>
       <mat-form-field appearance="fill">
         <mat-label>Indirizzo wallet</mat-label>
-        <input matInput placeholder="0x..." formControlName="address" required minlength="42" maxlength="42" />
+        <input id="address" matInput placeholder="0x..." formControlName="address" required minlength="42"
+          maxlength="42" />
         <mat-error class="errorMsg" *ngIf="form.controls['address'].errors?.['required']">Inserire un
           indirizzo</mat-error>
         <mat-error class="errorMsg" *ngIf="form.controls['address'].errors?.['pattern']">L'indirizzo non rispetta il
@@ -12,9 +13,9 @@
       <mat-form-field appearance="fill">
         <mat-label>Quantità di token</mat-label>
         <input matInput formControlName="tokens" required />
-        <mat-error class="errorMsg" *ngIf="form.controls['tokens'].errors?.['required']">
+        <mat-error class="tErrorMsg" *ngIf="form.controls['tokens'].errors?.['required']">
           Inserire un importo di token</mat-error>
-        <mat-error class="errorMsg" *ngIf="form.controls['tokens'].errors?.['pattern']">
+        <mat-error class="tErrorMsg" *ngIf="form.controls['tokens'].errors?.['pattern']">
           L'importo dev'essere un intero maggiore di zero
         </mat-error>
       </mat-form-field>
