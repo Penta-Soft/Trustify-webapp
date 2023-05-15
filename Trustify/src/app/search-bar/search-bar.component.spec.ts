@@ -147,6 +147,10 @@ describe('SearchBarComponent', () => {
 
   }));
 
+  it('RFO8 - user should be able to research the reviews', () => {
+
+  })
+
   it('RFO8.1 - controllare che esca fuori la frase "Non hai nessuna recensione"', () => {
 
   });
