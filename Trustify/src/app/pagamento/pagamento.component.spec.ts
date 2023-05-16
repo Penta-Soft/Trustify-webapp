@@ -9,10 +9,11 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { PagamentoComponent } from './pagamento.component';
 import { Web3Service } from '../web3.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import * as Rx from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { throwError } from 'rxjs';
+import { CustomErrorHandler } from '../custom-error-interceptor';
 
 describe('PagamentoComponent', () => {
   let component: PagamentoComponent;
@@ -20,8 +21,10 @@ describe('PagamentoComponent', () => {
   let web3ServiceSpy: any;
   let approveTokensSpy: any;
   let depositTokensSpy: any;
+  let handleErrorSpy: any;
 
   beforeEach(async () => {
+    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', ['handleError']);
     web3ServiceSpy = jasmine.createSpyObj('Web3Service', [
       'approveTokens',
       'depositTokens',
@@ -31,11 +34,13 @@ describe('PagamentoComponent', () => {
 
     approveTokensSpy = web3ServiceSpy.approveTokens.and.returnValue(Promise.resolve(true));
     depositTokensSpy = web3ServiceSpy.depositTokens.and.returnValue(Promise.resolve(true));
+    handleErrorSpy = customErrorService.handleError.and.returnValue('Connessione persa!');
 
     await TestBed.configureTestingModule({
       declarations: [PagamentoComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-      providers: [{ provide: Web3Service, useValue: web3ServiceSpy }],
+      providers: [{ provide: Web3Service, useValue: web3ServiceSpy },
+      { provide: CustomErrorHandler, useValue: customErrorService }],
       imports: [FormsModule, ReactiveFormsModule, MatSnackBarModule, BrowserAnimationsModule],
     }).compileComponents();
 
@@ -74,9 +79,18 @@ describe('PagamentoComponent', () => {
     flush();
   }));
 
-  it('RFO7.1 - user should be able to see the error message if the connection is lost', () => {
+  it('RFO7.1 - user should be able to see the error message if the connection is lost', fakeAsync(() => {
+    fixture.detectChanges();
+    depositTokensSpy = web3ServiceSpy.depositTokens.and.returnValue(throwError(() => new Error('Connection lost')));
 
-  });
+    component.pay('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e', '10');
+    fixture.detectChanges();
+
+    tick();
+
+    expect(handleErrorSpy).toHaveBeenCalled();
+    flush();
+  }));
 
   it('RFO7.2 - user should be able to enter the address of the wallet intended to receive the payment', () => {
     fixture.detectChanges();
@@ -160,7 +174,7 @@ describe('PagamentoComponent', () => {
   it('should call web3 getTokenBalance() on component getTokenBalance() call', fakeAsync(() => {
     let testBalance = 10;
     let getTokenBalanceSpy = web3ServiceSpy.getTokenBalance.and.returnValue(
-      Rx.of(testBalance)
+      testBalance
     );
 
     fixture.detectChanges();
