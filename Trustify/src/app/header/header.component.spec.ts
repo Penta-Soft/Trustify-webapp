@@ -1,24 +1,29 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HeaderComponent } from './header.component';
 import { WalletService } from '../wallet.service';
 import { By } from '@angular/platform-browser';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CustomErrorHandler } from '../custom-error-interceptor';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let connectSpy: any;
+  let displayMessageSpy: any;
 
   beforeEach(async () => {
     const walletService = jasmine.createSpyObj('WalletService', ['connect']);
+    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', ['displayMessage']);
 
     connectSpy = walletService.connect.and.returnValue(Promise.resolve(true));
+    displayMessageSpy = customErrorService.displayMessage.and.returnValue('Metamask connesso con successo!');
 
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [{ provide: WalletService, useValue: walletService }],
+      providers: [{ provide: WalletService, useValue: walletService },
+      { provide: CustomErrorHandler, useValue: customErrorService }],
       imports: [MatSnackBarModule],
     }).compileComponents();
 
@@ -40,9 +45,16 @@ describe('HeaderComponent', () => {
     expect(connectMetamaskFunction).toHaveBeenCalled();
   });
 
-  it('RFO1.1 - user should be able to see the error message if Metamask is not installed', () => { });
+  it('RFO1.1 - user should be able to see the error message if Metamask is not installed', () => {
+    // TODO
+  });
 
-  it('RFO1.2 - user should be able to see the approval message if his wallet connects successfully', () => { });
+  it('RFO1.2 - user should be able to see the approval message if his wallet connects successfully', fakeAsync(() => {
+    fixture.detectChanges();
+    component.connectToMetamask();
+    tick();
+    expect(displayMessageSpy).toHaveBeenCalled();
+  }));
 
   // test non tracciati nel documento AdR
 
