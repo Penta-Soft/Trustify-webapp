@@ -5,22 +5,29 @@ import { Web3Service } from '../web3.service';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CustomErrorHandler } from '../custom-error-interceptor';
+import { throwError } from 'rxjs';
 
 describe('RecensioneComponent', () => {
   let component: RecensioneComponent;
   let fixture: ComponentFixture<RecensioneComponent>;
   let writeAReviewSpy: any;
   let deleteReviewSpy: any;
+  let handleErrorSpy: any;
+  let web3ServiceSpy: any;
 
   beforeEach(async () => {
-    const web3ServiceSpy = jasmine.createSpyObj('Web3Service', ['writeAReview', 'deleteReview']);
+    web3ServiceSpy = jasmine.createSpyObj('Web3Service', ['writeAReview', 'deleteReview']);
+    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', ['handleError']);
     writeAReviewSpy = web3ServiceSpy.writeAReview.and.returnValue(Promise.resolve(true))
     deleteReviewSpy = web3ServiceSpy.deleteReview.and.returnValue(Promise.resolve(true));
+    handleErrorSpy = customErrorService.handleError.and.returnValue('Connessione persa!');
 
     await TestBed.configureTestingModule({
       declarations: [RecensioneComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [{ provide: Web3Service, useValue: web3ServiceSpy }],
+      providers: [{ provide: Web3Service, useValue: web3ServiceSpy },
+      { provide: CustomErrorHandler, useValue: customErrorService }],
       imports: [MatSnackBarModule, BrowserAnimationsModule],
     }).compileComponents();
 
@@ -33,9 +40,17 @@ describe('RecensioneComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it("RFO3.3.2.1 / RFO4.3.2.1 - user should be able to see the approval message if the review's description is empty", () => { });
+  it("RFO3.3.2.1 / RFO4.3.2.1 - user should be able to see the approval message if the review's description is empty", fakeAsync(() => {
+    fixture.detectChanges();
+    const reviewControl = component.form.controls['review'];
+    const reviewDescElement = fixture.debugElement.query(By.css('#reviewDesc'));
+    reviewControl.setValue('');
+    fixture.detectChanges();
 
+    tick();
 
+    expect(reviewDescElement.nativeElement.getAttribute('placeholder')).toEqual('Descrizione vuota');
+  }));
 
   it('RFO5 - user should be able to modify a review calling component editReview', () => {
     component.activeAction = true;
@@ -65,9 +80,14 @@ describe('RecensioneComponent', () => {
     flush();
   }));
 
-  it('RFO5.1 - user should be able to see the error message if connection is lost', () => {
+  it('RFO5.1 - user should be able to see the error message if connection is lost on editReview', fakeAsync(() => {
+    writeAReviewSpy = web3ServiceSpy.writeAReview.and.returnValue(throwError(() => new Error('Connessione persa!')));
 
-  });
+    fixture.detectChanges();
+    component.editReview();
+    expect(handleErrorSpy).toHaveBeenCalled();
+    expect(handleErrorSpy.calls.count()).toBe(1);
+  }));
 
   it('RFO5.2 - user should be able to modify the review\'s rating parameter', () => {
     fixture.detectChanges();
@@ -153,7 +173,11 @@ describe('RecensioneComponent', () => {
     flush();
   }));
 
-  it('RFO6.1 - user should be able to see the error message if the connection is lost', () => {
-
+  it('RFO6.1 - user should be able to see the error message if the connection is lost onDeleteReview', () => {
+    deleteReviewSpy = web3ServiceSpy.deleteReview.and.returnValue(throwError(() => new Error('Connessione persa!')));
+    fixture.detectChanges();
+    component.deleteReview();
+    expect(handleErrorSpy).toHaveBeenCalled();
+    expect(handleErrorSpy.calls.count()).toBe(1);
   });
 });
