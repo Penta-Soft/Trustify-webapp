@@ -17,10 +17,9 @@ describe('SearchBarComponent', () => {
   let reviewParserService: any;
   let testReviewsList: Recensione[];
   let retriveHomePageReviewsSpy: any;
+
   beforeEach(async () => {
-    reviewParserService = jasmine.createSpyObj('RecensioniParserService', [
-      'retriveHomePageReviews',
-    ]);
+    reviewParserService = jasmine.createSpyObj('RecensioniParserService', ['retriveHomePageReviews']);
 
     testReviewsList = [
       new Recensione(
@@ -148,10 +147,41 @@ describe('SearchBarComponent', () => {
   }));
 
   it('RFO8 - user should be able to research the reviews', () => {
+    const getCompanyReviewSpy = spyOn(component, 'getCompanyReview');
+    const submitButton = fixture.debugElement.query(By.css('#submit-btn'));
+    expect(submitButton.nativeElement).toBeDefined();
+    fixture.detectChanges();
 
-  })
-
-  it('RFO8.1 - controllare che esca fuori la frase "Non hai nessuna recensione"', () => {
-
+    expect(getCompanyReviewSpy).toHaveBeenCalled();
   });
+
+  it('RFO8.1 - user should be able to see the error message if the connection is lost', () => {
+    //controllare che esca fuori la frase "Non hai nessuna recensione"
+  });
+
+  it('RFO8.2 - user should be able to enter the wallet address to research the reviews', () => {
+    fixture.detectChanges();
+    const addressControl = component.form.controls['address'];
+    addressControl.setValue('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
+    fixture.detectChanges();
+    expect(component.form.value.address).toEqual('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
+  });
+
+  it('RFO8.2.1 - user should be able to see the error message if the address is empty', () => {
+    fixture.detectChanges();
+    const addressControl = component.form.controls['address'];
+    addressControl.setValue('');
+    fixture.detectChanges();
+    const errorMsgElement = fixture.debugElement.query(By.css('.errorMsg'));
+    expect(errorMsgElement.nativeElement.textContent).toEqual('Inserire un indirizzo');
+  });
+
+  it('RFO8.2.2 - user should be able to see the error message is the address is invalid', () => {
+    fixture.detectChanges();
+    const addressControl = component.form.controls['address'];
+    addressControl.setValue('0x invalid');
+    fixture.detectChanges();
+    const errorMsgElement = fixture.debugElement.query(By.css('.errorMsg'));
+    expect(errorMsgElement.nativeElement.textContent).toEqual('L\'indirizzo non rispetta il formato corretto ');
+  })
 });

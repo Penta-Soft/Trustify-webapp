@@ -10,7 +10,7 @@
         </mat-error>
     </mat-form-field>
 
-    <button color="primary" type="submit" [disabled]="!form.valid" mat-fab extended>
+    <button id="submit-btn" color="primary" type="submit" [disabled]="!form.valid" mat-fab extended>
         <mat-icon>search</mat-icon>
         Cerca
     </button>
@@ -22,7 +22,7 @@
         [ActiveAction]="false"></app-recensione>
 </ul>
 <div id="button" *ngIf="reviews.length > 0">
-    <button color="primary" type="submit" value="Continua" (click)="loadMoreReview()" mat-fab extended>
+    <button color="primary" value="Continua" (click)="loadMoreReview()" mat-fab extended>
         Carica altre recensioni
     </button>
 </div>

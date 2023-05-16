@@ -27,7 +27,7 @@ export class SearchBarComponent {
     private formBuilder: FormBuilder,
     private reviewParserService: RecensioniParserService,
     private errorHandler: CustomErrorHandler
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.form = this.formBuilder.group({
