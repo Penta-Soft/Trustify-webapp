@@ -17,7 +17,7 @@ export class GeneraRecensioneComponent implements OnInit {
     private web3: Web3Service,
     private formBuilder: FormBuilder,
     private errorHandler: CustomErrorHandler
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -46,6 +46,7 @@ export class GeneraRecensioneComponent implements OnInit {
           this.errorHandler.displayMessage('Recensione inviata con successo!');
         });
     } catch (error: any) {
+      this.isProgressSpinnerVisible = false;
       this.errorHandler.handleError(error);
     }
   }

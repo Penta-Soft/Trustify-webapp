@@ -3,6 +3,7 @@ import {
   TestBed,
   tick,
   fakeAsync,
+  flush
 } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeneraRecensioneComponent } from './genera-recensione.component';
@@ -10,21 +11,31 @@ import { Web3Service } from '../web3.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { throwError } from 'rxjs';
+import { CustomErrorHandler } from '../custom-error-interceptor';
 
 describe('GeneraRecensioneComponent', () => {
   let component: GeneraRecensioneComponent;
   let fixture: ComponentFixture<GeneraRecensioneComponent>;
   let web3ServiceSpy: any;
+  let writeAReviewSpy: any;
+  let handleErrorSpy: any;
 
   beforeEach(async () => {
+    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', ['handleError']);
     web3ServiceSpy = jasmine.createSpyObj('Web3Service', ['writeAReview']);
+
+    writeAReviewSpy = web3ServiceSpy.writeAReview.and.returnValue(Promise.resolve(true));
+    handleErrorSpy = customErrorService.handleError.and.returnValue('Connessione persa!');
 
     await TestBed.configureTestingModule({
       declarations: [GeneraRecensioneComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-      providers: [{ provide: Web3Service, useValue: web3ServiceSpy }],
+      providers: [{ provide: Web3Service, useValue: web3ServiceSpy },
+      { provide: CustomErrorHandler, useValue: customErrorService }],
 
-      imports: [FormsModule, ReactiveFormsModule, MatSnackBarModule],
+      imports: [FormsModule, ReactiveFormsModule, MatSnackBarModule, BrowserAnimationsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GeneraRecensioneComponent);
@@ -35,11 +46,24 @@ describe('GeneraRecensioneComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('RFO2 - user should be able to release a review after the purchase phase', () => {
+  it('RFO2.1 - user should be able to see the error message if the connection is lost', fakeAsync(() => {
+    fixture.detectChanges();
 
-  });
+    writeAReviewSpy = web3ServiceSpy.writeAReview.and.returnValue(throwError(() => new Error('Connection lost')));
+    const submitElement = fixture.debugElement.query(By.css('#btn-submit'));
+    const addressControl = component.form.get('address');
+    const reviewControl = component.form.get('review');
 
-  it('RFO2.1 - user should be able to see the error message if the connection is lost', () => { });
+    addressControl?.setValue('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
+    reviewControl?.setValue('Unit Test');
+    fixture.detectChanges();
+
+    (submitElement.nativeElement as HTMLButtonElement).click();
+    tick();
+
+    expect(handleErrorSpy).toHaveBeenCalled();
+    flush();
+  }));
 
   it('RFO2.2 - user should be able to enter the activity address', () => {
     fixture.detectChanges();
@@ -223,4 +247,20 @@ describe('GeneraRecensioneComponent', () => {
 
     expect(submitFunction).toHaveBeenCalled();
   });
+
+  it('should call web3 writeAReview after form submit', fakeAsync(() => {
+    const submitElement = fixture.debugElement.query(By.css('#btn-submit'));
+    const addressControl = component.form.get('address');
+    const reviewControl = component.form.get('review');
+
+    addressControl?.setValue('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
+    reviewControl?.setValue('Unit Test');
+    fixture.detectChanges();
+
+    (submitElement.nativeElement as HTMLButtonElement).click();
+    tick();
+
+    expect(writeAReviewSpy).toHaveBeenCalled();
+    flush();
+  }));
 });
