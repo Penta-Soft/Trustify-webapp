@@ -101,7 +101,9 @@ describe('AreaPersonaleComponent', () => {
     );
   }));
 
-  it('RFO4.2 - user should be able to see the error message if the connection is lost', () => {});
+  it('RFO4.2 - user should be able to see the error message if the connection is lost', () => {
+    // TODO
+  });
 
   it('RFO4.3 - user should be able to see a single review of his own released review list', fakeAsync(() => {
     fixture.detectChanges();
