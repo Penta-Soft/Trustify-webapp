@@ -10,6 +10,9 @@ import { RecensioniParserService } from '../recensioni-parser.service';
 import { Recensione } from '../recensione';
 import { By } from '@angular/platform-browser';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CustomErrorHandler } from '../custom-error-interceptor';
+import { throwError } from 'rxjs';
+
 
 describe('SearchBarComponent', () => {
   let component: SearchBarComponent;
@@ -17,9 +20,12 @@ describe('SearchBarComponent', () => {
   let reviewParserService: any;
   let testReviewsList: Recensione[];
   let retriveHomePageReviewsSpy: any;
+  let handleErrorSpy: any;
 
   beforeEach(async () => {
+    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', ['handleError']);
     reviewParserService = jasmine.createSpyObj('RecensioniParserService', ['retriveHomePageReviews']);
+    handleErrorSpy = customErrorService.handleError.and.returnValue('Connessione persa!');
 
     testReviewsList = [
       new Recensione(
@@ -52,6 +58,7 @@ describe('SearchBarComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
       providers: [
         { provide: RecensioniParserService, useValue: reviewParserService },
+        { provide: CustomErrorHandler, useValue: customErrorService }
       ],
       imports: [MatSnackBarModule],
     }).compileComponents();
@@ -77,7 +84,15 @@ describe('SearchBarComponent', () => {
     expect(component.reviews).toEqual(testReviewsList);
   }));
 
-  it('RFO3.1 - user should be able to see the error message if the connection is lost', () => { });
+  it('RFO3.1 - user should be able to see the error message if the connection is lost on component initialize', fakeAsync(() => {
+    reviewParserService = reviewParserService.retriveHomePageReviews.and.returnValue(throwError(() => new Error('Connessione persa!')));
+    fixture.detectChanges();
+
+    tick();
+
+    expect(handleErrorSpy).toHaveBeenCalled();
+    expect(handleErrorSpy.calls.count()).toBe(1);
+  }));
 
   it('RFO3.2 - user should be able to see the approval message if the list of reviews is empty', fakeAsync(() => {
     const testReviewsList: Recensione[] = [];
@@ -155,9 +170,15 @@ describe('SearchBarComponent', () => {
     expect(getCompanyReviewSpy).toHaveBeenCalled();
   });
 
-  it('RFO8.1 - user should be able to see the error message if the connection is lost', () => {
-    //controllare che esca fuori la frase "Non hai nessuna recensione"
-  });
+  it('RFO8.1 - user should be able to see the error message if the connection is lost on call getCompanyReview', fakeAsync(() => {
+    reviewParserService = reviewParserService.retriveHomePageReviews.and.returnValue(throwError(() => new Error('Connessione persa!')));
+    component.getCompanyReview('0x96A85346123DfAc720fFa6193dE5c9792BB65C5e');
+
+    tick();
+
+    expect(handleErrorSpy).toHaveBeenCalled();
+    expect(handleErrorSpy.calls.count()).toBe(1);
+  }));
 
   it('RFO8.2 - user should be able to enter the wallet address to research the reviews', () => {
     fixture.detectChanges();

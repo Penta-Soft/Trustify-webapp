@@ -10,6 +10,8 @@ import { RecensioniParserService } from '../recensioni-parser.service';
 import { Recensione } from '../recensione';
 import { By } from '@angular/platform-browser';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { throwError } from 'rxjs';
+import { CustomErrorHandler } from '../custom-error-interceptor';
 
 describe('AreaPersonaleComponent', () => {
   let component: AreaPersonaleComponent;
@@ -17,11 +19,11 @@ describe('AreaPersonaleComponent', () => {
   let reviewParserService: any;
   let testReviewsList: Recensione[];
   let retrivePersonalAreaReviewsSpy: any;
+  let handleErrorSpy: any;
 
   beforeEach(async () => {
-    reviewParserService = jasmine.createSpyObj('RecensioniParserService', [
-      'retrivePersonalAreaReviews',
-    ]);
+    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', ['handleError']);
+    reviewParserService = jasmine.createSpyObj('RecensioniParserService', ['retrivePersonalAreaReviews']);
 
     testReviewsList = [
       new Recensione(
@@ -49,11 +51,14 @@ describe('AreaPersonaleComponent', () => {
         testReviewsList
       );
 
+    handleErrorSpy = customErrorService.handleError.and.returnValue('Connessione persa!');
+
     await TestBed.configureTestingModule({
       declarations: [AreaPersonaleComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         { provide: RecensioniParserService, useValue: reviewParserService },
+        { provide: CustomErrorHandler, useValue: customErrorService }
       ],
       imports: [MatSnackBarModule],
     }).compileComponents();
@@ -101,9 +106,15 @@ describe('AreaPersonaleComponent', () => {
     );
   }));
 
-  it('RFO4.2 - user should be able to see the error message if the connection is lost', () => {
-    // TODO
-  });
+  it('RFO4.2 - user should be able to see the error message if the connection is lost', fakeAsync(() => {
+    reviewParserService = reviewParserService.retrivePersonalAreaReviews.and.returnValue(throwError(() => new Error('Connessione persa!')));
+    fixture.detectChanges();
+
+    tick();
+
+    expect(handleErrorSpy).toHaveBeenCalled();
+    expect(handleErrorSpy.calls.count()).toBe(1);
+  }));
 
   it('RFO4.3 - user should be able to see a single review of his own released review list', fakeAsync(() => {
     fixture.detectChanges();
