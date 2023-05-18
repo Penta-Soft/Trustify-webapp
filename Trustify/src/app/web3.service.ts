@@ -125,15 +125,6 @@ export class Web3Service {
     return output;
   }
 
-  async getSpecificReview(address: string) {
-    let review: string;
-    let star: number;
-    [review, star] = await this.trustifyContract.methods
-      .getSpecificReview(address)
-      .call();
-    return [review, star];
-  }
-
   async getMyReview(from: number, to: number) {
     if (await this.walletService.isWalletConnected()) {
       let output;
@@ -167,19 +158,5 @@ export class Web3Service {
         'Wallet non connesso, impossibile cancellare la tua review'
       );
     }
-  }
-
-  //Ritorna un array con tutte le "stars"
-  async getAverageStarsArray(address: string) {
-    let stars: number[];
-    stars = await this.trustifyContract.methods.GetAverageStars(address).call();
-    return stars;
-  }
-
-  //Ritorna la media effettiva di tutte le "stars"
-  async getAverageStars(address: string) {
-    let array: number[];
-    array = await this.getAverageStarsArray(address);
-    return array.reduce((a, b) => a + b, 0) / array.length;
   }
 }

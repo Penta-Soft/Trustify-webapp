@@ -1,5 +1,11 @@
 footer {
-    background-color: #cccccc;
+    background-color: #3F51B5;
     padding: 1.5em;
     text-align: center;
+    color: rgba(255, 255, 255, 0.87);
+}
+
+.mb-3 > img {
+    max-width: 12.5%;
+    height: auto;
 }
