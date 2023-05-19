@@ -13,7 +13,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CustomErrorHandler } from '../custom-error-interceptor';
 import { throwError } from 'rxjs';
 
-
 describe('SearchBarComponent', () => {
   let component: SearchBarComponent;
   let fixture: ComponentFixture<SearchBarComponent>;
@@ -23,9 +22,14 @@ describe('SearchBarComponent', () => {
   let handleErrorSpy: any;
 
   beforeEach(async () => {
-    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', ['handleError']);
-    reviewParserService = jasmine.createSpyObj('RecensioniParserService', ['retriveHomePageReviews']);
-    handleErrorSpy = customErrorService.handleError.and.returnValue('Connessione persa!');
+    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', [
+      'handleError',
+    ]);
+    reviewParserService = jasmine.createSpyObj('RecensioniParserService', [
+      'retriveHomePageReviews',
+    ]);
+    handleErrorSpy =
+      customErrorService.handleError.and.returnValue('Connessione persa!');
 
     testReviewsList = [
       new Recensione(
@@ -58,7 +62,7 @@ describe('SearchBarComponent', () => {
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
       providers: [
         { provide: RecensioniParserService, useValue: reviewParserService },
-        { provide: CustomErrorHandler, useValue: customErrorService }
+        { provide: CustomErrorHandler, useValue: customErrorService },
       ],
       imports: [MatSnackBarModule],
     }).compileComponents();
@@ -85,7 +89,10 @@ describe('SearchBarComponent', () => {
   }));
 
   it('RFO3.1 - user should be able to see the error message if the connection is lost on component initialize', fakeAsync(() => {
-    reviewParserService = reviewParserService.retriveHomePageReviews.and.returnValue(throwError(() => new Error('Connessione persa!')));
+    reviewParserService =
+      reviewParserService.retriveHomePageReviews.and.returnValue(
+        throwError(() => new Error('Connessione persa!'))
+      );
     fixture.detectChanges();
 
     tick();
@@ -158,7 +165,6 @@ describe('SearchBarComponent', () => {
     expect(component.reviews.at(0)?.getAddress()).toEqual(
       '0x96A85348123DfAc720fFa6193dE5c9792BB65C5e'
     );
-
   }));
 
   it('RFO8 - user should be able to research the reviews', () => {
@@ -171,7 +177,10 @@ describe('SearchBarComponent', () => {
   });
 
   it('RFO8.1 - user should be able to see the error message if the connection is lost on call getCompanyReview', fakeAsync(() => {
-    reviewParserService = reviewParserService.retriveHomePageReviews.and.returnValue(throwError(() => new Error('Connessione persa!')));
+    reviewParserService =
+      reviewParserService.retriveHomePageReviews.and.returnValue(
+        throwError(() => new Error('Connessione persa!'))
+      );
     component.getCompanyReview('0x96A85346123DfAc720fFa6193dE5c9792BB65C5e');
 
     tick();
@@ -185,7 +194,9 @@ describe('SearchBarComponent', () => {
     const addressControl = component.form.controls['address'];
     addressControl.setValue('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
     fixture.detectChanges();
-    expect(component.form.value.address).toEqual('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
+    expect(component.form.value.address).toEqual(
+      '0x96A85348123DfAc720fFa6193dE5c9792BB65C5e'
+    );
   });
 
   it('RFO8.2.1 - user should be able to see the error message if the address is empty', () => {
@@ -194,7 +205,9 @@ describe('SearchBarComponent', () => {
     addressControl.setValue('');
     fixture.detectChanges();
     const errorMsgElement = fixture.debugElement.query(By.css('.errorMsg'));
-    expect(errorMsgElement.nativeElement.textContent).toEqual('Inserire un indirizzo');
+    expect(errorMsgElement.nativeElement.textContent).toEqual(
+      'Inserire un indirizzo'
+    );
   });
 
   it('RFO8.2.2 - user should be able to see the error message is the address is invalid', () => {
@@ -203,6 +216,54 @@ describe('SearchBarComponent', () => {
     addressControl.setValue('0x invalid');
     fixture.detectChanges();
     const errorMsgElement = fixture.debugElement.query(By.css('.errorMsg'));
-    expect(errorMsgElement.nativeElement.textContent).toEqual('L\'indirizzo non rispetta il formato corretto ');
-  })
+    expect(errorMsgElement.nativeElement.textContent).toEqual(
+      "L'indirizzo non rispetta il formato corretto "
+    );
+  });
+
+  it('should update review indices and call getCompanyReview()', async () => {
+    // Arrange
+    const getCompanyReviewSpy = spyOn(component, 'getCompanyReview');
+    component['reviewsStartFrom'] = component['REVIEW_INDEX_START'];
+    component['reviewsEndTo'] = component['REVIEW_INDEX_END'];
+
+    // Act
+    await component['loadMoreReview']();
+
+    // Assert
+    expect(component['reviewsStartFrom']).toBe(
+      component['REVIEW_INDEX_START'] + component['REVIEW_INDEX_ADDER']
+    );
+    expect(component['reviewsEndTo']).toBe(
+      component['REVIEW_INDEX_END'] + component['REVIEW_INDEX_ADDER']
+    );
+    expect(getCompanyReviewSpy).toHaveBeenCalledWith(
+      component['DEFAULT_ADDRESS']
+    );
+  });
+
+  it('should reset review data and call getCompanyReview() with form address', async () => {
+    // Arrange
+    component.reviews = [
+      /* existing reviews */
+    ];
+    const address = '0xABC123';
+
+    const form = {
+      value: {
+        address: address,
+      },
+    };
+
+    const getCompanyReviewSpy = spyOn(component, 'getCompanyReview');
+
+    // Act
+    await component.onSubmit(form);
+
+    // Assert
+    expect(component.reviews).toEqual([]);
+    expect(component['reviewsStartFrom']).toBe(component['REVIEW_INDEX_START']);
+    expect(component['reviewsEndTo']).toBe(component['REVIEW_INDEX_END']);
+    expect(getCompanyReviewSpy).toHaveBeenCalledWith(address);
+  });
 });
