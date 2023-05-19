@@ -9,9 +9,8 @@ describe('StarRatingComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [StarRatingComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    })
-      .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(StarRatingComponent);
     component = fixture.componentInstance;
@@ -20,5 +19,23 @@ describe('StarRatingComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should emit the rating when onClick is called', () => {
+    const rating = 4;
+    spyOn(component.ratingUpdated, 'emit');
+
+    component.onClick(rating);
+
+    expect(component.ratingUpdated.emit).toHaveBeenCalledWith(rating);
+  });
+
+  it('should return false when onClick is called', () => {
+    const rating = 4;
+    spyOn(component.ratingUpdated, 'emit');
+
+    const result = component.onClick(rating);
+
+    expect(result).toBeFalse();
   });
 });
