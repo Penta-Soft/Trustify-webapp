@@ -3,7 +3,7 @@ import {
   fakeAsync,
   flush,
   TestBed,
-  tick
+  tick,
 } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { PagamentoComponent } from './pagamento.component';
@@ -24,7 +24,9 @@ describe('PagamentoComponent', () => {
   let handleErrorSpy: any;
 
   beforeEach(async () => {
-    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', ['handleError']);
+    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', [
+      'handleError',
+    ]);
     web3ServiceSpy = jasmine.createSpyObj('Web3Service', [
       'approveTokens',
       'depositTokens',
@@ -32,16 +34,28 @@ describe('PagamentoComponent', () => {
       'getTokenBalance',
     ]);
 
-    approveTokensSpy = web3ServiceSpy.approveTokens.and.returnValue(Promise.resolve(true));
-    depositTokensSpy = web3ServiceSpy.depositTokens.and.returnValue(Promise.resolve(true));
-    handleErrorSpy = customErrorService.handleError.and.returnValue('Connessione persa!');
+    approveTokensSpy = web3ServiceSpy.approveTokens.and.returnValue(
+      Promise.resolve(true)
+    );
+    depositTokensSpy = web3ServiceSpy.depositTokens.and.returnValue(
+      Promise.resolve(true)
+    );
+    handleErrorSpy =
+      customErrorService.handleError.and.returnValue('Connessione persa!');
 
     await TestBed.configureTestingModule({
       declarations: [PagamentoComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-      providers: [{ provide: Web3Service, useValue: web3ServiceSpy },
-      { provide: CustomErrorHandler, useValue: customErrorService }],
-      imports: [FormsModule, ReactiveFormsModule, MatSnackBarModule, BrowserAnimationsModule],
+      providers: [
+        { provide: Web3Service, useValue: web3ServiceSpy },
+        { provide: CustomErrorHandler, useValue: customErrorService },
+      ],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        BrowserAnimationsModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PagamentoComponent);
@@ -81,7 +95,9 @@ describe('PagamentoComponent', () => {
 
   it('RFO7.1 - user should be able to see the error message if the connection is lost', fakeAsync(() => {
     fixture.detectChanges();
-    depositTokensSpy = web3ServiceSpy.depositTokens.and.returnValue(throwError(() => new Error('Connection lost')));
+    depositTokensSpy = web3ServiceSpy.depositTokens.and.returnValue(
+      throwError(() => new Error('Connection lost'))
+    );
 
     component.pay('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e', '10');
     fixture.detectChanges();
@@ -100,7 +116,9 @@ describe('PagamentoComponent', () => {
 
     fixture.detectChanges();
 
-    expect(component.form.value.address).toEqual('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
+    expect(component.form.value.address).toEqual(
+      '0x96A85348123DfAc720fFa6193dE5c9792BB65C5e'
+    );
   });
 
   it('RFO7.2.1 - user should be able to see the error message if the address is empty', () => {
@@ -148,7 +166,7 @@ describe('PagamentoComponent', () => {
     expect(tokensErrorElement.nativeElement.textContent).toEqual(
       ' Inserire un importo di token'
     );
-  })
+  });
 
   it('RFO7.3.2 - user should be able to see the error message is the token amount is invalid', () => {
     fixture.detectChanges();
@@ -159,9 +177,9 @@ describe('PagamentoComponent', () => {
     const tokensErrorElement = fixture.debugElement.query(By.css('.tErrorMsg'));
     expect(tokensErrorElement.nativeElement).toBeTruthy();
     expect(tokensErrorElement.nativeElement.textContent).toEqual(
-      ' L\'importo dev\'essere un intero maggiore di zero '
+      " L'importo dev'essere un intero maggiore di zero "
     );
-  })
+  });
 
   // test non tracciati
 
@@ -173,9 +191,8 @@ describe('PagamentoComponent', () => {
 
   it('should call web3 getTokenBalance() on component getTokenBalance() call', fakeAsync(() => {
     let testBalance = 10;
-    let getTokenBalanceSpy = web3ServiceSpy.getTokenBalance.and.returnValue(
-      testBalance
-    );
+    let getTokenBalanceSpy =
+      web3ServiceSpy.getTokenBalance.and.returnValue(testBalance);
 
     fixture.detectChanges();
     tick();
@@ -184,5 +201,14 @@ describe('PagamentoComponent', () => {
     expect(getTokenBalanceSpy).toHaveBeenCalled();
     expect(getTokenBalanceSpy.calls.any()).toBe(true);
     expect(component.balance).toBeDefined();
+  }));
+
+  it('should set isProgressSpinnerVisible to true before calling pullTCoin', fakeAsync(() => {
+    web3ServiceSpy.pullTCoin.and.returnValue(Promise.resolve());
+
+    component.getToken();
+
+    expect(component.isProgressSpinnerVisible).toBe(true);
+    expect(web3ServiceSpy.pullTCoin).toHaveBeenCalled();
   }));
 });
