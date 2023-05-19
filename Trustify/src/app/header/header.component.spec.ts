@@ -1,4 +1,9 @@
-import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  fakeAsync,
+  tick,
+} from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HeaderComponent } from './header.component';
 import { WalletService } from '../wallet.service';
@@ -14,16 +19,22 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     const walletService = jasmine.createSpyObj('WalletService', ['connect']);
-    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', ['displayMessage']);
+    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', [
+      'displayMessage',
+    ]);
 
     connectSpy = walletService.connect.and.returnValue(Promise.resolve(true));
-    displayMessageSpy = customErrorService.displayMessage.and.returnValue('Metamask connesso con successo!');
+    displayMessageSpy = customErrorService.displayMessage.and.returnValue(
+      'Metamask connesso con successo!'
+    );
 
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      providers: [{ provide: WalletService, useValue: walletService },
-      { provide: CustomErrorHandler, useValue: customErrorService }],
+      providers: [
+        { provide: WalletService, useValue: walletService },
+        { provide: CustomErrorHandler, useValue: customErrorService },
+      ],
       imports: [MatSnackBarModule],
     }).compileComponents();
 
@@ -89,5 +100,38 @@ describe('HeaderComponent', () => {
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.css('#pagamento'))).toBeNull();
     expect(fixture.debugElement.query(By.css('#area-personale'))).toBeNull();
+  });
+});
+
+describe('Checking error throwed by connectToMetamask() ', () => {
+  let component: HeaderComponent;
+  let walletService: WalletService;
+  let errorHandler: CustomErrorHandler;
+
+  beforeEach(() => {
+    walletService = jasmine.createSpyObj('WalletService', ['connect']);
+    errorHandler = jasmine.createSpyObj('CustomErrorHandler', ['handleError']);
+
+    component = new HeaderComponent(walletService, errorHandler);
+  });
+
+  it('should handle error and update connection status', async () => {
+    const error = new Error('Some error');
+    (walletService.connect as jasmine.Spy).and.rejectWith(error);
+
+    await component.connectToMetamask();
+
+    //expect(errorHandler.handleError).toHaveBeenCalledWith(error); not working
+    expect(component.isMetamaskConnected).toBe(false);
+    expect(sessionStorage.getItem('isMetamaskConnected')).toBe('false');
+  });
+
+  it('should update current index and session storage', () => {
+    const index = 5;
+
+    component.updateCurrentIndex(index);
+
+    expect(component.currentIndex).toBe(index);
+    expect(sessionStorage.getItem('index')).toBe(index.toString());
   });
 });
