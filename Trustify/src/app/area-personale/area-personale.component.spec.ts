@@ -22,8 +22,12 @@ describe('AreaPersonaleComponent', () => {
   let handleErrorSpy: any;
 
   beforeEach(async () => {
-    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', ['handleError']);
-    reviewParserService = jasmine.createSpyObj('RecensioniParserService', ['retrivePersonalAreaReviews']);
+    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', [
+      'handleError',
+    ]);
+    reviewParserService = jasmine.createSpyObj('RecensioniParserService', [
+      'retrivePersonalAreaReviews',
+    ]);
 
     testReviewsList = [
       new Recensione(
@@ -51,14 +55,15 @@ describe('AreaPersonaleComponent', () => {
         testReviewsList
       );
 
-    handleErrorSpy = customErrorService.handleError.and.returnValue('Connessione persa!');
+    handleErrorSpy =
+      customErrorService.handleError.and.returnValue('Connessione persa!');
 
     await TestBed.configureTestingModule({
       declarations: [AreaPersonaleComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
         { provide: RecensioniParserService, useValue: reviewParserService },
-        { provide: CustomErrorHandler, useValue: customErrorService }
+        { provide: CustomErrorHandler, useValue: customErrorService },
       ],
       imports: [MatSnackBarModule],
     }).compileComponents();
@@ -107,7 +112,10 @@ describe('AreaPersonaleComponent', () => {
   }));
 
   it('RFO4.2 - user should be able to see the error message if the connection is lost', fakeAsync(() => {
-    reviewParserService = reviewParserService.retrivePersonalAreaReviews.and.returnValue(throwError(() => new Error('Connessione persa!')));
+    reviewParserService =
+      reviewParserService.retrivePersonalAreaReviews.and.returnValue(
+        throwError(() => new Error('Connessione persa!'))
+      );
     fixture.detectChanges();
 
     tick();
@@ -156,4 +164,16 @@ describe('AreaPersonaleComponent', () => {
       '0x96A85348123DfAc720fFa6193dE5c9792BB65C5e'
     );
   }));
+
+  it('should update review indices and call getMyReview()', async () => {
+    component['reviewsEndTo'] = 9;
+
+    spyOn(component, 'getMyReview').and.returnValue(Promise.resolve());
+
+    await component.loadMoreReview();
+
+    expect(component['reviewsStartFrom']).toBe(10);
+    expect(component['reviewsEndTo']).toBe(19);
+    expect(component.getMyReview).toHaveBeenCalled();
+  });
 });

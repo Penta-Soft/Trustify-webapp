@@ -36,6 +36,8 @@ export class CustomErrorHandler implements ErrorHandler {
       )
     ) {
       this.errorMessage = 'Richiesta già in corso, controlla MetaMask';
+    } else if (error.message.includes('You have not released any reviews')) {
+      return;
     }
 
     if (this.errorMessage != '') {

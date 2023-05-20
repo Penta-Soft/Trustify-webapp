@@ -16,7 +16,7 @@ import {
 export class StarRatingComponent implements OnInit {
   @Input('rating') public rating: number = 3;
   public starCount: number = 5;
-  @Output() private ratingUpdated = new EventEmitter();
+  @Output() public ratingUpdated = new EventEmitter();
 
   public ratingArr: number[] = [];
 
