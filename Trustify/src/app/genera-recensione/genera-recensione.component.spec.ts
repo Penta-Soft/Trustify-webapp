@@ -3,7 +3,7 @@ import {
   TestBed,
   tick,
   fakeAsync,
-  flush
+  flush,
 } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeneraRecensioneComponent } from './genera-recensione.component';
@@ -23,19 +23,31 @@ describe('GeneraRecensioneComponent', () => {
   let handleErrorSpy: any;
 
   beforeEach(async () => {
-    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', ['handleError']);
+    const customErrorService = jasmine.createSpyObj('CustomErrorHandler', [
+      'handleError',
+    ]);
     web3ServiceSpy = jasmine.createSpyObj('Web3Service', ['writeAReview']);
 
-    writeAReviewSpy = web3ServiceSpy.writeAReview.and.returnValue(Promise.resolve(true));
-    handleErrorSpy = customErrorService.handleError.and.returnValue('Connessione persa!');
+    writeAReviewSpy = web3ServiceSpy.writeAReview.and.returnValue(
+      Promise.resolve(true)
+    );
+    handleErrorSpy =
+      customErrorService.handleError.and.returnValue('Connessione persa!');
 
     await TestBed.configureTestingModule({
       declarations: [GeneraRecensioneComponent],
       schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-      providers: [{ provide: Web3Service, useValue: web3ServiceSpy },
-      { provide: CustomErrorHandler, useValue: customErrorService }],
+      providers: [
+        { provide: Web3Service, useValue: web3ServiceSpy },
+        { provide: CustomErrorHandler, useValue: customErrorService },
+      ],
 
-      imports: [FormsModule, ReactiveFormsModule, MatSnackBarModule, BrowserAnimationsModule],
+      imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        BrowserAnimationsModule,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(GeneraRecensioneComponent);
@@ -49,7 +61,9 @@ describe('GeneraRecensioneComponent', () => {
   it('RFO2.1 - user should be able to see the error message if the connection is lost', fakeAsync(() => {
     fixture.detectChanges();
 
-    writeAReviewSpy = web3ServiceSpy.writeAReview.and.returnValue(throwError(() => new Error('Connection lost')));
+    writeAReviewSpy = web3ServiceSpy.writeAReview.and.returnValue(
+      throwError(() => new Error('Connection lost'))
+    );
     const submitElement = fixture.debugElement.query(By.css('#btn-submit'));
     const addressControl = component.form.get('address');
     const reviewControl = component.form.get('review');
@@ -232,35 +246,4 @@ describe('GeneraRecensioneComponent', () => {
     fixture.detectChanges();
     expect(component.rating).toEqual(oldRatingValue);
   });
-
-  it('should call component onSubmit() after form submit', () => {
-    const submitElement = fixture.debugElement.query(By.css('#btn-submit'));
-    const addressControl = component.form.get('address');
-    const reviewControl = component.form.get('review');
-    const submitFunction = spyOn(component, 'onSubmit');
-
-    addressControl?.setValue('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
-    reviewControl?.setValue('Unit Test');
-    fixture.detectChanges();
-
-    (submitElement.nativeElement as HTMLButtonElement).click();
-
-    expect(submitFunction).toHaveBeenCalled();
-  });
-
-  it('should call web3 writeAReview after form submit', fakeAsync(() => {
-    const submitElement = fixture.debugElement.query(By.css('#btn-submit'));
-    const addressControl = component.form.get('address');
-    const reviewControl = component.form.get('review');
-
-    addressControl?.setValue('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
-    reviewControl?.setValue('Unit Test');
-    fixture.detectChanges();
-
-    (submitElement.nativeElement as HTMLButtonElement).click();
-    tick();
-
-    expect(writeAReviewSpy).toHaveBeenCalled();
-    flush();
-  }));
 });

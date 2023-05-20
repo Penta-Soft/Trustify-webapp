@@ -9,15 +9,25 @@ describe('Web3Service', () => {
   let web3: jasmine.SpyObj<Web3>;
 
   beforeEach(() => {
-    const spyWallet = jasmine.createSpyObj('WalletService', ['getProvider', 'getAccount', 'connect', 'isWalletConnected']);
-    const spyWeb3 = jasmine.createSpyObj('Web3', ['setProvider'], ['eth', 'utils']);
+    const spyWallet = jasmine.createSpyObj('WalletService', [
+      'getProvider',
+      'getAccount',
+      'connect',
+      'isWalletConnected',
+    ]);
+    const spyWeb3 = jasmine.createSpyObj(
+      'Web3',
+      ['setProvider'],
+      ['eth', 'utils']
+    );
 
     TestBed.configureTestingModule({
       providers: [
         Web3Service,
-        {provide: WalletService, useValue: spyWallet},
-        {provide: Web3, useValue: spyWeb3}
-    ]});
+        { provide: WalletService, useValue: spyWallet },
+        { provide: Web3, useValue: spyWeb3 },
+      ],
+    });
     service = TestBed.inject(Web3Service);
     wallet = TestBed.inject(WalletService) as jasmine.SpyObj<WalletService>;
     web3 = TestBed.inject(Web3) as jasmine.SpyObj<Web3>;
@@ -25,7 +35,6 @@ describe('Web3Service', () => {
 
   it('should be created', () => {
     // web3.setProvider(wallet.getProvider());
-
     expect(service).toBeTruthy();
   });
 });
