@@ -75,7 +75,7 @@ describe('SearchBarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('RFO3 - user should be able to see a list of reviews', fakeAsync(() => {
+  it('TS3RFO3 - user should be able to see a list of reviews', fakeAsync(() => {
     fixture.detectChanges();
 
     tick();
@@ -88,7 +88,7 @@ describe('SearchBarComponent', () => {
     expect(component.reviews).toEqual(testReviewsList);
   }));
 
-  it('RFO3.1 - user should be able to see the error message if the connection is lost on component initialize', fakeAsync(() => {
+  it('TS3RFO3.1 - user should be able to see the error message if the connection is lost on component initialize', fakeAsync(() => {
     reviewParserService =
       reviewParserService.retriveHomePageReviews.and.returnValue(
         throwError(() => new Error('Connessione persa!'))
@@ -101,7 +101,7 @@ describe('SearchBarComponent', () => {
     expect(handleErrorSpy.calls.count()).toBe(1);
   }));
 
-  it('RFO3.2 - user should be able to see the approval message if the list of reviews is empty', fakeAsync(() => {
+  it('TS3RFO3.2 - user should be able to see the approval message if the list of reviews is empty', fakeAsync(() => {
     const testReviewsList: Recensione[] = [];
 
     let retriveHomePageReviewsSpy =
@@ -126,7 +126,7 @@ describe('SearchBarComponent', () => {
     );
   }));
 
-  it('RFO3.3 - user should be able to see a single review of the list', fakeAsync(() => {
+  it('TS3RFO3.3 - user should be able to see a single review of the list', fakeAsync(() => {
     fixture.detectChanges();
 
     tick();
@@ -135,7 +135,7 @@ describe('SearchBarComponent', () => {
     expect(component.reviews.at(0)).toBeDefined();
   }));
 
-  it("RFO3.3.1 - user should be able to see a single review's rating parameter", fakeAsync(() => {
+  it("TS3RFO3.3.1 - user should be able to see a single review's rating parameter", fakeAsync(() => {
     fixture.detectChanges();
 
     tick();
@@ -145,7 +145,7 @@ describe('SearchBarComponent', () => {
     expect(component.reviews.at(0)?.getRating()).toEqual(5);
   }));
 
-  it("RFO3.3.2 - user should be able to see a single review's description", fakeAsync(() => {
+  it("TS3RFO3.3.2 - user should be able to see a single review's description", fakeAsync(() => {
     fixture.detectChanges();
 
     tick();
@@ -155,7 +155,7 @@ describe('SearchBarComponent', () => {
     expect(component.reviews.at(0)?.getReview()).toEqual('Test1');
   }));
 
-  it("RFO3.3.3 - user should be able to see a single review's address", fakeAsync(() => {
+  it("TS3RFO3.3.3 - user should be able to see a single review's address", fakeAsync(() => {
     fixture.detectChanges();
 
     tick();
@@ -167,7 +167,7 @@ describe('SearchBarComponent', () => {
     );
   }));
 
-  it('RFO8 - user should be able to research the reviews', () => {
+  it('TS8RFO8 - user should be able to research the reviews', () => {
     const getCompanyReviewSpy = spyOn(component, 'getCompanyReview');
     const submitButton = fixture.debugElement.query(By.css('#submit-btn'));
     expect(submitButton.nativeElement).toBeDefined();
@@ -176,7 +176,7 @@ describe('SearchBarComponent', () => {
     expect(getCompanyReviewSpy).toHaveBeenCalled();
   });
 
-  it('RFO8.1 - user should be able to see the error message if the connection is lost on call getCompanyReview', fakeAsync(() => {
+  it('TS8RFO8.1 - user should be able to see the error message if the connection is lost on call getCompanyReview', fakeAsync(() => {
     reviewParserService =
       reviewParserService.retriveHomePageReviews.and.returnValue(
         throwError(() => new Error('Connessione persa!'))
@@ -189,7 +189,7 @@ describe('SearchBarComponent', () => {
     expect(handleErrorSpy.calls.count()).toBe(1);
   }));
 
-  it('RFO8.2 - user should be able to enter the wallet address to research the reviews', () => {
+  it('TS8RFO8.2 - user should be able to enter the wallet address to research the reviews', () => {
     fixture.detectChanges();
     const addressControl = component.form.controls['address'];
     addressControl.setValue('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
@@ -199,7 +199,7 @@ describe('SearchBarComponent', () => {
     );
   });
 
-  it('RFO8.2.1 - user should be able to see the error message if the address is empty', () => {
+  it('TS8RFO8.2.1 - user should be able to see the error message if the address is empty', () => {
     fixture.detectChanges();
     const addressControl = component.form.controls['address'];
     addressControl.setValue('');
@@ -210,7 +210,7 @@ describe('SearchBarComponent', () => {
     );
   });
 
-  it('RFO8.2.2 - user should be able to see the error message is the address is invalid', () => {
+  it('TS8RFO8.2.2 - user should be able to see the error message is the address is invalid', () => {
     fixture.detectChanges();
     const addressControl = component.form.controls['address'];
     addressControl.setValue('0x invalid');

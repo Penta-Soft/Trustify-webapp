@@ -76,7 +76,7 @@ describe('AreaPersonaleComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('RFO4 - user should be able to see the list of his released reviews', fakeAsync(() => {
+  it('TS4RFO4 - user should be able to see the list of his released reviews', fakeAsync(() => {
     fixture.detectChanges();
 
     tick();
@@ -89,7 +89,7 @@ describe('AreaPersonaleComponent', () => {
     expect(component.reviews).toEqual(testReviewsList);
   }));
 
-  it("RFO4.1 - user should be able to see the approval message if he didn't released any review", fakeAsync(() => {
+  it("TS4RFO4.1 - user should be able to see the approval message if he didn't released any review", fakeAsync(() => {
     const testReviewsList: Recensione[] = [];
 
     let retrivePersonalAreaReviewsSpy =
@@ -111,7 +111,7 @@ describe('AreaPersonaleComponent', () => {
     );
   }));
 
-  it('RFO4.2 - user should be able to see the error message if the connection is lost', fakeAsync(() => {
+  it('TS4RFO4.2 - user should be able to see the error message if the connection is lost', fakeAsync(() => {
     reviewParserService =
       reviewParserService.retrivePersonalAreaReviews.and.returnValue(
         throwError(() => new Error('Connessione persa!'))
@@ -124,7 +124,7 @@ describe('AreaPersonaleComponent', () => {
     expect(handleErrorSpy.calls.count()).toBe(1);
   }));
 
-  it('RFO4.3 - user should be able to see a single review of his own released review list', fakeAsync(() => {
+  it('TS4RFO4.3 - user should be able to see a single review of his own released review list', fakeAsync(() => {
     fixture.detectChanges();
 
     tick();
@@ -133,7 +133,7 @@ describe('AreaPersonaleComponent', () => {
     expect(component.reviews.at(0)).toBeDefined();
   }));
 
-  it("RFO4.3.1 - user should be able to see a single review's rating parameter", fakeAsync(() => {
+  it("TS4RFO4.3.1 - user should be able to see a single review's rating parameter", fakeAsync(() => {
     fixture.detectChanges();
 
     tick();
@@ -143,7 +143,7 @@ describe('AreaPersonaleComponent', () => {
     expect(component.reviews.at(0)?.getRating()).toEqual(5);
   }));
 
-  it("RFO4.3.2 - user should be able to see a single review's description", fakeAsync(() => {
+  it("TS4RFO4.3.2 - user should be able to see a single review's description", fakeAsync(() => {
     fixture.detectChanges();
 
     tick();
@@ -153,7 +153,7 @@ describe('AreaPersonaleComponent', () => {
     expect(component.reviews.at(0)?.getReview()).toEqual('Test1');
   }));
 
-  it("RFO4.3.3 - user should be able to see a single review's address", fakeAsync(() => {
+  it("TS4RFO4.3.3 - user should be able to see a single review's address", fakeAsync(() => {
     fixture.detectChanges();
 
     tick();

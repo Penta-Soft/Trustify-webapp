@@ -66,7 +66,7 @@ describe('PagamentoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('RFO7 - user should be able to make a payment from his wallet calling component pay', () => {
+  it('TS7TS7RFO7 - user should be able to make a payment from his wallet calling component pay', () => {
     fixture.detectChanges();
     const paySpy = spyOn(component, 'pay');
     const addressControl = component.form.controls['address'];
@@ -82,7 +82,7 @@ describe('PagamentoComponent', () => {
     expect(paySpy).toHaveBeenCalled();
   });
 
-  it('RFO7 - user should be able to make a payment from his wallet calling web3 approveTokens and depositTokens', fakeAsync(() => {
+  it('TS7TS7RFO7 - user should be able to make a payment from his wallet calling web3 approveTokens and depositTokens', fakeAsync(() => {
     component.pay('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e', '10');
 
     tick();
@@ -93,7 +93,7 @@ describe('PagamentoComponent', () => {
     flush();
   }));
 
-  it('RFO7.1 - user should be able to see the error message if the connection is lost', fakeAsync(() => {
+  it('TS7TS7RFO7.1 - user should be able to see the error message if the connection is lost', fakeAsync(() => {
     fixture.detectChanges();
     depositTokensSpy = web3ServiceSpy.depositTokens.and.returnValue(
       throwError(() => new Error('Connection lost'))
@@ -108,7 +108,7 @@ describe('PagamentoComponent', () => {
     flush();
   }));
 
-  it('RFO7.2 - user should be able to enter the address of the wallet intended to receive the payment', () => {
+  it('TS7TS7RFO7.2 - user should be able to enter the address of the wallet intended to receive the payment', () => {
     fixture.detectChanges();
 
     const addressControl = component.form.controls['address'];
@@ -121,7 +121,7 @@ describe('PagamentoComponent', () => {
     );
   });
 
-  it('RFO7.2.1 - user should be able to see the error message if the address is empty', () => {
+  it('TS7TS7RFO7.2.1 - user should be able to see the error message if the address is empty', () => {
     fixture.detectChanges();
     const addressControl = component.form.controls['address'];
     addressControl.setValue('');
@@ -134,7 +134,7 @@ describe('PagamentoComponent', () => {
     );
   });
 
-  it('RFO7.2.2 - user should be able to see the error message if the address is invalid', () => {
+  it('TS7TS7RFO7.2.2 - user should be able to see the error message if the address is invalid', () => {
     fixture.detectChanges();
     const addressControl = component.form.controls['address'];
     addressControl.setValue('0x invalidAddress');
@@ -147,7 +147,7 @@ describe('PagamentoComponent', () => {
     );
   });
 
-  it('RFO7.3 - user should be able to enter the amount of ERC20 token to send', () => {
+  it('TS7TS7RFO7.3 - user should be able to enter the amount of ERC20 token to send', () => {
     fixture.detectChanges();
     const tokensControl = component.form.controls['tokens'];
     tokensControl.setValue('99');
@@ -155,7 +155,7 @@ describe('PagamentoComponent', () => {
     expect(component.form.value.tokens).toEqual('99');
   });
 
-  it('RFO7.3.1 - user should be able to see the error message is the token amount is empty', () => {
+  it('TS7TS7RFO7.3.1 - user should be able to see the error message is the token amount is empty', () => {
     fixture.detectChanges();
     const tokensControl = component.form.controls['tokens'];
     tokensControl.setValue('');
@@ -168,7 +168,7 @@ describe('PagamentoComponent', () => {
     );
   });
 
-  it('RFO7.3.2 - user should be able to see the error message is the token amount is invalid', () => {
+  it('TS7TS7RFO7.3.2 - user should be able to see the error message is the token amount is invalid', () => {
     fixture.detectChanges();
     const tokensControl = component.form.controls['tokens'];
     tokensControl.setValue('-1');

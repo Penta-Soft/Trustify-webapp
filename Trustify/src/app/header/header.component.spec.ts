@@ -46,7 +46,7 @@ describe('HeaderComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('RFO1 - should connect user wallet via Metamask', () => {
+  it('TS1RFO1 - should connect user wallet via Metamask', () => {
     component.isMetamaskConnected = false;
     fixture.detectChanges();
 
@@ -56,11 +56,11 @@ describe('HeaderComponent', () => {
     expect(connectMetamaskFunction).toHaveBeenCalled();
   });
 
-  it('RFO1.1 - user should be able to see the error message if Metamask is not installed', () => {
+  it('TS1RFO1.1  - user should be able to see the error message if Metamask is not installed', () => {
     // TODO
   });
 
-  it('RFO1.2 - user should be able to see the approval message if his wallet connects successfully', fakeAsync(() => {
+  it('TS1RFO1.2 - user should be able to see the approval message if his wallet connects successfully', fakeAsync(() => {
     fixture.detectChanges();
     component.connectToMetamask();
     tick();

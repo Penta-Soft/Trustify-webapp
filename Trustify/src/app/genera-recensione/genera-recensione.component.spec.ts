@@ -58,7 +58,7 @@ describe('GeneraRecensioneComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('RFO2.1 - user should be able to see the error message if the connection is lost', fakeAsync(() => {
+  it('TS2RFO2.1 - user should be able to see the error message if the connection is lost', fakeAsync(() => {
     fixture.detectChanges();
 
     writeAReviewSpy = web3ServiceSpy.writeAReview.and.returnValue(
@@ -79,7 +79,7 @@ describe('GeneraRecensioneComponent', () => {
     flush();
   }));
 
-  it('RFO2.2 - user should be able to enter the activity address', () => {
+  it('TS2RFO2.2 - user should be able to enter the activity address', () => {
     fixture.detectChanges();
     const addressControl = component.form.controls['address'];
     addressControl.setValue('0x96A85348123DfAc720fFa6193dE5c9792BB65C5e');
@@ -89,7 +89,7 @@ describe('GeneraRecensioneComponent', () => {
     );
   });
 
-  it('RFO2.2.1 - user should be able to see the error message if the address is empty', () => {
+  it('TS2RFO2.2.1 - user should be able to see the error message if the address is empty', () => {
     fixture.detectChanges();
     const addressControl = component.form.controls['address'];
     addressControl.setValue('');
@@ -102,7 +102,7 @@ describe('GeneraRecensioneComponent', () => {
     );
   });
 
-  it('RFO2.2.2 - user should be able to see the error message if the address is invalid', () => {
+  it('TS2RFO2.2.2 - user should be able to see the error message if the address is invalid', () => {
     fixture.detectChanges();
     const addressControl = component.form.controls['address'];
     addressControl.setValue('0x invalidAddress');
@@ -115,7 +115,7 @@ describe('GeneraRecensioneComponent', () => {
     );
   });
 
-  it('RFO2.3 - user should be able to enter the review description', () => {
+  it('TS2RFO2.3 - user should be able to enter the review description', () => {
     fixture.detectChanges();
     const reviewControl = component.form.controls['review'];
     reviewControl.setValue('Test review');
@@ -123,7 +123,7 @@ describe('GeneraRecensioneComponent', () => {
     expect(component.form.value.review).toEqual('Test review');
   });
 
-  it("RFO2.4 - user should be able to enter the review's rating parameter", () => {
+  it("TS2RFO2.4 - user should be able to enter the review's rating parameter", () => {
     const ratingElement = fixture.debugElement.query(By.css('#rating'));
     let ratingTextContent = '';
 
@@ -137,7 +137,7 @@ describe('GeneraRecensioneComponent', () => {
     );
   });
 
-  it('RFO2.4.3 - user should be able to enter a rating value of 1', () => {
+  it('TS2RFO2.4.3 - user should be able to enter a rating value of 1', () => {
     const ratingElement = fixture.debugElement.query(By.css('#rating'));
     let ratingTextContent = '';
 
@@ -151,7 +151,7 @@ describe('GeneraRecensioneComponent', () => {
     );
   });
 
-  it('RFO2.4.4 - user should be able to enter a rating value of 2', () => {
+  it('TS2RFO2.4.4 - user should be able to enter a rating value of 2', () => {
     const ratingElement = fixture.debugElement.query(By.css('#rating'));
     let ratingTextContent = '';
 
@@ -165,7 +165,7 @@ describe('GeneraRecensioneComponent', () => {
     );
   });
 
-  it('RFO2.4.5 - user should be able to enter a rating value of 3', () => {
+  it('TS2RFO2.4.5 - user should be able to enter a rating value of 3', () => {
     const ratingElement = fixture.debugElement.query(By.css('#rating'));
     let ratingTextContent = '';
 
@@ -179,7 +179,7 @@ describe('GeneraRecensioneComponent', () => {
     );
   });
 
-  it('RFO2.4.6 - user should be able to enter a rating value of 4', () => {
+  it('TS2RFO2.4.6 - user should be able to enter a rating value of 4', () => {
     const ratingElement = fixture.debugElement.query(By.css('#rating'));
     let ratingTextContent = '';
 
@@ -193,7 +193,7 @@ describe('GeneraRecensioneComponent', () => {
     );
   });
 
-  it('RFO2.4.7 - user should be able to enter a rating value of 5', () => {
+  it('TS2RFO2.4.7 - user should be able to enter a rating value of 5', () => {
     const ratingElement = fixture.debugElement.query(By.css('#rating'));
     let ratingTextContent = '';
 
