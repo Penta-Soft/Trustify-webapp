@@ -10,23 +10,29 @@ import { WalletService } from '../wallet.service';
 import { By } from '@angular/platform-browser';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CustomErrorHandler } from '../custom-error-interceptor';
+import { throwError } from 'rxjs';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
   let connectSpy: any;
   let displayMessageSpy: any;
+  let walletService: any;
+  let handleErrorSpy: any;
 
   beforeEach(async () => {
-    const walletService = jasmine.createSpyObj('WalletService', ['connect']);
+    walletService = jasmine.createSpyObj('WalletService', ['connect']);
     const customErrorService = jasmine.createSpyObj('CustomErrorHandler', [
-      'displayMessage',
+      'displayMessage', 'handleError'
     ]);
 
     connectSpy = walletService.connect.and.returnValue(Promise.resolve(true));
     displayMessageSpy = customErrorService.displayMessage.and.returnValue(
       'Metamask connesso con successo!'
     );
+
+    handleErrorSpy =
+      customErrorService.handleError.and.returnValue('Metamask non installato!');
 
     await TestBed.configureTestingModule({
       declarations: [HeaderComponent],
@@ -56,9 +62,16 @@ describe('HeaderComponent', () => {
     expect(connectMetamaskFunction).toHaveBeenCalled();
   });
 
-  it('TS1RFO1.1  - user should be able to see the error message if Metamask is not installed', () => {
-    // TODO
-  });
+  it('TS1RFO1.1  - user should be able to see the error message if Metamask is not installed', fakeAsync(() => {
+    walletService.connect.and.returnValue(throwError(() => new Error('Metamask not installed!')))
+    component.connectToMetamask();
+    fixture.detectChanges();
+
+    tick();
+
+    expect(handleErrorSpy).toHaveBeenCalled();
+    expect(handleErrorSpy.calls.count()).toBe(1);
+  }));
 
   it('TS1RFO1.2 - user should be able to see the approval message if his wallet connects successfully', fakeAsync(() => {
     fixture.detectChanges();
