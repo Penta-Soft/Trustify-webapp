@@ -22,6 +22,7 @@ export class SearchBarComponent {
   private readonly REVIEW_INDEX_END = 4;
   private reviewsStartFrom = this.REVIEW_INDEX_START;
   private reviewsEndTo = this.REVIEW_INDEX_END;
+  private address = this.DEFAULT_ADDRESS;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,21 +41,26 @@ export class SearchBarComponent {
       ],
     });
 
-    await this.getCompanyReview(this.DEFAULT_ADDRESS);
+    await this.getCompanyReview(this.address);
   }
 
   async loadMoreReview() {
     this.reviewsStartFrom = this.reviewsEndTo + 1;
     this.reviewsEndTo += this.REVIEW_INDEX_ADDER;
+    if (this.form.value.address != null) {
+      this.address = this.form.value.address;
+    }
 
-    await this.getCompanyReview(this.DEFAULT_ADDRESS);
+    await this.getCompanyReview(this.address);
   }
 
   async onSubmit(form: any) {
     this.reviews = [];
     this.reviewsStartFrom = this.REVIEW_INDEX_START;
     this.reviewsEndTo = this.REVIEW_INDEX_END;
-    await this.getCompanyReview(form.value.address);
+    this.address = this.form.value.address;
+
+    await this.getCompanyReview(this.address);
   }
 
   async getCompanyReview(address: string) {
