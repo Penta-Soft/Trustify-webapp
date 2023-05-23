@@ -166,14 +166,14 @@ describe('AreaPersonaleComponent', () => {
   }));
 
   it('should update review indices and call getMyReview()', async () => {
-    component['reviewsEndTo'] = 9;
+    component['reviewsEndTo'] = 4;
 
     spyOn(component, 'getMyReview').and.returnValue(Promise.resolve());
 
     await component.loadMoreReview();
 
-    expect(component['reviewsStartFrom']).toBe(10);
-    expect(component['reviewsEndTo']).toBe(19);
+    expect(component['reviewsStartFrom']).toBe(5);
+    expect(component['reviewsEndTo']).toBe(9);
     expect(component.getMyReview).toHaveBeenCalled();
   });
 });

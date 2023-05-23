@@ -58,7 +58,7 @@ export class SearchBarComponent {
     this.reviews = [];
     this.reviewsStartFrom = this.REVIEW_INDEX_START;
     this.reviewsEndTo = this.REVIEW_INDEX_END;
-    this.address = this.form.value.address;
+    this.address = form.value.address;
 
     await this.getCompanyReview(this.address);
   }
