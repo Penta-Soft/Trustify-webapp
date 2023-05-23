@@ -17,7 +17,7 @@ export class GeneraRecensioneComponent implements OnInit {
     private web3: Web3Service,
     private formBuilder: FormBuilder,
     private errorHandler: CustomErrorHandler
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -39,6 +39,7 @@ export class GeneraRecensioneComponent implements OnInit {
   async onSubmit(form: any) {
     try {
       this.isProgressSpinnerVisible = true;
+      if (form.value.review == null) form.value.review = '';
       await this.web3
         .writeAReview(form.value.address, form.value.review, this.rating)
         .finally(() => {
