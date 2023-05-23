@@ -4,6 +4,7 @@ import {
   tick,
   fakeAsync,
   flush,
+  waitForAsync,
 } from '@angular/core/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { GeneraRecensioneComponent } from './genera-recensione.component';
@@ -245,5 +246,19 @@ describe('GeneraRecensioneComponent', () => {
     component.onRatingChanged(-1);
     fixture.detectChanges();
     expect(component.rating).toEqual(oldRatingValue);
+  });
+
+  it('should handle error and display error message', async () => {
+    const errorMessage = 'Error occurred.';
+
+    const formValue = {
+      address: '0x1234567890abcdef1234567890abcdef12345678',
+      review: 'Great product!',
+    };
+    component.form.patchValue(formValue);
+
+    await component.onSubmit(component.form);
+
+    expect(component.isProgressSpinnerVisible).toBe(false);
   });
 });
