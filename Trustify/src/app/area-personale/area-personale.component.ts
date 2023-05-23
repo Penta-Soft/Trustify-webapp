@@ -9,9 +9,9 @@ import { CustomErrorHandler } from '../custom-error-interceptor';
 })
 export class AreaPersonaleComponent implements OnInit {
   reviews: Recensione[] = [];
-  private readonly REVIEW_INDEX_ADDER = 10;
+  private readonly REVIEW_INDEX_ADDER = 5;
   private reviewsStartFrom = 0;
-  private reviewsEndTo = 9;
+  private reviewsEndTo = 4;
 
   constructor(
     private reviewParserService: RecensioniParserService,

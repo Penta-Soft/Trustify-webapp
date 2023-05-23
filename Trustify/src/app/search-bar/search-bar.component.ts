@@ -17,9 +17,9 @@ export class SearchBarComponent {
 
   private readonly DEFAULT_ADDRESS =
     '0x43aB5C6Ea8728c34cc779d9a4f9E2aF8Cd923C5D';
-  private readonly REVIEW_INDEX_ADDER = 10;
+  private readonly REVIEW_INDEX_ADDER = 5;
   private readonly REVIEW_INDEX_START = 0;
-  private readonly REVIEW_INDEX_END = 9;
+  private readonly REVIEW_INDEX_END = 4;
   private reviewsStartFrom = this.REVIEW_INDEX_START;
   private reviewsEndTo = this.REVIEW_INDEX_END;
 
