@@ -1,0 +1,29 @@
+#paymentWrapper {
+    margin-bottom: 2em;
+    margin-top: 2em;
+    text-align: center;
+}
+
+#payment {
+    width: 50%;
+    margin: 1% auto;
+}
+
+#payment fieldset {
+    border-radius: 1em;
+    padding: 1.5%;
+    display: flex;
+    flex-direction: column;
+}
+
+.errorMsg {
+    margin-bottom: 1%;
+}
+
+#payment fieldset > button {
+    margin: 1% 0%;
+}
+
+.accountBalance {
+    text-align: center;
+}

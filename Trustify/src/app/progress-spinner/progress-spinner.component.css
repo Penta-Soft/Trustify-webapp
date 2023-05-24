@@ -1,0 +1,30 @@
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+}
+
+.overlay {
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(18, 20, 27, 0.583);
+    z-index: 3;
+    top: 0;
+    left: 0;
+    position: fixed;
+}
+
+#msg {
+    font-size: 2.2em;
+    color: white;
+    text-shadow: 2px 4px 4px rgba(0, 0, 0, 0.6);
+    padding: 1em;
+}
+
+mat-progress-spinner {
+    margin: auto;
+}

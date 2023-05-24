@@ -1,0 +1,57 @@
+header {
+    text-align: center;
+    min-height: 50px;
+}
+
+h1 {
+    padding: 0.5em;
+    background-color: #3f51b5;
+    color: rgba(255, 255, 255, 0.87);
+}
+
+nav {
+    padding: 1.5em;
+}
+
+:host ::ng-deep mat-tab-header {
+    top: 0;
+    z-index: 1;
+    background-color: white;
+    border-bottom: 1.5px solid #3f51b5;
+}
+
+#icon-close {
+    padding: 0.3em;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+}
+
+#icon-done {
+    padding: 0.3em;
+    border-radius: 50%;
+    background-color: green;
+    color: white;
+}
+
+#button-tab,
+#button-tab * {
+    box-sizing: border-box;
+}
+
+#button-tab button {
+    width: 100%;
+    display: block;
+}
+
+.container-btn {
+    margin: 0 auto;
+}
+
+.active-btn {
+    color: black !important;
+}
+
+mat-tab:disabled {
+    cursor: none;
+}

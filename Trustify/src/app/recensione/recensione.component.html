@@ -1,0 +1,33 @@
+<mat-card [formGroup]="form">
+    <mat-card-header>
+        <mat-card-title>
+            <mat-card-subtitle id="status" *ngIf="status != 'ACTIVE'">{{status}}</mat-card-subtitle>
+            <app-star-rating [rating]="rating" (ratingUpdated)="onRatingChanged($event)"></app-star-rating>
+            <input type="hidden" formControlName="rating" />
+        </mat-card-title>
+        <mat-card-subtitle>
+            Address <input id="address" size="44" formControlName="address" readonly />
+        </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+
+        <mat-form-field appearance="fill">
+            <textarea id="reviewDesc" matInput formControlName="review" placeholder="Descrizione vuota"></textarea>
+        </mat-form-field>
+    </mat-card-content>
+    <div *ngIf="activeAction">
+        <mat-divider></mat-divider>
+        <mat-card-actions>
+            <div *ngIf="!isReviewEditable">
+                <button mat-raised-button (click)="reviewEditable(true)">Modifica</button>
+                <button id="delete-btn" mat-raised-button (click)="deleteReview()">Cancella</button>
+            </div>
+            <div *ngIf="isReviewEditable">
+                <button id="edit-btn" mat-raised-button (click)="editReview()">Fatto</button>
+                <button mat-raised-button (click)="reviewEditable(false)">Annulla</button>
+            </div>
+        </mat-card-actions>
+    </div>
+</mat-card>
+
+<app-progress-spinner [overlay]="true" *ngIf="isProgressSpinnerVisible"></app-progress-spinner>

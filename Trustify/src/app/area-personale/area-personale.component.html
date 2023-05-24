@@ -1,0 +1,18 @@
+<div id="personal-area">
+  <mat-tab-group>
+    <mat-tab label="Nuova-recensione">
+      <app-genera-recensione></app-genera-recensione>
+    </mat-tab>
+    <mat-tab label="Lista-recensioni">
+      <p class="errorMsg" *ngIf="reviews.length == 0">Nessuna recensione presente</p>
+      <ul *ngIf="reviews.length > 0">
+        <app-recensione *ngFor="let currentReview of reviews" [Review]="currentReview.getReview()"
+          [Address]="currentReview.getAddress()" [Rating]="currentReview.getRating()"
+          [Status]="currentReview.getStatus()" [ActiveAction]="true"></app-recensione>
+      </ul>
+      <button color="primary" type="submit" value="Continua" (click)="loadMoreReview()" mat-fab extended>
+        Carica altre recensioni
+    </button>
+    </mat-tab>
+  </mat-tab-group>
+</div>

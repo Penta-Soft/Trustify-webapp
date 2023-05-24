@@ -1,0 +1,32 @@
+<header>
+  <h1 class="mat-headline-3">Trustify</h1>
+</header>
+
+<mat-tab-group [selectedIndex]="currentIndex" (selectedIndexChange)="updateCurrentIndex($event)">
+  <mat-tab id="home" label="Home">
+    <app-home-page></app-home-page>
+  </mat-tab>
+  <ng-container *ngIf="isMetamaskConnected">
+    <mat-tab id="pagamento" label="Effettua un pagamento">
+      <app-pagamento></app-pagamento>
+    </mat-tab>
+    <mat-tab id="area-personale" label="Area personale">
+      <app-area-personale></app-area-personale>
+    </mat-tab>
+  </ng-container>
+
+  <mat-tab id="button-tab" disabled>
+    <ng-template mat-tab-label>
+      <ng-container class="container-btn" *ngIf="!isMetamaskConnected; else disconnected">
+        <button id="connect-btn" class="active-btn" (click)="changeMetamaskState()" color="basic" mat-button extended>
+          <mat-icon id="icon-close">close</mat-icon> Connetti Metamask
+        </button>
+      </ng-container>
+      <ng-template class="container-btn" #disconnected>
+        <button class="active-btn" (click)="changeMetamaskState()" color="basic" mat-button extended disabled>
+          <mat-icon id="icon-done">done</mat-icon> Connesso con Metamask
+        </button>
+      </ng-template>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,28 @@
+form {
+  display: inline-block;
+  width: 50%;
+  margin-bottom: 2em;
+  margin-top: 2em;
+}
+
+fieldset {
+  border-radius: 1em;
+}
+
+legend {
+  text-align: left;
+  margin: 2em;
+}
+
+mat-form-field {
+  display: block;
+  margin: 1em;
+}
+
+input, textarea {
+  text-align: left;
+}
+
+button {
+  margin-bottom: 1em;
+}

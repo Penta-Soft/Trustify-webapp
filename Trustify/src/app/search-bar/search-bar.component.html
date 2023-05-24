@@ -1,0 +1,31 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+    <mat-form-field id="address">
+        <mat-label>Indirizzo Wallet</mat-label>
+        <input type="text" matInput minlength="42" maxlength="42" inputmode="address" placeholder="0x..."
+            formControlName="address" #nameInput>
+        <mat-error class="errorMsg" *ngIf="form.controls['address'].errors?.['required']">Inserire un
+            indirizzo</mat-error>
+        <mat-error class="errorMsg" *ngIf="form.controls['address'].errors?.['pattern']">L'indirizzo non rispetta il
+            formato corretto
+        </mat-error>
+    </mat-form-field>
+
+    <button id="submit-btn" color="primary" type="submit" [disabled]="!form.valid" mat-fab extended>
+        <mat-icon>search</mat-icon>
+        Cerca
+    </button>
+</form>
+
+<ul *ngIf="reviews.length > 0">
+    <app-recensione *ngFor="let currentReview of reviews" [Review]="currentReview.getReview()"
+        [Address]="currentReview.getAddress()" [Rating]="currentReview.getRating()" [Status]="currentReview.getStatus()"
+        [ActiveAction]="false"></app-recensione>
+</ul>
+<div id="button" *ngIf="reviews.length > 0">
+    <button color="primary" value="Continua" (click)="loadMoreReview()" mat-fab extended>
+        Carica altre recensioni
+    </button>
+</div>
+<div *ngIf="reviews.length === 0">
+    <p class="reviewErrorMsg">Non ci sono recensioni!</p>
+</div>

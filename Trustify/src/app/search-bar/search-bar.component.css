@@ -1,0 +1,29 @@
+form {
+    text-align: center;
+    padding: 1em;
+}
+
+.recensione {
+    padding: 1em;
+    list-style-type: none;
+}
+
+.recensione > span {
+    display: block;
+}
+
+#address {
+    width: 50%;
+    padding: 0em 1em;
+}
+
+#button{
+    text-align: center;
+    margin-bottom: 2%;
+}
+
+p{
+    display: block;
+    text-align: center;
+}
+
