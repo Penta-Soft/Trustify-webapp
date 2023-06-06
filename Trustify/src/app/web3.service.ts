@@ -7,8 +7,9 @@ import Web3 from 'web3';
 })
 export class Web3Service {
   private trustifyContractAddress =
-    '0x3361fe8BfD202239d43325a053C7Cac246517a98';
-  private tCoinContractAddress = '0x54Fbf778d61A2C44a41EC10E183EC3eD06bd37EB';
+    '0x7864eBbd72AB6781B3C9A16766c7cBecE33eF692';
+  private tCoinContractAddress = '0x71Ef919ab7b86825D50b2ce7c7923013DF2f51ac';
+  private TLogicContractAddress = '0x14f9CFF96eCcc589300Dcc0FeADF8C1C7b94c284';
 
   private trustifyAbi = require('../../contracts/Trustify.json');
   private tCoinAbi = require('../../contracts/TCoin.json');
@@ -47,13 +48,13 @@ export class Web3Service {
   async approveTokens(amount: number) {
     if (await this.walletService.isWalletConnected()) {
       let allowance = await this.tCoinContract.methods
-        .allowance(await this.address(), this.trustifyContractAddress)
+        .allowance(await this.address(), this.TLogicContractAddress)
         .call();
 
       if (parseInt(allowance) < amount) {
         await this.tCoinContract.methods
           .approve(
-            this.trustifyContractAddress,
+            this.TLogicContractAddress,
             Web3.utils.toWei(amount.toString(), 'ether')
           )
           .send({ from: await this.address() })
